@@ -13,43 +13,59 @@ backward asymmetry (A_{FB}) histogram in function to the invariant mass.
 The analysis needs solely a ROOT installation (6.16 or greater). You have to download a set of datas from this site:
 
 ```bash
-source /cvmfs/sft.cern.ch/lcg/views/LCG_95/x86_64-slc6-gcc8-opt/setup.sh
+[source /cvmfs/sft.cern.ch/lcg/views/LCG_95/x86_64-slc6-gcc8-opt/setup.sh](https://eospublichttp01.cern.ch/eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola)
 ```
 
-Just run the filter_df.cpp, if you haveTo download the files, you can either use `git` with the following command or download them directly via the web browser.
+Just run the filter_df.cpp, then you'll create the file `Events.root`, where there are some filtered columns of the initial dataframe. Be sure in the first dataset there are the following columns:
 
 ```bash
-git clone git://github.com/cms-opendata-analyses/DimuonSpectrumNanoAODOutreachAnalysis -b v1.4
+nMuon
+Muon_charge
+Muon_mass
+Muon_eta
+Muon_phi
+Muon_pt
+Muon_dxy
+Muon_pfRelIso03
 ```
 
-The analysis code itself is provided in Python and C++. The instructions to run the scripts is shown below:
+The analysis code itself is provided in C++. There are different files for each macro. The instructions to run the scripts is shown below:
 
-**Python (notebook):**
-
-The notebook can either be run locally or via [binder](https://mybinder.org/) in the browser. To run locally, use the following command.
+**Root (interactive):**
 
 ```bash
-jupyter notebook
+root[0] .L dimuon_spectrum_Z.cpp
+root[1] dimuon_spectrum_Z()
 ```
-
-To run via binder, you just have to click the following link and follow the instructions. You can ignore the two error messages.
-
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/cms-opendata-analyses/DimuonSpectrumNanoAODOutreachAnalysis/v1.4)
-
-**Python (interactive):**
-
-Note the `-i` flag, which keeps the Python interpreter alive after the end of the script so that the interactive plot can still be explored.
+or 
 
 ```bash
-python -i dimuonSpectrum.py
+root[0] .L costheta.cpp
+root[1] costheta()
+```
+or
+
+```bash
+root[0] .L afb.cpp
+root[1] afb()
 ```
 
 **C++ (interactive):**
 
 ```bash
-root -l dimuonSpectrum.C
+root -l dimuon_spectrum_Z.cpp
+```
+or
+
+```bash
+root -l costheta.cpp
+```
+or
+```bash
+root -l afb.cpp
 ```
 
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxxxx
 **C++ (compiled):**
 
 Note that you have to select the compiler based on your system.
