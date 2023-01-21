@@ -8,7 +8,7 @@
 #include <TLatex.h>
 #include <TStyle.h>
 
-void invariantmass_dimuonZ(){
+void dimuon_spectrum_Z(){
     // Enable multi-threading
     // The default here is set to a single thread. You can choose the number of threads based on your system.
     //ROOT::EnableImplicitMT(1);
