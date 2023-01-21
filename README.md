@@ -2,11 +2,11 @@
 
 # Analysis of the di-muon spectrum using data from the MC simulation
 
-Reproduction of the Analysis of the weak mixing angle using the forward-backward asymmetry of Drell–Yan events in p\bar{p} collisions at 8 TeV.
-Analysis using reduced files created from Montecarlo Simulation open data producing di-muon spectrum, the histogram of \theta* (the angle of the negative muon relative to the axis that bisects the angle between the direction of the quark and the reversed direction of the antiquark) and the forward-
-backward asymmetry (A_{FB}) histogram in function to the invariant mass.
+Reproduction of the Analysis of the weak mixing angle using the forward-backward asymmetry of Drell–Yan events in p$\bar{p}$ collisions at 8 TeV.
+Analysis using reduced files created from Montecarlo Simulation open data producing di-muon spectrum, the histogram of $\theta$* (the angle of the negative muon relative to the axis that bisects the angle between the direction of the quark and the reversed direction of the antiquark) and the forward-
+backward asymmetry ($A_{FB}$) histogram in function to the invariant mass.
 
-![](dimuonSpectrum.png)
+![](images/dimuonspectrumZ/dimuonspectrum_Z1.pdf)
 
 ## How to run this?
 
