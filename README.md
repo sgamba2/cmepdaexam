@@ -6,8 +6,6 @@ Reproduction of the Analysis of the weak mixing angle using the forward-backward
 Analysis using reduced files created from Montecarlo Simulation open data producing di-muon spectrum, the histogram of $\theta$* (the angle of the negative muon relative to the axis that bisects the angle between the direction of the quark and the reversed direction of the antiquark) and the forward-
 backward asymmetry ($A_{FB}$) histogram in function to the invariant mass.
 
-![](/images/dimuonspectrumZ/dimuonSpectrum_Z1.pdf)
-
 ## How to run this?
 
 The analysis needs solely a ROOT installation (6.16 or greater). You have to download a set of datas from this site:
