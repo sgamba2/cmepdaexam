@@ -17,7 +17,15 @@ The analysis needs solely a ROOT installation (6.16 or greater). You have to dow
 [source /cvmfs/sft.cern.ch/lcg/views/LCG_95/x86_64-slc6-gcc8-opt/setup.sh](https://eospublichttp01.cern.ch/eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola)
 ```
 
-Just run the filter_df.cpp, then you'll create the file `Events.root`, where there are some filtered columns of the initial dataframe. Be sure in the first dataset there are the following columns:
+Just run the filter_df.cpp with ROOT:
+
+**Root (interactive):**
+
+```bash
+root[0] .L filter_df.cpp
+root[1] filter_df()
+```
+then you'll create the file `Events.root`, where there are some filtered columns of the initial dataframe. Be sure in the first dataset there are the following columns:
 
 ```bash
 nMuon
