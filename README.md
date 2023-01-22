@@ -51,12 +51,14 @@ The analysis code itself is provided in C++. There are different files for each 
 root[0] .L dimuon_spectrum_Z.cpp
 root[1] dimuon_spectrum_Z()
 ```
+
 or 
 
 ```bash
 root[0] .L costheta.cpp
 root[1] costheta()
 ```
+
 or
 
 ```bash
@@ -74,14 +76,21 @@ or
 ```bash
 root -l costheta.cpp
 ```
+
 or
+
 ```bash
 root -l afb.cpp
 ```
 
 
 Download also the "images" folder and its content to be able to save histogram. Otherwise change the path on the macros programs.
-You can also change
+You can also change the threads number in function 
+
+```bash
+ROOT::EnableImplicitMT()
+```
+depending on your system.
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxxxx
 **C++ (compiled):**
 
