@@ -79,6 +79,9 @@ or
 root -l afb.cpp
 ```
 
+
+Download also the "images" folder and its content to be able to save histogram. Otherwise change the path on the macros programs.
+You can also change
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxxxx
 **C++ (compiled):**
 
