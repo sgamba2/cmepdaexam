@@ -1,4 +1,3 @@
-\usepackage{mathtools}
 # CMEPDA exam
 
 # Analysis of the di-muon spectrum using data from the MC simulation
