@@ -1,6 +1,9 @@
 #include <ROOT/RDataFrame.hxx>
 #include <cmath>
 #include <string>
+#include <TSystem.h>
+#include <filesystem>
+#include <TFile.h>
 
 void filter_df(std::string filename){    
     /*
@@ -17,12 +20,12 @@ void filter_df(std::string filename){
     */
    // Enable multi-threading
     // The default here is set to a single thread. You can choose the number of threads based on your system.
-
     ROOT::EnableImplicitMT();
 
     string filepath = "../datas/";
     filepath = filepath + filename;
-
+    //le tue exception devono essere lanciate se non trovi file o directory
+    TFile * file= new TFile(filepath.c_str()); 
     ROOT::RDataFrame df("Events", filepath);
 
     auto df1 = df.Filter("nMuon == 2","Events with only two muons");
@@ -41,7 +44,8 @@ void filter_df(std::string filename){
     else{
         printf("Creating filtered dataframe! \n");
         df1.Snapshot("Events_new","../datas/Events.root",
-               {"Muon_pt","nMuon","Muon_eta","Muon_charge","Muon_mass","Muon_phi"});
+                {"Muon_pt","nMuon","Muon_eta","Muon_charge","Muon_mass","Muon_phi"});
         report->Print();
     }  
+        
 }

@@ -1,4 +1,5 @@
 #include "utilities.h"
+#include "graphical_utilities.h"
 #include <ROOT/RDataFrame.hxx>
 #include <ROOT/RVec.hxx>
 #include <Math/Vector4Dfwd.h>
@@ -9,6 +10,8 @@
 #include <TStyle.h>
 #include <TROOT.h>
 #include <TLegend.h>
+#include <filesystem>
+#include <string>
 
 void afb(){
 
@@ -55,7 +58,13 @@ void afb(){
     auto df_cp5=df_2mu_MC5.Filter("costheta>=0", "forward");
     auto df_cm6=df_2mu_MC6.Filter("costheta<0", "backward");
     auto df_cp6=df_2mu_MC6.Filter("costheta>=0", "forward");
-
+    gStyle->SetMarkerStyle(4);
+    gStyle->SetMarkerColor(1);
+    //gStyle->SetOptStats(0);
+    gStyle->SetPalette(1);
+    gStyle->SetLabelFont(72);
+    gStyle->SetPadTickX(30);
+    gStyle->SetEndErrorSize(0);
     //first condition of rapidity
     auto histDf1 = df_cp1.Histo2D({"cp,Df1", "", 10, 70,110,10,-2.4,2.4},"dimuon_mass","y","wd");
     auto histNf1 = df_cp1.Histo2D({"cp,Nf1", "cp,Nf", 10, 70,110,10,-2.4,2.4},"dimuon_mass","y","wn");
@@ -67,14 +76,15 @@ void afb(){
     histNf1->Divide(histDf1.GetPtr());
     histNf1->Scale(0.375);
 
-    auto c1 = new TCanvas("c1", "c1", 1000, 700);
+    auto c1 = new TCanvas("c1", "c1", 1000, 800);
     histNf1->GetXaxis()->SetTitle("m_{#mu#mu}");
     histNf1->GetXaxis()->SetTitleSize(0.04);
     histNf1->GetYaxis()->SetTitle("MC");
     histNf1->GetYaxis()->SetTitleSize(0.04);
     histNf1->SetStats(0);
-    //c1->Divide(1,6);
-    histNf1->ProfileX()->DrawClone("P");
+    c1->Divide(6,1,0,0);
+    c1->cd(1);
+    histNf1->ProjectionX("",0,10,"s")->DrawClone("P");
 
     //second condition of rapidity
     auto histDf2 = df_cp2.Histo2D({"cp,Df2", "", 10,70,110,10,-2.4,2.4},"dimuon_mass","y","wd");
@@ -87,13 +97,14 @@ void afb(){
     histNf2->Divide(histDf2.GetPtr());
     histNf2->Scale(0.375);
 
-    auto c2 = new TCanvas("c2", "c2", 1000, 700);
+    //auto c2 = new TCanvas("c2", "c2", 1000, 700);
     histNf2->GetXaxis()->SetTitle("m_{#mu#mu}");
     histNf2->GetXaxis()->SetTitleSize(0.04);
     histNf2->GetYaxis()->SetTitle("MC");
     histNf2->GetYaxis()->SetTitleSize(0.04);
     histNf2->SetStats(0);
-    histNf2->ProjectionX()->DrawClone("P");
+    c1->cd(2);
+    histNf2->ProjectionX("",0,10,"s")->DrawClone("P");
 
     //third condition of rapidity
     auto histDf3 = df_cp3.Histo2D({"cp,Df3", "", 10,70,110,10,-2.4,2.4},"dimuon_mass","y","wd");
@@ -106,13 +117,14 @@ void afb(){
     histNf3->Divide(histDf3.GetPtr());
     histNf3->Scale(0.375);
 
-    auto c3 = new TCanvas("c3", "c3", 1000, 700);
+    //auto c3 = new TCanvas("c3", "c3", 1000, 700);
     histNf3->GetXaxis()->SetTitle("m_{#mu#mu}");
     histNf3->GetXaxis()->SetTitleSize(0.04);
     histNf3->GetYaxis()->SetTitle("MC");
     histNf3->GetYaxis()->SetTitleSize(0.04);
     histNf3->SetStats(0);
-    histNf3->ProjectionX()->DrawClone("P");
+    c1->cd(3);
+    histNf3->ProjectionX("",0,10,"s")->DrawClone("P");
     
     //fourth condition of rapidity 
     auto histDf4 = df_cp4.Histo2D({"cp,Df4", "", 10, 70,110,10,-2.4,2.4},"dimuon_mass","y","wd");
@@ -125,13 +137,14 @@ void afb(){
     histNf4->Divide(histDf4.GetPtr());
     histNf4->Scale(0.375);
 
-    auto c4 = new TCanvas("c4", "c4", 1000, 700);
+    //auto c4 = new TCanvas("c4", "c4", 1000, 700);
     histNf4->GetXaxis()->SetTitle("m_{#mu#mu}");
     histNf4->GetXaxis()->SetTitleSize(0.04);
     histNf4->GetYaxis()->SetTitle("MC");
     histNf4->GetYaxis()->SetTitleSize(0.04);
     histNf4->SetStats(0);
-    histNf4->ProjectionX()->DrawClone("P");
+    c1->cd(4);
+    histNf4->ProjectionX("",0,10,"s")->DrawClone("P");
 
     //fifth condition of rapidity 
     auto histDf5 = df_cp5.Histo2D({"cp,Df5", "", 10, 70,110,10,-2.4,2.4},"dimuon_mass","y","wd");
@@ -144,13 +157,14 @@ void afb(){
     histNf5->Divide(histDf5.GetPtr());
     histNf5->Scale(0.375);
 
-    auto c5 = new TCanvas("c5", "c5", 1000, 700);
+    //auto c5 = new TCanvas("c5", "c5", 1000, 700);
     histNf5->GetXaxis()->SetTitle("m_{#mu#mu}");
     histNf5->GetXaxis()->SetTitleSize(0.04);
     histNf5->GetYaxis()->SetTitle("MC");
     histNf5->GetYaxis()->SetTitleSize(0.04);
     histNf5->SetStats(0);
-    histNf5->ProjectionX()->DrawClone("P");
+    c1->cd(5);
+    histNf5->ProjectionX("",0,10,"s")->DrawClone("P");
     
      //sixth condition of rapidity 
     auto histDf6 = df_cp6.Histo2D({"cp,Df6", "", 10, 70,110,10,-2.4,2.4},"dimuon_mass","y","wd");
@@ -163,11 +177,14 @@ void afb(){
     histNf6->Divide(histDf6.GetPtr());
     histNf6->Scale(0.375);
 
-    auto c6 = new TCanvas("c6", "c6", 1000, 700);
+    //auto c6 = new TCanvas("c6", "c6", 1000, 700);
     histNf6->GetXaxis()->SetTitle("m_{#mu#mu}");
     histNf6->GetXaxis()->SetTitleSize(0.04);
     histNf6->GetYaxis()->SetTitle("MC");
     histNf6->GetYaxis()->SetTitleSize(0.04);
     histNf6->SetStats(0);
-    histNf6->ProjectionX()->DrawClone("P");
+    c1->cd(6);
+    histNf6->ProjectionX("",0,10,"s")->DrawClone("P");
+    save_histogram(c1, "afb", "afb");
+    
 }
