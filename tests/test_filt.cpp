@@ -1,6 +1,6 @@
 #include <ROOT/RDataFrame.hxx>
 #include <cmath>
-#include "filter_df.cpp"
+#include "../src/filter_df.cpp"
 #include <ROOT/RVec.hxx>
 #include <Math/Vector4Dfwd.h>
 #include <Math/Vector4D.h>
@@ -30,5 +30,5 @@ void test_filt(){
     //file.ls();
     //file.Print();
     file.Close();
-    filter_df("SimpleTree.root");
+    filter_df("../tests/SimpleTree.root");
 }

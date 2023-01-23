@@ -1,6 +1,6 @@
 #include <ROOT/RDataFrame.hxx>
 #include <cmath>
-#include "utilities.h"
+#include "../src/utilities.h"
 #include <ROOT/RVec.hxx>
 #include <Math/Vector4Dfwd.h>
 #include <Math/Vector4D.h>
@@ -12,20 +12,22 @@ void test_energy(){
     */
     ROOT::EnableImplicitMT();
 
-    ROOT::RDataFrame df("Events_new", "Events.root");
+    ROOT::RDataFrame df("Events_new", "../datas/Events.root");
 
     auto df_2mu= allquantities(df);
 
     //testing if sum of energies is almost equal to Etot
-    auto df_2mucontrol2=df_2mu.Filter("fabs(E1+E2-E)>0.001","control"); 
+    auto df_2mucontrol2=df_2mu.Filter("fabs(E1+E2-E)>0.00001*E","control"); 
 
     auto nEntries=df_2mucontrol2.Count();
 
+    printf("testing if sum of energies is almost equal to Etot \n");
+    
     if( nEntries.GetValue()==0){
-        printf("test passed!");
+        printf("test passed! \n");
     }
     else{
-        printf("test failed!");
+        printf("test failed! \n");
     }
 }
 

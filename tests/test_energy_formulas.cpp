@@ -1,6 +1,6 @@
 #include <ROOT/RDataFrame.hxx>
 #include <cmath>
-#include "utilities.h"
+#include "../src/utilities.h"
 #include <ROOT/RVec.hxx>
 #include <Math/Vector4Dfwd.h>
 #include <Math/Vector4D.h>
@@ -91,7 +91,7 @@ void test_energy_formulas(){
     */
     ROOT::EnableImplicitMT();
 
-    ROOT::RDataFrame df("Events_new", "Events.root");
+    ROOT::RDataFrame df("Events_new", "../datas/Events.root");
 
     auto df_2mu= allquantities(df);
 
@@ -103,13 +103,16 @@ void test_energy_formulas(){
     df_2mucontrol=df_2mucontrol.Define("energynew2","pow(pow(Muon_mass[0],2)+pow(Px2,2)+pow(Py2,2)+pow(Pz2,2),0.5)");
 
     //testing if E1 and E2 are almost equal to their formulas
-    auto df_2mucontrol2=df_2mucontrol.Filter("fabs(energynew1-E1)>0.001 || fabs(energynew2-E2)>0.001","control");
+    auto df_2mucontrol2=df_2mucontrol.Filter("fabs(energynew1-E1)>0.00001*E1 || fabs(energynew2-E2)>0.00001*E2 ","control");
     
     auto nEntries=df_2mucontrol2.Count();
+
+    printf("testing if E_i^2 is almost equal to m^2+p_i^2 \n");
+
     if( nEntries.GetValue()==0){
-        printf("test passed!");
+        printf("test passed!\n");
     }
     else{
-        printf("test failed!");
+        printf("test failed!\n");
     }
 }
