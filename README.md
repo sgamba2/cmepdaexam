@@ -13,6 +13,7 @@ The analysis needs solely a ROOT installation (6.16 or greater). You have to dow
 ```bash
 [source /cvmfs/sft.cern.ch/lcg/views/LCG_95/x86_64-slc6-gcc8-opt/setup.sh](https://eospublichttp01.cern.ch/eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola)
 ```
+and put in the folder `datas`.
 
 Just run the filter_df.cpp with:
 
