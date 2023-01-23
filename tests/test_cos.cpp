@@ -10,7 +10,7 @@ void test_cos(){
     /*
     Testing if cos is > or < 0
     */
-    //ROOT::EnableImplicitMT();
+    ROOT::EnableImplicitMT();
 
     ROOT::RDataFrame df("Events_new", "Events.root");
 
