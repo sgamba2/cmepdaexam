@@ -27,6 +27,7 @@ void filter_df(std::string filename){
     df1 = df1.Filter("Muon_dxy[0]<0.2 && Muon_dxy[1]<0.2","Selection on transverse distance");
 
     auto nEntries = df.Count();
+    auto report = df1.Report();
 
     if( nEntries.GetValue() == 0){
         printf("Your filtered dataframe is empty, change datas! \n");
@@ -35,6 +36,7 @@ void filter_df(std::string filename){
         printf("Creating filtered dataframe! \n");
         df1.Snapshot("Events_new","Events.root",
                {"Muon_pt","nMuon","Muon_eta","Muon_charge","Muon_mass","Muon_phi"});
+        report->Print();
     }
   
 }
