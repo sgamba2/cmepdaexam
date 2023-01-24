@@ -32,7 +32,7 @@ void costheta_hist(){
     // The default here is set to a single thread. You can choose the number of threads based on your system.
     ROOT::EnableImplicitMT();
 
-    ROOT::RDataFrame df_MC("Events_new", "../datas/Events.root");
+    ROOT::RDataFrame df_MC("Events", "../datas/Events.root");
 
     auto df_2mu_MC= allquantities(df_MC);
     

@@ -30,7 +30,7 @@ void dimuon_spectrum_Z(){
     // The default here is set to a single thread. You can choose the number of threads based on your system.
     ROOT::EnableImplicitMT();
 
-    ROOT::RDataFrame df_MC("Events_new", "../datas/Events.root");
+    ROOT::RDataFrame df_MC("Events", "../datas/Events.root");
     
     auto df_mass_MC = df_MC.Define("dimuon_mass", computeInvariantMass, {"Muon_pt", "Muon_eta", "Muon_phi", "Muon_mass"}); //
     
