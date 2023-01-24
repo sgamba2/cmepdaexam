@@ -12,7 +12,7 @@ void test_energy(){
     */
     ROOT::EnableImplicitMT();
 
-    ROOT::RDataFrame df("Events_new", "../datas/Events.root");
+    ROOT::RDataFrame df("Events", "../datas/Events.root");
 
     auto df_2mu= allquantities(df);
 

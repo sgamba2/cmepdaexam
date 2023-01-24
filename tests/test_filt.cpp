@@ -34,7 +34,8 @@ void test_filt(){
     int test3 = filter_df("../dati/file.root"); //looking for a file and a folder that don't exist
     int test4 = filter_df("../dati/00C074C0-1C19-4933-9407-5A05484E1F1E.root"); //looking for a folder that doesn't exist
     int test5 = filter_df("../datas/00C074C0-1C19-4933-9407-5A05484E1F1E.root"); //looking for a file and a folder that exist
-    if(test1==4 && test2==1 && test3==1 && test4==1 && test5==0){
+    int test6 = filter_df("../datas/Events.root");
+    if(test1==4 && test2==1 && test3==1 && test4==1 && test5==0 && test6==2){
         printf("test passed!");
     }else{
         printf("test failed!");

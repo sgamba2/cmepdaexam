@@ -12,7 +12,7 @@ void test_cos(){
     */
     ROOT::EnableImplicitMT();
 
-    ROOT::RDataFrame df("Events_new", "../datas/Events.root");
+    ROOT::RDataFrame df("Events", "../datas/Events.root");
 
     auto df_2mu= allquantities(df);
     auto df_2mucontrol=df_2mu.Filter("costheta>1 || costheta<-1","coseno control");
