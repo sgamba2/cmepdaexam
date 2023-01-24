@@ -3,7 +3,7 @@
 #include <string>
 #include <TFile.h>
 #include <iostream>
-
+/*
 string extension(string file_name){
   //store the position of last '.' in the file name
   int position=file_name.find_last_of(".");
@@ -13,7 +13,7 @@ string extension(string file_name){
   cout<<"The file "<< file_name<<" has <." << result << "> extension."<<endl;
   return result;
 }
-
+*/
 int filter_df(std::string filepath){    
     /*
     Parameters
@@ -26,16 +26,17 @@ int filter_df(std::string filepath){
     It is an int function and it generates a new filtered dataframe in Events.root,
     in the same folder of this program. Also this new dataframe contains less 
     columns compared to the previous file. 
-    If the return is 0 everything was done correctly.
-    1: doesn't exist the path
-    4: it was an empty file
+    return value:
+    0: everything is ok
+    1: doesn't exist the path or wrong file extension
+    2:few columns
     */
 
     // Enable multi-threading
     // The default here is set to a single thread. You can choose the number of threads based on your system.
     ROOT::EnableImplicitMT();
 
-    if(TFile::Open(filepath.c_str())!=nullptr && "root"==extension(filepath)){
+    if(TFile::Open(filepath.c_str())!=nullptr){
         ROOT::RDataFrame df("Events", filepath);
         if(df.HasColumn("nMuon")&& df.HasColumn("Muon_pt") && df.HasColumn("Muon_mass")&& df.HasColumn("Muon_charge") && df.HasColumn("Muon_phi") && df.HasColumn("Muon_dxy") && df.HasColumn("Muon_eta") && df.HasColumn("Muon_pfRelIso03_chg")){
             auto df1 = df.Filter("nMuon == 2","Events with only two muons");
@@ -62,8 +63,8 @@ int filter_df(std::string filepath){
             printf("your dataset can't be processed for our analysis, few columns! \n");
             return 2;
         }
-    }else{
-        printf("Doesn't exist the path you have insert, can't reach the file! Try again!\n");
+    }else {
+        printf("Doesn't exist the path you have insert or it is has wrong extension, can't reach the file! Try again!\n");
         return 1;
     }
 }
