@@ -27,7 +27,7 @@ void test_filt(){
     tree1->Branch("Muon_phi",f,"f[2]/F");
     tree1->Write(); 
     file1.Close();
-    int test0 = filter_df("../datas/SimpleTree1.root");
+    int test0 = filter_df("../datas/SimpleTree1.root");//few column
 
     TFile file("../datas/SimpleTree.root","RECREATE"); 
     TTree * tree = new TTree("Events","Events");
@@ -41,14 +41,17 @@ void test_filt(){
     tree->Branch("Muon_mass",f,"f[2]/F");
     tree->Write(); 
     file.Close();
-    
-    int test1 = filter_df("../datas/SimpleTree.root"); //looking for an empty file
+ 
+    int test1 = filter_df("../datas/SimpleTree.root");//looking for an empty file
     int test2 = filter_df("../datas/file.root"); //looking for a file that doesn't exist
     int test3 = filter_df("../dati/file.root"); //looking for a file and a folder that don't exist
-    int test4 = filter_df("../dati/00C074C0-1C19-4933-9407-5A05484E1F1E.root"); //looking for a folder that doesn't exist
+    int test4 = filter_df("../dati/00C074C0-1C19-4933-9407-5A05484E1F1E.root");//looking for a folder that doesn't exist
     int test5 = filter_df("../datas/00C074C0-1C19-4933-9407-5A05484E1F1E.root"); //looking for a file and a folder that exist
-    
-    if(test1==4 && test2==1 && test3==1 && test4==1 && test5==0 && test0==2){
+
+    TFile file2("../datas/filedummy.txt","RECREATE");//if it has a wrong extension
+    int test6 = filter_df("../datas/filedummy.txt");
+
+    if(test1==4 && test2==1 && test3==1 && test4==1 && test5==0 && test0==2 && test6==1){
         printf("test passed!");
     }else{
         printf("test failed!");
