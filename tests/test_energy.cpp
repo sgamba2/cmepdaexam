@@ -12,18 +12,22 @@ void test_energy(){
     */
     ROOT::EnableImplicitMT();
 
-    ROOT::RDataFrame df("Events", "../datas/Events.root");
+    ROOT::RDataFrame df_MC("Events", "../datas/Events_MC.root");
+    ROOT::RDataFrame df_datas("Events", "../datas/Events_datas.root");
 
-    auto df_2mu= allquantities(df);
+    auto df_2mu_MC= allquantities(df_MC);
+    auto df_2mu_datas= allquantities(df_datas);
 
     //testing if sum of energies is almost equal to Etot
-    auto df_2mucontrol2=df_2mu.Filter("fabs(E1+E2-E)>0.00001*E","control"); 
+    auto df_2mucontrol2_MC=df_2mu_MC.Filter("fabs(E1+E2-E)>0.00001*E","control"); 
+    auto df_2mucontrol2_datas=df_2mu_datas.Filter("fabs(E1+E2-E)>0.00001*E","control"); 
 
-    auto nEntries=df_2mucontrol2.Count();
+    auto nEntries_datas=df_2mucontrol2_datas.Count();
+    auto nEntries_MC=df_2mucontrol2_MC.Count();
 
     printf("testing if sum of energies is almost equal to Etot \n");
     
-    if( nEntries.GetValue()==0){
+    if( nEntries_MC.GetValue()==0 && nEntries_datas.GetValue()==0){
         printf("test passed! \n");
     }
     else{
