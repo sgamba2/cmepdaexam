@@ -14,7 +14,7 @@ string extension(string file_name){
   return result;
 }
 */
-int filter_df(std::string filepath){    
+int filter_df(std::string filepath_MC, std::string filepath_datas){    
     /*
     Parameters
     ----------
@@ -36,29 +36,62 @@ int filter_df(std::string filepath){
     // The default here is set to a single thread. You can choose the number of threads based on your system.
     ROOT::EnableImplicitMT();
 
-    if(TFile::Open(filepath.c_str())!=nullptr){
-        ROOT::RDataFrame df("Events", filepath);
-        if(df.HasColumn("nMuon")&& df.HasColumn("Muon_pt") && df.HasColumn("Muon_mass")&& df.HasColumn("Muon_charge") && df.HasColumn("Muon_phi") && df.HasColumn("Muon_dxy") && df.HasColumn("Muon_eta") && df.HasColumn("Muon_pfRelIso03_chg")){
-            auto df1 = df.Filter("nMuon == 2","Events with only two muons");
-            df1 = df1.Filter("Muon_charge[0]*Muon_charge[1]==-1","Muons with opposite charge");
-            df1 = df1.Filter("fabs(Muon_eta[0])<2.4 && fabs(Muon_eta[1])<2.4","Selection on muon eta");
-            df1 = df1.Filter("(Muon_pt[0]>25 && Muon_pt[1]>15)|| (Muon_pt[1]>25 && Muon_pt[0]>15)","Selection on muon pt");
-            df1 = df1.Filter("Muon_pfRelIso03_chg[0] < 0.1*Muon_pt[0] && Muon_pfRelIso03_chg[1] < 0.1*Muon_pt[1] ","Selection on muon isolation");
-            df1 = df1.Filter("Muon_dxy[0]<0.2 && Muon_dxy[1]<0.2","Selection on transverse distance");
+    if(TFile::Open(filepath_datas.c_str())!=nullptr && TFile::Open(filepath_MC.c_str())!=nullptr){
+        
+        ROOT::RDataFrame df_MC("Events", filepath_MC);
+        ROOT::RDataFrame df_datas("Events", filepath_datas);
+        
+        if(df_MC.HasColumn("nMuon")&& df_MC.HasColumn("Muon_pt") && df_MC.HasColumn("Muon_mass")&& df_MC.HasColumn("Muon_charge") && df_MC.HasColumn("Muon_phi") && df_MC.HasColumn("Muon_dxy") && df_MC.HasColumn("Muon_eta") && df_MC.HasColumn("Muon_pfRelIso03_chg") && df_datas.HasColumn("nMuon")&& df_datas.HasColumn("Muon_pt") && df_datas.HasColumn("Muon_mass")&& df_datas.HasColumn("Muon_charge") && df_datas.HasColumn("Muon_phi") && df_datas.HasColumn("Muon_dxy") && df_datas.HasColumn("Muon_eta") && df_datas.HasColumn("Muon_pfRelIso03_chg")){
+           
+            auto df1_MC = df_MC.Filter("nMuon == 2","Events with only two muons");
+            df1_MC = df1_MC.Filter("Muon_charge[0]*Muon_charge[1]==-1","Muons with opposite charge");
+            df1_MC = df1_MC.Filter("fabs(Muon_eta[0])<2.4 && fabs(Muon_eta[1])<2.4","Selection on muon eta");
+            df1_MC = df1_MC.Filter("(Muon_pt[0]>25 && Muon_pt[1]>15)|| (Muon_pt[1]>25 && Muon_pt[0]>15)","Selection on muon pt");
+            df1_MC = df1_MC.Filter("Muon_pfRelIso03_chg[0] < 0.1*Muon_pt[0] && Muon_pfRelIso03_chg[1] < 0.1*Muon_pt[1] ","Selection on muon isolation");
+            df1_MC = df1_MC.Filter("Muon_dxy[0]<0.2 && Muon_dxy[1]<0.2","Selection on transverse distance");
 
-            auto nEntries1 = df1.Count();
-            auto report = df1.Report();
+            auto df1_datas = df_datas.Filter("nMuon == 2","Events with only two muons");
+            df1_datas = df1_datas.Filter("Muon_charge[0]*Muon_charge[1]==-1","Muons with opposite charge");
+            df1_datas = df1_datas.Filter("fabs(Muon_eta[0])<2.4 && fabs(Muon_eta[1])<2.4","Selection on muon eta");
+            df1_datas = df1_datas.Filter("(Muon_pt[0]>25 && Muon_pt[1]>15)|| (Muon_pt[1]>25 && Muon_pt[0]>15)","Selection on muon pt");
+            df1_datas = df1_datas.Filter("Muon_pfRelIso03_chg[0] < 0.1*Muon_pt[0] && Muon_pfRelIso03_chg[1] < 0.1*Muon_pt[1] ","Selection on muon isolation");
+            df1_datas = df1_datas.Filter("Muon_dxy[0]<0.2 && Muon_dxy[1]<0.2","Selection on transverse distance");
 
-            if( nEntries1.GetValue() == 0){
-                printf("Your filtered dataframe is empty, change datas! \n");
+            auto nEntries1_MC = df1_MC.Count();
+            auto nEntries1_datas = df1_datas.Count();
+            auto report_MC = df1_MC.Report();
+            auto report_datas = df1_datas.Report();
+
+            if( nEntries1_MC.GetValue() == 0 && nEntries1_datas.GetValue() == 0){
+                printf("Your filtered dataframes (MC and Run) are empty, change datas! \n");
                 return 4;
+            }else if(nEntries1_MC.GetValue() == 0 && nEntries1_datas.GetValue() != 0){
+                printf("Your filtered dataframe (MC) is empty, change datas! \n");
+                return 5;
+            }else if(nEntries1_MC.GetValue() != 0 && nEntries1_datas.GetValue() == 0){
+                printf("Your filtered dataframe (Run) is empty, change datas! \n");
+                return 6;
             }else{
-                printf("Creating filtered dataframe! \n");
-                df1.Snapshot("Events","../datas/Events.root",
-                        {"Muon_pt","nMuon","Muon_eta","Muon_charge","Muon_mass","Muon_phi"});
-                report->Print();
-                return 0;
-            }  
+                /*if(nEntries1_MC.GetValue() < 50 && nEntries1_datas.GetValue() > 50){
+                    printf("Your filtered dataframe (MC) has few events, change datas! \n");
+                    return 7;
+                }else if(nEntries1_MC.GetValue() > 50 && nEntries1_datas.GetValue() < 50){
+                    printf("Your filtered dataframe (Run) has few events, change datas! \n");
+                    return 8;
+                }else if(nEntries1_MC.GetValue() < 50 && nEntries1_datas.GetValue() < 50){
+                    printf("Your filtered dataframes have few events, change datas! \n");
+                    return 9;
+                }else{*/
+                    printf("Creating filtered dataframes! \n");
+                    df1_MC.Snapshot("Events","../datas/Events_MC.root",
+                            {"Muon_pt","nMuon","Muon_eta","Muon_charge","Muon_mass","Muon_phi"});
+                    df1_datas.Snapshot("Events","../datas/Events_datas.root",
+                            {"Muon_pt","nMuon","Muon_eta","Muon_charge","Muon_mass","Muon_phi"});
+                    report_MC->Print();
+                    report_datas->Print();
+                    return 0;
+                 
+            } 
         }else{
             printf("your dataset can't be processed for our analysis, few columns! \n");
             return 2;

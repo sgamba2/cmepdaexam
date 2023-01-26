@@ -1,5 +1,17 @@
 #include <filesystem>
 #include <string>
+#include <TH2D.h>
+#include <TH1D.h>
+#include <ROOT/RDataFrame.hxx>
+#include <ROOT/RResultPtr.hxx>
+#include <ROOT/RVec.hxx>
+#include <Math/Vector4Dfwd.h>
+#include <Math/Vector4D.h>
+#include <TCanvas.h>
+#include <TLatex.h>
+#include <TStyle.h>
+#include <TROOT.h>
+#include <TLegend.h>
 
 void save_histogram(TCanvas *c, string namehist, string type){
    namespace fs = std::filesystem;
@@ -35,30 +47,40 @@ void save_histogram(TCanvas *c, string namehist, string type){
 //but there is no catch block for int, so the catch(…) block will be executed. 
 
 
-void coshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df, string filename, string rapiditylim, float x1, float y1, float x2, float y2,string canvasname){
+void coshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC,ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_datas, string filename, string rapiditylim, float x1, float y1, float x2, float y2,string canvasname){
    
    constexpr int nbins = 40; //widthbins = 0.05
 
    //creating new canvas
-   auto c = new TCanvas(canvasname.c_str(), "", 1000,800);
+   auto c = new TCanvas(canvasname.c_str(), "", 1200,1000);
 
    //creating a histogram
-   auto hist = df.Histo1D({"hist", "", nbins, -1, 1}, "costheta");
+   auto hist_MC = df_MC.Histo1D({"hist_MC", "", nbins, -1, 1}, "costheta");
+   auto hist_datas = df_datas.Histo1D({"hist_datas", "", nbins, -1, 1}, "costheta");
+
+   //creating report
+   auto report_MC = df_MC.Report();
+   report_MC->Print();
+   auto report_datas = df_datas.Report();
+   report_datas->Print();
 
    //setting histogram properties
-   hist->SetFillColor(kOrange-3); 
-   hist->SetLineColor(kOrange-3); 
-   hist->SetMarkerStyle(20);
-   hist->SetMarkerColor(kBlack); 
-   hist->SetLineStyle(0);
-   hist->GetXaxis()->SetTitle("cos(#theta*)");
-   hist->GetXaxis()->SetTitleSize(0.04);
-   hist->GetYaxis()->SetTitle("N_{Events} MC");
-   hist->GetYaxis()->SetTitleSize(0.04);
-   hist->SetStats(0);
+   hist_MC->SetFillColor(kOrange-3); 
+   hist_MC->SetLineColor(kOrange-3); 
+   hist_MC->SetMarkerStyle(20);
+   hist_MC->SetMarkerColor(kBlack); 
+   hist_MC->SetLineStyle(0);
+   hist_MC->GetXaxis()->SetTitle("cos(#theta*)");
+   hist_MC->GetXaxis()->SetTitleSize(0.04);
+   hist_MC->GetYaxis()->SetTitle("N_{Events}");
+   hist_MC->GetYaxis()->SetTitleSize(0.04);
+   hist_MC->SetStats(0);
+   hist_datas->SetMarkerStyle(8);
+   hist_datas->SetStats(0);
 
    //draw the histogram
-   hist->DrawClone("PHF3");
+   hist_MC->DrawClone("HF3SAME");
+   hist_datas->DrawClone("PESAME");
 
    //writing the rapidity limits on the histogram
    TLatex label;
@@ -70,7 +92,8 @@ void coshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df, 
 
    //writing legend
    auto legend = new TLegend(x1,y1,x2,y2);
-   legend->AddEntry("hist","MC:Z->#mu#mu","f");
+   legend->AddEntry("hist_MC","MC:Z->#mu#mu","f");
+   legend->AddEntry("hist_datas","Datas","p");
    legend->SetBorderSize(0);
    legend->SetFillColor(0);
    legend->Draw();
@@ -80,7 +103,7 @@ void coshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df, 
 
 }
 
-void dmmasshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df, string filename, string rapiditylim,string canvasname){
+void dmmasshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC,ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_datas, string filename, string rapiditylim,string canvasname){
    
    constexpr int nbins = 100; //widthbins = 0.05
 
@@ -88,30 +111,36 @@ void dmmasshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> d
    auto c = new TCanvas(canvasname.c_str(), "", 1000,800);
 
    //creating a histogram
-   auto hist = df.Histo1D({"hist", "", nbins, 70, 110}, "dimuon_mass");
+   auto hist_MC = df_MC.Histo1D({"hist_MC", "", nbins, 70, 110}, "dimuon_mass");
+   auto hist_datas = df_datas.Histo1D({"hist_datas", "", nbins, 70, 110}, "dimuon_mass");
 
    //creating report
-   auto report = df.Report();
-   report->Print();
+   auto report_MC = df_MC.Report();
+   report_MC->Print();
+   auto report_datas = df_datas.Report();
+   report_datas->Print();
 
    //setting histogram properties
-   hist->GetXaxis()->SetTitle("m_{#mu#mu} (GeV)");
-   hist->GetXaxis()->SetTitleSize(0.04);
-   hist->GetYaxis()->SetTitle("N_{Events}");
-   hist->GetYaxis()->SetTitleSize(0.04);
-   hist->SetStats(0);
-   hist->SetFillColor(kOrange-3); 
-   hist->SetLineColor(kOrange-3); 
-   hist->SetMarkerStyle(20);
-   hist->SetMarkerColor(kBlack); 
-   hist->SetLineStyle(0);
+   hist_MC->GetXaxis()->SetTitle("m_{#mu#mu} (GeV)");
+   hist_MC->GetXaxis()->SetTitleSize(0.04);
+   hist_MC->GetYaxis()->SetTitle("N_{Events}");
+   hist_MC->GetYaxis()->SetTitleSize(0.04);
+   hist_MC->SetStats(0);
+   hist_MC->SetFillColor(kOrange-3); 
+   hist_MC->SetLineColor(kOrange-3); 
+   hist_MC->SetMarkerStyle(20);
+   hist_MC->SetMarkerColor(kBlack); 
+   hist_MC->SetLineStyle(0);
+   hist_datas->SetMarkerStyle(8);
+   hist_datas->SetStats(0);
 
    //setting semilog histo
    c->SetLogy();
 
    //draw the histogram
-   hist->DrawClone("PHF3");
-
+   hist_MC->DrawClone("HF3SAME");
+   hist_datas->DrawClone("PESAME");
+   
    //writing the rapidity limits on the histogram
    TLatex label;
    label.SetTextSize(0.04);
@@ -126,12 +155,101 @@ void dmmasshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> d
 
    //writing legend
    auto legend = new TLegend(0.65,0.80,0.85,0.86);
-   legend->AddEntry("hist","MC:Z->#mu#mu","f");
+   legend->AddEntry("hist_MC","MC:Z->#mu#mu","f");
+   legend->AddEntry("hist_datas","Datas","p");
    legend->SetBorderSize(0);
    legend->SetFillColor(0);
    legend->Draw();
 
    //save histogram in ../images/dimuonspectrum/
    save_histogram(c, filename, "dimuonspectrum");
+
+}
+
+auto operationhist( ROOT::RDF::RResultPtr<::TH2D> & histNf, ROOT::RDF::RResultPtr<::TH2D> & histDf,ROOT::RDF::RResultPtr<::TH2D> & histNb, ROOT::RDF::RResultPtr<::TH2D> & histDb){
+
+   histNf->Add(histNb.GetPtr(),-1.0);
+   histDf->Add(histDb.GetPtr(),+1.0);
+   histNf->Divide(histDf.GetPtr());
+   histNf->Scale(0.375);
+
+   return histNf;
+
+}
+
+void afbhist(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC,ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_datas, string filename, string rapiditylim,string canvasname){
+   
+   //creating two filtered datframes, one with costheta=>0, one with costheta<0
+   auto df_cm_MC=df_MC.Filter("costheta<0", "backward");
+   auto df_cp_MC=df_MC.Filter("costheta>=0", "forward");
+   auto df_cm_datas=df_datas.Filter("costheta<0", "backward");
+   auto df_cp_datas=df_datas.Filter("costheta>=0", "forward");
+
+   
+   //creating four histogram 2D
+   auto histDf_MC = df_cp_MC.Histo2D({"cp,Df", "", 10, 70,110,10,-2.4,2.4},"dimuon_mass","y","wd");
+   auto histNf_MC = df_cp_MC.Histo2D({"cp,Nf", "", 10, 70,110,10,-2.4,2.4},"dimuon_mass","y","wn");
+   auto histDb_MC = df_cm_MC.Histo2D({"cm,Db", "", 10, 70,110,10,-2.4,2.4},"dimuon_mass","y","wd");
+   auto histNb_MC = df_cm_MC.Histo2D({"cm,Nb", "", 10, 70,110,10,-2.4,2.4},"dimuon_mass","y","wn");
+
+   auto histDf_datas = df_cp_datas.Histo2D({"cp,Df", "", 10, 70,110,10,-2.4,2.4},"dimuon_mass","y","wd");
+   auto histNf_datas = df_cp_datas.Histo2D({"cp,Nf", "", 10, 70,110,10,-2.4,2.4},"dimuon_mass","y","wn");
+   auto histDb_datas = df_cm_datas.Histo2D({"cm,Db", "", 10, 70,110,10,-2.4,2.4},"dimuon_mass","y","wd");
+   auto histNb_datas = df_cm_datas.Histo2D({"cm,Nb", "", 10, 70,110,10,-2.4,2.4},"dimuon_mass","y","wn");
+
+   //summing and adding histos
+   auto hist_MC=operationhist(histNf_MC, histDf_MC, histNb_MC, histDb_MC);
+   auto hist_datas=operationhist(histNf_datas, histDf_datas, histNb_datas, histDb_datas);
+
+   //creating new canvas
+   auto c = new TCanvas(canvasname.c_str(), "", 1200, 1200);
+   
+   //projection of the final histogram
+   auto h_MC= hist_MC->ProjectionX("",1,100,"");
+   //auto h_datas= hist_datas->ProjectionX("",1,100,"");
+
+   //graphical set
+   h_MC->SetStats(0);
+   //h_datas->SetStats(0);
+   h_MC->SetMarkerStyle(8);
+   h_MC->SetMarkerColor(1);
+   //h_datas->SetMarkerStyle(8);
+   //h_datas->SetMarkerColor(2);
+   h_MC->GetXaxis()->SetTitle("m_{#mu#mu}");
+   h_MC->GetYaxis()->SetTitle("Afb");
+   h_MC->GetXaxis()->CenterTitle(true);
+   h_MC->GetXaxis()->SetTitleSize(0.06);
+   h_MC->GetXaxis()->SetNdivisions(505);
+   h_MC->GetXaxis()->SetLabelFont(42);
+   h_MC->GetXaxis()->SetLabelSize(0.05);
+   h_MC->GetXaxis()->SetTitleOffset(0.77);
+   h_MC->GetXaxis()->SetTickLength(0.05);
+   h_MC->GetYaxis()->SetTitleSize(0.06);
+   h_MC->GetYaxis()->SetLabelFont(42);
+   h_MC->GetYaxis()->SetLabelSize(0.05);
+   h_MC->GetYaxis()->SetTitleOffset(0.66);
+   h_MC->GetYaxis()->SetTickLength(0.05);
+
+   //drawing
+   h_MC->DrawClone("PSAME");
+   //h_datas->DrawClone("PSAME");
+
+   //label
+   TLatex label;
+   label.SetTextSize(0.04);
+   label.SetTextAlign(12);
+   label.SetNDC(true);
+   label.DrawLatex(0.15, 0.8, rapiditylim.c_str());
+
+   //legend
+   auto legend = new TLegend(0.65,0.80,0.85,0.86);
+   legend->AddEntry("h_MC","MC:Z->#mu#mu","p");
+   //legend->AddEntry("h_datas","Datas","p");
+   legend->SetBorderSize(0);
+   legend->SetFillColor(0);
+   legend->Draw();
+
+   //saving
+   save_histogram(c, filename, "afb");
 
 }

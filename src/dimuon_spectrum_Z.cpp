@@ -30,18 +30,25 @@ void dimuon_spectrum_Z(){
     // The default here is set to a single thread. You can choose the number of threads based on your system.
     ROOT::EnableImplicitMT();
 
-    ROOT::RDataFrame df_MC("Events", "../datas/Events.root");
+    ROOT::RDataFrame df_MC("Events", "../datas/Events_MC.root");
+    ROOT::RDataFrame df_datas("Events", "../datas/Events_datas.root");
     
     auto df_mass_MC = df_MC.Define("dimuon_mass", computeInvariantMass, {"Muon_pt", "Muon_eta", "Muon_phi", "Muon_mass"}); //
+    auto df_mass_datas = df_datas.Define("dimuon_mass", computeInvariantMass, {"Muon_pt", "Muon_eta", "Muon_phi", "Muon_mass"});
     
     df_mass_MC=df_mass_MC.Define("y", computey,{"Muon_pt", "Muon_eta", "Muon_phi", "Muon_mass"});
+    df_mass_datas=df_mass_datas.Define("y", computey,{"Muon_pt", "Muon_eta", "Muon_phi", "Muon_mass"});
 
     auto df_mass1_MC= df_mass_MC.Filter("fabs(y)<0.4 ", "y1");
     auto df_mass2_MC= df_mass_MC.Filter("fabs(y)<1.2 && fabs(y)>0.8", "y2");
     auto df_mass3_MC= df_mass_MC.Filter("fabs(y)<2.0 && fabs(y)>1.6", "y3");
 
-    dmmasshisto(df_mass1_MC, "dimuon_spectrum_Z1","#bf{0.0<|y_{#mu#mu}|<0.4}","c1");
-    dmmasshisto(df_mass2_MC, "dimuon_spectrum_Z2","#bf{1.2<|y_{#mu#mu}|<1.8}","c2");
-    dmmasshisto(df_mass3_MC, "dimuon_spectrum_Z3","#bf{1.6<|y_{#mu#mu}|<2.0}","c3");
+    auto df_mass1_datas= df_mass_datas.Filter("fabs(y)<0.4 ", "y1");
+    auto df_mass2_datas= df_mass_datas.Filter("fabs(y)<1.2 && fabs(y)>0.8", "y2");
+    auto df_mass3_datas= df_mass_datas.Filter("fabs(y)<2.0 && fabs(y)>1.6", "y3");
+
+    dmmasshisto(df_mass1_MC,df_mass1_datas, "dimuon_spectrum_Z1","#bf{0.0<|y_{#mu#mu}|<0.4}","c1");
+    dmmasshisto(df_mass2_MC,df_mass2_datas, "dimuon_spectrum_Z2","#bf{1.2<|y_{#mu#mu}|<1.8}","c2");
+    dmmasshisto(df_mass3_MC,df_mass3_datas, "dimuon_spectrum_Z3","#bf{1.6<|y_{#mu#mu}|<2.0}","c3");
 
 }
