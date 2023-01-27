@@ -1,3 +1,5 @@
+#ifndef GRAPHICAL_UTILITIES_H
+#define GRAPHICAL_UTILITIES_H
 #include <filesystem>
 #include <string>
 #include <TH2D.h>
@@ -57,7 +59,8 @@ void coshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_M
    //creating a histogram
    auto hist_MC = df_MC.Histo1D({"hist_MC", "", nbins, -1, 1}, "costheta");
    auto hist_datas = df_datas.Histo1D({"hist_datas", "", nbins, -1, 1}, "costheta");
-
+   hist_datas->Scale(1/float((df_datas.Count()).GetValue()));
+   hist_MC->Scale(1/float((df_MC.Count()).GetValue()));
    //creating report
    auto report_MC = df_MC.Report();
    report_MC->Print();
@@ -67,8 +70,6 @@ void coshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_M
    //setting histogram properties
    hist_MC->SetFillColor(kOrange-3); 
    hist_MC->SetLineColor(kOrange-3); 
-   hist_MC->SetMarkerStyle(20);
-   hist_MC->SetMarkerColor(kBlack); 
    hist_MC->SetLineStyle(0);
    hist_MC->GetXaxis()->SetTitle("cos(#theta*)");
    hist_MC->GetXaxis()->SetTitleSize(0.04);
@@ -93,7 +94,7 @@ void coshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_M
    //writing legend
    auto legend = new TLegend(x1,y1,x2,y2);
    legend->AddEntry("hist_MC","MC:Z->#mu#mu","f");
-   legend->AddEntry("hist_datas","Datas","p");
+   legend->AddEntry("hist_datas","Datas","lep");
    legend->SetBorderSize(0);
    legend->SetFillColor(0);
    legend->Draw();
@@ -113,7 +114,8 @@ void dmmasshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> d
    //creating a histogram
    auto hist_MC = df_MC.Histo1D({"hist_MC", "", nbins, 70, 110}, "dimuon_mass");
    auto hist_datas = df_datas.Histo1D({"hist_datas", "", nbins, 70, 110}, "dimuon_mass");
-
+   hist_datas->Scale(1/float((df_datas.Count()).GetValue()));
+   hist_MC->Scale(1/float((df_MC.Count()).GetValue()));
    //creating report
    auto report_MC = df_MC.Report();
    report_MC->Print();
@@ -128,8 +130,6 @@ void dmmasshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> d
    hist_MC->SetStats(0);
    hist_MC->SetFillColor(kOrange-3); 
    hist_MC->SetLineColor(kOrange-3); 
-   hist_MC->SetMarkerStyle(20);
-   hist_MC->SetMarkerColor(kBlack); 
    hist_MC->SetLineStyle(0);
    hist_datas->SetMarkerStyle(8);
    hist_datas->SetStats(0);
@@ -156,7 +156,7 @@ void dmmasshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> d
    //writing legend
    auto legend = new TLegend(0.65,0.80,0.85,0.86);
    legend->AddEntry("hist_MC","MC:Z->#mu#mu","f");
-   legend->AddEntry("hist_datas","Datas","p");
+   legend->AddEntry("hist_datas","Datas","lep");
    legend->SetBorderSize(0);
    legend->SetFillColor(0);
    legend->Draw();
@@ -200,21 +200,21 @@ void afbhist(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC
    //summing and adding histos
    auto hist_MC=operationhist(histNf_MC, histDf_MC, histNb_MC, histDb_MC);
    auto hist_datas=operationhist(histNf_datas, histDf_datas, histNb_datas, histDb_datas);
-
+   
    //creating new canvas
    auto c = new TCanvas(canvasname.c_str(), "", 1200, 1200);
    
    //projection of the final histogram
    auto h_MC= hist_MC->ProjectionX("",1,100,"");
-   //auto h_datas= hist_datas->ProjectionX("",1,100,"");
+   auto h_datas= hist_datas->ProjectionX("",1,100,"");
 
    //graphical set
    h_MC->SetStats(0);
-   //h_datas->SetStats(0);
+   h_datas->SetStats(0);
    h_MC->SetMarkerStyle(8);
    h_MC->SetMarkerColor(1);
-   //h_datas->SetMarkerStyle(8);
-   //h_datas->SetMarkerColor(2);
+   h_datas->SetMarkerStyle(8);
+   h_datas->SetMarkerColor(2);
    h_MC->GetXaxis()->SetTitle("m_{#mu#mu}");
    h_MC->GetYaxis()->SetTitle("Afb");
    h_MC->GetXaxis()->CenterTitle(true);
@@ -232,7 +232,7 @@ void afbhist(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC
 
    //drawing
    h_MC->DrawClone("PSAME");
-   //h_datas->DrawClone("PSAME");
+   h_datas->DrawClone("PSAME");
 
    //label
    TLatex label;
@@ -243,8 +243,8 @@ void afbhist(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC
 
    //legend
    auto legend = new TLegend(0.65,0.80,0.85,0.86);
-   legend->AddEntry("h_MC","MC:Z->#mu#mu","p");
-   //legend->AddEntry("h_datas","Datas","p");
+   legend->AddEntry("h_MC","MC:Z->#mu#mu","lep");
+   legend->AddEntry("h_datas","Datas","lep");
    legend->SetBorderSize(0);
    legend->SetFillColor(0);
    legend->Draw();
@@ -253,3 +253,4 @@ void afbhist(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC
    save_histogram(c, filename, "afb");
 
 }
+#endif

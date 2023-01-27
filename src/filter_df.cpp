@@ -34,7 +34,7 @@ int filter_df(std::string filepath_MC, std::string filepath_datas){
 
     // Enable multi-threading
     // The default here is set to a single thread. You can choose the number of threads based on your system.
-    ROOT::EnableImplicitMT();
+    
 
     if(TFile::Open(filepath_datas.c_str())!=nullptr && TFile::Open(filepath_MC.c_str())!=nullptr){
         
@@ -62,26 +62,16 @@ int filter_df(std::string filepath_MC, std::string filepath_datas){
             auto report_MC = df1_MC.Report();
             auto report_datas = df1_datas.Report();
 
-            if( nEntries1_MC.GetValue() == 0 && nEntries1_datas.GetValue() == 0){
-                printf("Your filtered dataframes (MC and Run) are empty, change datas! \n");
+            if( nEntries1_MC.GetValue() <= 50 && nEntries1_datas.GetValue() <= 50){
+                printf("Your filtered dataframes (MC and Run) are almost empty, change datas! \n");
                 return 4;
-            }else if(nEntries1_MC.GetValue() == 0 && nEntries1_datas.GetValue() != 0){
-                printf("Your filtered dataframe (MC) is empty, change datas! \n");
+            }else if(nEntries1_MC.GetValue() <= 50 && nEntries1_datas.GetValue() > 50){
+                printf("Your filtered dataframe (MC) is almost empty, change datas! \n");
                 return 5;
-            }else if(nEntries1_MC.GetValue() != 0 && nEntries1_datas.GetValue() == 0){
-                printf("Your filtered dataframe (Run) is empty, change datas! \n");
+            }else if(nEntries1_MC.GetValue() > 50 && nEntries1_datas.GetValue() <= 50){
+                printf("Your filtered dataframe (Run) is almost empty, change datas! \n");
                 return 6;
             }else{
-                /*if(nEntries1_MC.GetValue() < 50 && nEntries1_datas.GetValue() > 50){
-                    printf("Your filtered dataframe (MC) has few events, change datas! \n");
-                    return 7;
-                }else if(nEntries1_MC.GetValue() > 50 && nEntries1_datas.GetValue() < 50){
-                    printf("Your filtered dataframe (Run) has few events, change datas! \n");
-                    return 8;
-                }else if(nEntries1_MC.GetValue() < 50 && nEntries1_datas.GetValue() < 50){
-                    printf("Your filtered dataframes have few events, change datas! \n");
-                    return 9;
-                }else{*/
                     printf("Creating filtered dataframes! \n");
                     df1_MC.Snapshot("Events","../datas/Events_MC.root",
                             {"Muon_pt","nMuon","Muon_eta","Muon_charge","Muon_mass","Muon_phi"});
