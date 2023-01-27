@@ -6,14 +6,14 @@
 #include <Math/Vector4D.h>
 #include <vector>
 
-void test_cos(){
+void test_cos(std::string filepath_MC, std::string filepath_datas){
     /*
     Testing if cos is > or < 0
     */
     ROOT::EnableImplicitMT();
 
-    ROOT::RDataFrame df_MC("Events", "../datas/Events_MC.root");
-    ROOT::RDataFrame df_datas("Events", "../datas/Events_datas.root");
+    ROOT::RDataFrame df_MC("Events", filepath_MC);
+    ROOT::RDataFrame df_datas("Events", filepath_datas);
 
     auto df_2mu_MC= allquantities(df_MC);
     auto df_2mucontrol_MC=df_2mu_MC.Filter("costheta>1 || costheta<-1","coseno control");
