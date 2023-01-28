@@ -1,0 +1,213 @@
+/*!
+ * \mainpage Documentation Main Page
+ *
+ * This C++/ROOT Library was created by Sara Gamba and Giulia Nigrelli for the Computing Methods
+ * for Experimental Physics and Data Analysis exam.
+ *
+ * \section intro_sec Introduction
+ * Using MC and Run datas of the dimuon events of CMS, the main goals of this library are essentially three:
+ * * the measurement of the Z resonance; 
+ * * the measurement of the angle of the negative muon in the Collins–Soper frame of the dimuon system;
+ * * the measurement of the forward-backward asymmetry.
+ *
+ * This functionalities are built in order to recreate similar plots of the article  
+ * [Measurement of the weak mixing angle using the forward-backward asymmetry of Drell–Yan events in pp collisions at 8 TeV](https://arxiv.org/abs/1806.00863) 
+ * by the CMS collaboration.
+ * 
+ * For simplifying the usage, a main is provided in order to execute the program.
+ *
+ * \section Requirements
+ * 
+ * * CERN ROOT 6.26
+ * * Python3
+ *
+ * \section example_usage A simple example usage
+ * The whole project is done in C++ files, but the compilation is done with python.
+ * This is simply done by typing in the terminal:
+ * \code
+ * $ python3 openfiles.py
+ * \endcode
+ *
+ * The program will ask you if you want to filter your datas or not. 
+ *
+ * If you type 'y', you have to insert your root path to the file for MC and Run, and also the path where you want to save your filtered dataframes. 
+ * We used root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola_merged.root
+ * for the MC simulation datas.
+ * We used root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/Run2012C_DoubleMuParked_merged.root
+ * for the Run datas.
+ * 
+ * 
+ * If you type 'n', you will have to insert the path of your filtered file.
+ *
+ * 
+ *  The default applied filters are:
+ * * number of muons equal to 2;
+ * * 
+ * *
+ * *
+ * *
+ * *
+ * *
+ *
+ *
+ * \image html dimuon_spectrum_Z1.pdf "Bild2"
+ * \image html dimuon_spectrum_Z2.pdf "Bild2"
+ * \image html dimuon_spectrum_Z3.pdf "Bild2"
+ *
+ *
+ *
+ * 
+ * 
+ * \subsubsection custOpt Custimize options
+ *
+ * In Fit mode we can customize some cuts on the dimuon state using the flags 
+ * described in the documentation of the file  \c OptionParse.h.
+ *
+ * Say for example, that we want to apply the cuts \f$20.0 < p_T < 30.0\f$ GeV and \f$|y| < 0.5\f$
+ * for the dimuon state and save the plot in a file named CustomizeCuts.pdf. 
+ * 
+ * We can type in the terminal
+ * \code
+ * $ ./build/main/YLaunch -n "CustomizeCuts" -p 20. -P 30. -Y 0.5
+ * \endcode
+ * and the following figure is produced and saved in the file **CustomizeCut.pdf** inside the Plots folder.
+ * 
+ * An exhaustive list of options are flags can also be obtained by typing in the terminal
+ * \code 
+ * $ ./build/main/YLaunch --help
+ * \endcode 
+ * 
+ * \image html CustomizeCuts.pdf "CustomizeCuts.pdf"
+ *
+ *
+ * \section program_des Description of main (and functionality of libraries)
+ * 
+ * In order to use the library as the author thought, a main is provided with it. 
+ * In this section, the structure of the program is explained as if we were reading 
+ * the code starting from the main and following the function calls.
+ * \subsection option_param Choose of the parameters and flags
+ * The first thing one wants to do is to initialize some parameters. 
+ * This step is necessary because the options and flags are passed as pointers in the 
+ * function \c ProcessArgs(), so that they can be modified by the user 
+ * with the flag syntax while calling the executable from terminal. 
+ * 
+ * The default values are:
+ * * fitFunction = 0, i.e. Breit-Wigner
+ * * ptm, ptM, ym, yM = NaN, i.e. no cuts on \f$ p_T \f$ or rapidity y
+ * * nameFile = "YResonacesFit", name of the figure that will be saved
+ * * verbose = 0, i.e. no output stream from Minuit
+ * * mode = 1, i.e. CrossMode
+ * * canvas = 0, i.e. Display canvas
+ * 
+ * In the \c optionParse.C file are also defined functions in order to handle parameters out of bounds and non-existing ones.
+ * 
+ * \subsection data_load Data Loading
+ * The data are loaded and manipulated (to have useful variables) using the functions defined inside  
+ * \c df_set.C. Since the data are heavy, it is really slow to read them online every time one calls the program.
+ * Therefore, it was decided to download them and store them in a folder Data.
+ * \note The folder Data is not in this repository because is too heavy. 
+ * The first time you call this function, the data are going to be downloaded 
+ * from the CMS Open Data portal, so it might take a while (up to 40 minutes depending on the internet connection).
+ *
+ * The Dataset is saved through a Snapshot of the Dataframe with new useful variables:
+ * * Dimuon_FourVec: Four Vector containing the Pt, Eta, Phi and Mass of the Dimuon pair
+ * * Dimuon_mass: Invariant Mass of the Dimuon Four Vector
+ * * Dimuon_pt: Transverse Momentum of the Dimuon Four Vector
+ * * Dimuon_beta: Beta (velocity) of the Dimuon Four Vector
+ * * Dimuon_y: Rapidity of the Dimuon Four Vector
+ * 
+ * This variables are defined in order to make fast and efficient cuts on the Dataframe.
+ * In the function \c df_set() is also handled the creation of the folder Data if not already existing.
+ * \subsection apply_cut Apply some cuts!
+ * In the file Cuts.C one can decide the cuts to be applied in the dataframe. 
+ *
+ * It is possible to choose custom cuts on the trasverse momentum and the rapidity of the dimuon state, 
+ * by adding an option while calling the program from the terminal. For example, the line
+ *
+ * \code 
+ * $ ./build/main/YLaunch -m fit -p 12 -P 50 -y 0.2 -Y 1.4
+ * \endcode 
+ *
+ * requests the cuts to be \f$ 12 < p_T <50 \f$ GeV and \f$ 0.2 < |y| < 1.4 \f$, but this dataframe is not saved. 
+ * Once the dataframe is cut, the report on the cuts is printed on stream.
+ *
+ * \subsection spectrum_draw Draw a preliminary Spectrum Plot
+ * The selected data are preliminary drawn on a canvas as an histohgramm of the invariant mass of the dimuon.
+ * The canvas is saved as **nameFile_Preliminary.pdf**, where nameFile is the name passed through 
+ * command line with the flag -n or --nameFile.
+ * If no argument is provided, the default value for nameFile is "YResonacesFit".
+ * In the file \c SpectrumPlot.C is also defined a function in order to handle the saving of figures in the folder Plots. 
+ * If it does not exist, it is recreated.
+ *
+ * \subsection fit_roo Fit the Function and save it in a canvas
+ *
+ * In \c fitRoo.C the plotted histogramm is fitted by RooFit to a PDF choosable with the flag 
+ * -f [--fitFunction]. The options are:
+ * * a BreitWigner [-f bw] (default)
+ * * a Gaussian [-f gaus]
+ * * a t-Student [-f stud] (still not stable in this version)
+ *
+ * The histogram and the fitted function are drawn on a canvas which is saved as nameFile.pdf. 
+ * If there are custom cuts, these are printed on the canvas.
+ *
+ * \subsection diffCS Calculate and plot the differential cross section
+ * 
+ * Using the customizable function \c fitRoo(), it is possible calculate the differential cross section of the process \f$Y\rightarrow\mu^+\mu^-\f$
+ *
+ * \f[
+ * \frac{d\sigma}{dp_t} = \frac{N}{L \Delta p_T e_{uu} e_{sg} e_{vp} A}
+ * \f]
+ *
+ * where \f$N\f$ is a fit parameter that says how many events are under the signal function and
+ * \f$\Delta p_T\f$ is the width of the bin in \f$p_T\f$ (i.e. the width of cut
+ * on the trasverse momentum). The value of the acceptance A is fixed to 1,
+ * and the other values are some costants taken from the article
+ * ["Measurements of the Υ(1S), Υ(2S), and Υ(3S) differential cross sections in pp collisions at √s = 7 TeV"]
+ * (https://arxiv.org/pdf/1501.07750.pdf).
+ *
+ * A more detail description of the functions used it can be found in \c diffCrossSection.h.
+ * \image html diffCrossSection.pdf "diffCrossSection.pdf"
+ * 
+ * \section test_doc Testing
+ *
+ * Since the program is built with CMake, the testing was performed using CTest. 
+ * A brief description of each test is presented below. 
+ * To run the test, one must move inside the build folder and run the simple command ctest.
+ * \code {.bash}
+ * $ cd build
+ * $ ctest
+ * \endcode
+ * 
+ * \subsection test0 Test 0
+ * Test0 handles the reading of the command arguments and flags. 
+ * In this test one define some variables, call the \c processArgs() 
+ * and sees if the definition stands, then one modify the arguments and check 
+ * if the options are evolved according to the made changes
+ *
+ * \subsection test1 Test 1
+ * Here is tested the online reading of the data and the behavior in case the Data folder or the Data 
+ * file is missing. In the test, the folder Data is deleted and the function \c df_set() is called. 
+ * This function should handle the creation of the folder Data and the downloading and saving of the data. 
+ * Once finished this first step, we check if the Data folder exists and if it contains the file data.root. 
+ * Next, we keep the folder Data and we eliminate the file data.root. The function \c df_set() is called 
+ * again and after it finished, one check if the data is successfully recreated.
+ *
+ * \subsection test2 Test 2
+ * In this test the fit results are controlled. First off, one defines a model with a similar shape to the one 
+ * expected and calls the function \c fitRoo() passing this model as an argument instead of the real data. 
+ * The test checks if the fit converged by looking at the fitStatus and also check if the returned parameters 
+ * are inside 5 sigma of the initial value.
+ *
+ * \subsection test3 Test 3
+ * This one tests the function \c SavePlot() which handles the saving of a canvas with a specific filename.
+ * If the folder Plots does not exist, it creates it.
+ * \subsection test4 Test 4
+ * This test is useful to check if the printing of the custom cuts on the canvas work.
+ * It compares the strings returned by the function \c formatYString() or \c formatPtString() 
+ * with the expected ones.
+ * 
+ * \section styleOpt Coding Style Options
+ * 
+ * The styling of the code files is formatted and checked using the library clang-format, 
+ * using the guidelines provided by the [ROOT official page](https://root.cern/contribute/coding_conventions/#clangformat).
+ */
