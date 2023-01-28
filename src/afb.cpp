@@ -1,3 +1,9 @@
+/******************************************************************************
+* 
+* \file afb.cpp
+* \brief Creating afb histogram in function of dimuon mass
+* 
+******************************************************************************/
 #include "utilities.h"
 #include "graphical_utilities.h"
 #include <ROOT/RDataFrame.hxx>
@@ -13,33 +19,35 @@
 #include <TLegend.h>
 #include <filesystem>
 #include <string>
+#include <iostream>
+
 
 void afb(std::string filepath_MC){
+/******************************************************************************
+* 
+* \brief Creating afb histogram in function of dimuon mass
+* 
+* @param filepath_MC: dataframe of the MC datas
+*
+* \return None
+* 
+******************************************************************************/
 
-    /*
-    Parameters
-    ----------
-    It doesn't take any parameter
-
-    Returns
-    ---------
-    It is a void function and it generates different 
-    plots (based on rapidity conditions) of the forward backward asimmetry.
-    All the plots are saved in images/afb/file.pdf.
-    */
-
+    //checking the correct path
     if( TFile::Open(filepath_MC.c_str())!=nullptr){
 
+        //creating the dataframe
         ROOT::RDataFrame df_MC("Events", filepath_MC);
         
+        //checking if there are the right columns
         if(df_MC.HasColumn("nMuon")&& df_MC.HasColumn("Muon_pt") && df_MC.HasColumn("Muon_mass")&& df_MC.HasColumn("Muon_charge") && df_MC.HasColumn("Muon_phi") && df_MC.HasColumn("Muon_eta") ){
-    
+            
+            //defining all quantities
             auto df_2mu_MC = allquantities(df_MC);
-    
             df_2mu_MC=df_2mu_MC.Define("wd","0.5*pow(costheta,2)/pow((pow(costheta,2)+1+0.005*(1-3*pow(costheta,2))),3)");
-
             df_2mu_MC=df_2mu_MC.Define("wn","0.5*fabs(costheta)/pow((pow(costheta,2)+1+0.005*(1-3*pow(costheta,2))),2)");
 
+            //filter the dataframe
             auto df_2mu_MC1= df_2mu_MC.Filter("fabs(y)<=0.4 ", "y1");
             auto df_2mu_MC2= df_2mu_MC.Filter("fabs(y)<=0.8 && fabs(y)>0.4", "y2");
             auto df_2mu_MC3= df_2mu_MC.Filter("fabs(y)<=1.2 && fabs(y)>0.8", "y3");
@@ -102,10 +110,11 @@ void afb(std::string filepath_MC){
 
             //saving histogram
             save_histogram(c, "afb", "afb");
+
         }else{
-            printf("your file have not the right columns");
+            std::cout << "Your file haven't the right columns\n";
         }
     }else{
-        printf("your files dont exist");
+        std::cout << "Your files don't exist, change datas!\n";
     }
 }

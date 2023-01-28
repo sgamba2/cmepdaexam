@@ -1,3 +1,9 @@
+/******************************************************************************
+* 
+* \file graphical_utilities.h
+* \brief Graphical utilities for displaying histograms of Afb, Z spectrum, cos(theta*)
+* 
+******************************************************************************/
 #ifndef GRAPHICAL_UTILITIES_H
 #define GRAPHICAL_UTILITIES_H
 #include <filesystem>
@@ -18,22 +24,40 @@
 #include <TLegend.h>
 
 void save_histogram(TCanvas *c, string namehist, string type){
+/******************************************************************************
+* 
+* \brief Save histogram in the folder "../images" and in the subfolder "../images/type", 
+* if don't exist the program creates them
+* 
+* @param c: the canvas I have to save
+* @param namehist: name of the histogram
+* @param type: name of the subfolder
+* 
+* \return None
+* 
+******************************************************************************/
    namespace fs = std::filesystem;
+
+   // define path where to save plot
    type = "/" + type;
    string subpath = "../images" + type;
-   string filepath =  subpath + "/"  + namehist + ".pdf"; // define path where to save plot
-   try { //The try statement allows you to define a block of code to be tested for errors while it is being executed.                                         // save canvas in filepath
-      if (!fs::is_directory("../images") || !fs::exists("../images")) // if directory does not exist
-         throw("../images");//The throw keyword throws an exception when a problem is detected, which lets us create a custom error.                                        // throw exception
-   } catch (const char *path) { //The catch statement allows you to define a block of code to be executed, if an error occurs in the try block.
+   string filepath =  subpath + "/"  + namehist + ".pdf"; 
+   
+   //if the folder "images" doesn't exist, it will create it
+   try {                                        
+      if (!fs::is_directory("../images") || !fs::exists("../images")) 
+         throw("../images");
+   } catch (const char *path) { 
       std::cerr << "The folder " << path << " does not exist.\n" << std::endl;
       std::cerr << "Creating folder...\n" << std::endl;
-      fs::create_directory(path); // create directory
+      fs::create_directory(path); 
       std::cout << "The folder " << path << " successfully created\n" << std::endl;
    }
+
+   //if the subfolder "type" doesn't exist, it will create it
    try {          
       c->SaveAs(filepath.c_str());                              
-      if (!fs::is_directory(subpath.c_str()) || !fs::exists(subpath.c_str())) // if directory does not exist
+      if (!fs::is_directory(subpath.c_str()) || !fs::exists(subpath.c_str())) 
          throw(subpath.c_str());
    }catch(const char *newpath){
       std::cerr << "The folder " << newpath << " does not exist.\n" << std::endl;
@@ -45,14 +69,24 @@ void save_histogram(TCanvas *c, string namehist, string type){
 }
 
 
-//There is a special catch block called the ‘catch all’ block, written as catch(…), 
-//that can be used to catch all types of exceptions.
-// For example, in the following program, an int is thrown as an exception, 
-//but there is no catch block for int, so the catch(…) block will be executed. 
-
-
 void coshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC,ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_datas, string filename, string rapiditylim, float x1, float y1, float x2, float y2,string canvasname){
-   
+/******************************************************************************
+* 
+* \brief creating cos(theta*) histogram and save
+* 
+* @param df_MC: dataframe of the MonteCarlo datas
+* @param df_datas: dataframe of the Run datas
+* @param filename: name of the final file
+* @param rapiditylim: limit of rapidity to write on the canvas
+* @param x1: low limit of x for the legend
+* @param y1: low limit of y for the legend
+* @param x2: up limit of x for the legend
+* @param y2: up limit of y for the legend
+* @param canvasname: name of the canvas I create
+* 
+* \return None
+* 
+******************************************************************************/
    constexpr int nbins = 40; //widthbins = 0.05
 
    //creating new canvas
@@ -70,10 +104,10 @@ void coshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_M
    pad1->Draw();
    pad2->Draw();
 
-   //pad1
+   //fill pad1
    pad1->cd();
 
-   //creating a histogram
+   //creating a histogram 
    auto hist_MC = df_MC.Histo1D({"hist_MC", "", nbins, -1, 1}, "costheta");
    auto hist_datas = df_datas.Histo1D({"hist_datas", "", nbins, -1, 1}, "costheta");
    hist_datas->Scale(1/float((df_datas.Count()).GetValue()));
@@ -86,7 +120,7 @@ void coshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_M
    report_datas->Print();
 
    //setting histogram properties
-   hist_MC->GetYaxis()->SetTitle("N_{events}");
+   hist_MC->GetYaxis()->SetTitle("N_{events,norm}");
    hist_MC->GetYaxis()->SetTitleSize(0.06);
    hist_MC->GetYaxis()->SetTitleOffset(0.7);
    hist_MC->GetYaxis()->SetLabelSize(0.05);
@@ -117,7 +151,7 @@ void coshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_M
    legend->SetFillColor(0);
    legend->Draw();
 
-   //pad2 
+   //fill pad2 
    pad2->cd();
 
    //creating divide histo Data/MC
@@ -142,8 +176,21 @@ void coshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_M
 
 }
 
+
 void dmmasshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC,ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_datas, string filename, string rapiditylim,string canvasname){
-   
+/******************************************************************************
+* 
+* \brief creating Z dimuon spectrum histogram and save
+* 
+* @param df_MC: dataframe of the MonteCarlo datas
+* @param df_datas: dataframe of the Run datas
+* @param filename: name of the final file
+* @param rapiditylim: limit of rapidity to write on the canvas
+* @param canvasname: name of the canvas I create
+* 
+* \return None
+* 
+******************************************************************************/
    constexpr int nbins = 100; //widthbins = 0.05
 
    //creating new canvas
@@ -161,7 +208,7 @@ void dmmasshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> d
    pad1->Draw();
    pad2->Draw();
 
-   //pad1
+   //fill pad1
    pad1->cd();
 
    //creating a histogram
@@ -177,7 +224,7 @@ void dmmasshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> d
    report_datas->Print();
 
    //setting histogram properties
-   hist_MC->GetYaxis()->SetTitle("N_{Events}");
+   hist_MC->GetYaxis()->SetTitle("N_{Events,norm}");
    hist_MC->GetYaxis()->SetTitleSize(0.06);
    hist_MC->GetYaxis()->SetTitleOffset(0.7);
    hist_MC->GetYaxis()->SetLabelSize(0.05);
@@ -212,13 +259,13 @@ void dmmasshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> d
    legend->SetFillColor(0);
    legend->Draw();
 
-   //pad2 
+   //fill pad2 
    pad2->cd();
 
    //creating divide histo Data/MC
    hist_datas->Divide(hist_MC.GetPtr());
 
-   //properties
+   //setting histogram properties
    pad2->SetGridy();
    hist_datas->GetXaxis()->SetTitle("m_{#mu#mu} (GeV)");
    hist_datas->GetYaxis()->SetTitle("Data/MC");
@@ -232,36 +279,58 @@ void dmmasshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> d
    hist_datas->SetStats(0);
    hist_datas->DrawClone("PESAME");
 
-
    //save histogram in ../images/dimuonspectrum/
    save_histogram(c, filename, "dimuonspectrum");
 
 }
 
-auto operationhist( ROOT::RDF::RResultPtr<::TH2D> & histNf, ROOT::RDF::RResultPtr<::TH2D> & histDf,ROOT::RDF::RResultPtr<::TH2D> & histNb, ROOT::RDF::RResultPtr<::TH2D> & histDb){
 
+auto operationhist( ROOT::RDF::RResultPtr<::TH2D> & histNf, ROOT::RDF::RResultPtr<::TH2D> & histDf,ROOT::RDF::RResultPtr<::TH2D> & histNb, ROOT::RDF::RResultPtr<::TH2D> & histDb){
+/******************************************************************************
+* 
+* \brief making sum, division and rescaling of an histogram
+* 
+* @param histNf: 2D histogram of dimuon mass and rapidity, with costheta>0, weighted with wn
+* @param histDf: 2D histogram of dimuon mass and rapidity, with costheta>0, weighted with wd
+* @param histNb: 2D histogram of dimuon mass and rapidity, with costheta<0, weighted with wn
+* @param histDb: 2D histogram of dimuon mass and rapidity, with costheta<0, weighted with wd
+* 
+* \return rescaled histogram
+* 
+******************************************************************************/
+   //making operation on histogram
    histNf->Add(histNb.GetPtr(),-1.0);
    histDf->Add(histDb.GetPtr(),+1.0);
    histNf->Divide(histDf.GetPtr());
    histNf->Scale(0.375);
 
    return histNf;
-
 }
 
+
 void afbhist(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC, string filename, string rapiditylim){
-   
+/******************************************************************************
+* 
+* \brief creating Afb histogram 
+* 
+* @param df_MC: dataframe of the MonteCarlo datas
+* @param filename: name of the final file
+* @param rapiditylim: limit of rapidity to write on the canvas
+* 
+* \return None
+* 
+******************************************************************************/
    //creating two filtered datframes, one with costheta=>0, one with costheta<0
    auto df_cm_MC=df_MC.Filter("costheta<0", "backward");
    auto df_cp_MC=df_MC.Filter("costheta>=0", "forward");
    
-   //creating four histogram 2D
+   //creating four histogram 2D of the dimuonmass and rapidity weighted with wn
    auto histDf_MC = df_cp_MC.Histo2D({"cp,Df", "", 10, 60,120,10,-2.4,2.4},"dimuon_mass","y","wd");
    auto histNf_MC = df_cp_MC.Histo2D({"cp,Nf", "", 10, 60,120,10,-2.4,2.4},"dimuon_mass","y","wn");
    auto histDb_MC = df_cm_MC.Histo2D({"cm,Db", "", 10, 60,120,10,-2.4,2.4},"dimuon_mass","y","wd");
    auto histNb_MC = df_cm_MC.Histo2D({"cm,Nb", "", 10, 60,120,10,-2.4,2.4},"dimuon_mass","y","wn");
 
-   //summing and adding histos
+   //operation on histogram
    auto hist_MC=operationhist(histNf_MC, histDf_MC, histNb_MC, histDb_MC);
    
    //projection of the final histogram
@@ -271,8 +340,9 @@ void afbhist(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC
    h_MC->SetStats(0);;
    h_MC->SetMarkerStyle(8);
    h_MC->SetMarkerColor(1);
+
    h_MC->GetXaxis()->SetTitle("m_{#mu#mu}");
-   h_MC->GetYaxis()->SetTitle("Afb");
+   h_MC->GetYaxis()->SetTitle("Afb MC");
 
    h_MC->GetXaxis()->CenterTitle(true);
    h_MC->GetYaxis()->CenterTitle(true);
@@ -291,15 +361,17 @@ void afbhist(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC
    h_MC->GetYaxis()->SetTitleOffset(0.66);
    h_MC->GetYaxis()->SetTickLength(0.05);
 
-   //drawing
+   //drawing the final histogram
    h_MC->DrawClone("PSAME");
 
-   //label
+   //label on the histogram
    TLatex label;
    label.SetTextSize(0.1);
    label.SetTextAlign(12);
    label.SetNDC(true);
    label.DrawLatex(0.3, 0.85, rapiditylim.c_str());
+   label.DrawLatex(0.15, 0.92, "CMS");
+   label.DrawLatex(0.90, 0.92, "#sqrt{s} = 8 TeV, L_{int} = 18.8 fb^{-1}");
 
 }
 #endif

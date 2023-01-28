@@ -1,3 +1,9 @@
+/******************************************************************************
+* 
+* \file utilities.h
+* \brief Utilities to define new columns on the dataframe
+* 
+******************************************************************************/
 #ifndef UTILITIES_H
 #define UTILITIES_H
 #include <ROOT/RDataFrame.hxx>
@@ -5,11 +11,22 @@
 #include "Math/Vector4Dfwd.h"
 #include "Math/Vector4D.h"
 
-
 using namespace ROOT::VecOps;
 
-
 ROOT::Math::PtEtaPhiMVector quadrivectot(RVec<float>& pt, RVec<float>& eta, RVec<float>& phi, RVec<float>& mass){
+/******************************************************************************
+* 
+* \brief Creating a fourvector of the dimuon system
+* 
+* @param pt: Column pt of the dataframe
+* @param eta: Column eta of the dataframe
+* @param phi: Column phi of the dataframe
+* @param mass: Column mass of the dataframe
+* 
+* \return Dimuon system fourvector
+* 
+******************************************************************************/
+
     ROOT::Math::PtEtaPhiMVector m1(pt[0], eta[0], phi[0], mass[0]);
     ROOT::Math::PtEtaPhiMVector m2(pt[1], eta[1], phi[1], mass[1]);
 
@@ -17,33 +34,57 @@ ROOT::Math::PtEtaPhiMVector quadrivectot(RVec<float>& pt, RVec<float>& eta, RVec
 
 }
 
+
 ROOT::Math::PtEtaPhiMVector quadrivec1(RVec<float>& pt, RVec<float>& eta, RVec<float>& phi, RVec<float>& mass){
+/******************************************************************************
+* 
+* \brief Creating a fourvector of the first muon 
+* 
+* @param pt: Column pt of the dataframe
+* @param eta: Column eta of the dataframe
+* @param phi: Column phi of the dataframe
+* @param mass: Column mass of the dataframe
+* 
+* \return First muon fourvector
+* 
+******************************************************************************/
     ROOT::Math::PtEtaPhiMVector m1(pt[0], eta[0], phi[0], mass[0]);
 
     return m1;
 
 }
 
+
 ROOT::Math::PtEtaPhiMVector quadrivec2(RVec<float>& pt, RVec<float>& eta, RVec<float>& phi, RVec<float>& mass){
-    
+/******************************************************************************
+* 
+* \brief Creating a fourvector of the second muon
+* 
+* @param pt: Column pt of the dataframe
+* @param eta: Column eta of the dataframe
+* @param phi: Column phi of the dataframe
+* @param mass: Column mass of the dataframe
+* 
+* \return Second muon fourvector
+* 
+******************************************************************************/
     ROOT::Math::PtEtaPhiMVector m2(pt[1], eta[1], phi[1], mass[1]);
 
     return m2;
 
 }
+
+
 auto allquantities(ROOT::RDataFrame df){
-
-    /*
-    Parameters
-    ----------
-    df: Dataframe of the events 
-
-    Returns
-    ---------
-    It returns the first node of the computation graph for which the new quantity is defined.
-    This function adds new columns to the input dataframe, with new values as total energy or pz, 
-    first or second muon energy or pz, total rapidity, cos(theta*), pm1,pp1,pm2,pp2
-    */
+/******************************************************************************
+* 
+* \brief Creating all the quantities necessary for the analysis
+* 
+* @param df: Dataframe we need to process
+* 
+* \return Dataframe with added column
+* 
+******************************************************************************/
 
     auto df_2mu_MC=df.Define("quadrivectot", quadrivectot,{"Muon_pt", "Muon_eta", "Muon_phi", "Muon_mass"});
 
