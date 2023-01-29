@@ -1,11 +1,6 @@
-/******************************************************************************
-* 
-* \file afb.cpp
-* \brief Creating afb histogram in function of dimuon mass
-* 
-******************************************************************************/
-#include "utilities.h"
-#include "graphical_utilities.h"
+#include "../include/afb.h"
+#include "../include/utilities.h"
+#include "../include/graphical_utilities.h"
 #include <ROOT/RDataFrame.hxx>
 #include <ROOT/RVec.hxx>
 #include <Math/Vector4Dfwd.h>
@@ -23,15 +18,6 @@
 
 
 void afb(std::string filepath_MC){
-/******************************************************************************
-* 
-* \brief Creating afb histogram in function of dimuon mass
-* 
-* @param filepath_MC: dataframe of the MC datas
-*
-* \return None
-* 
-******************************************************************************/
 
     //checking the correct path
     if( TFile::Open(filepath_MC.c_str())!=nullptr){
@@ -40,7 +26,7 @@ void afb(std::string filepath_MC){
         ROOT::RDataFrame df_MC("Events", filepath_MC);
         
         //checking if there are the right columns
-        if(df_MC.HasColumn("nMuon")&& df_MC.HasColumn("Muon_pt") && df_MC.HasColumn("Muon_mass")&& df_MC.HasColumn("Muon_charge") && df_MC.HasColumn("Muon_phi") && df_MC.HasColumn("Muon_eta") ){
+        if( df_MC.HasColumn("Muon_pt") && df_MC.HasColumn("Muon_mass") && df_MC.HasColumn("Muon_phi") && df_MC.HasColumn("Muon_eta") ){
             
             //defining all quantities
             auto df_2mu_MC = allquantities(df_MC);
@@ -55,14 +41,24 @@ void afb(std::string filepath_MC){
             auto df_2mu_MC5= df_2mu_MC.Filter("fabs(y)<=2.0 && fabs(y)>1.6", "y5");
             auto df_2mu_MC6= df_2mu_MC.Filter("fabs(y)<=2.4 && fabs(y)>2.0", "y6");
     
-            //setting canvas and pads
+            //setting canvas
             auto c = new TCanvas("c","",1000,800);
-            auto pad1 = new TPad("pad1","pad1",0.03,0,0.18,1);
-            auto pad2 = new TPad("pad2","pad2",0.19,0,0.34,1);
-            auto pad3 = new TPad("pad3","pad3",0.35,0,0.50,1);
-            auto pad4 = new TPad("pad4","pad4",0.52,0,0.67,1);
-            auto pad5 = new TPad("pad5","pad5",0.69,0,0.84,1);
-            auto pad6 = new TPad("pad6","pad6",0.86,0,1,1);
+
+            //labels
+            TLatex label;
+            label.SetTextSize(0.05);
+            label.SetTextAlign(12);
+            label.SetNDC(true);
+            label.DrawLatex(0.10, 0.93, "CMS");
+            label.DrawLatex(0.40, 0.93, "#sqrt{s} = 8 TeV, L_{int} = 18.8 fb^{-1}");
+
+            //setting pads
+            auto pad1 = new TPad("pad1","pad1",0.03,0,0.18,0.9);
+            auto pad2 = new TPad("pad2","pad2",0.19,0,0.34,0.9);
+            auto pad3 = new TPad("pad3","pad3",0.35,0,0.50,0.9);
+            auto pad4 = new TPad("pad4","pad4",0.52,0,0.67,0.9);
+            auto pad5 = new TPad("pad5","pad5",0.69,0,0.84,0.9);
+            auto pad6 = new TPad("pad6","pad6",0.86,0,1,0.9);
             pad1->SetTopMargin(0.1);
             pad1->SetLeftMargin(0.17);
             pad1->SetBottomMargin(0.1);

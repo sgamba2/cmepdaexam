@@ -1,9 +1,4 @@
-/******************************************************************************
-* 
-* \file filter_df.cpp
-* \brief Creating filtered dataframes
-* 
-******************************************************************************/
+#include "../include/df_filter.h"
 #include <ROOT/RDataFrame.hxx>
 #include <cmath>
 #include <string>
@@ -12,18 +7,6 @@
 
 
 int filter_df(std::string filepath_MC, std::string filepath_datas, std::string filepath_MC_fil, std::string filepath_datas_fil){   
-/******************************************************************************
-* 
-* \brief Creating filtered dataframes of MC datas and Run datas
-* 
-* @param filepath_MC: dataframe of the MC datas 
-* @param filepath_datas: dataframe of the Run datas
-* @param filepath_MC_fil: file path of the dataframe of the MC datas filtered
-* @param filepath_datas_fil: dataframe of the dataframe of the Run datas filtered
-*
-* \return 0: filtered dataframes have been created, 1: Doesn't exist the path of the files, 2: files with few columns, 3: files with few datas 
-* 
-******************************************************************************/ 
 
     //checking if the paths exist
     if(TFile::Open(filepath_datas.c_str())!=nullptr && TFile::Open(filepath_MC.c_str())!=nullptr){
@@ -68,9 +51,9 @@ int filter_df(std::string filepath_MC, std::string filepath_datas, std::string f
             }else{
                     std::cout << "Creating filtered dataframes!\n";
                     df1_MC.Snapshot("Events",filepath_MC_fil,
-                            {"Muon_pt","nMuon","Muon_eta","Muon_charge","Muon_mass","Muon_phi"});
+                            {"Muon_pt","Muon_eta","Muon_mass","Muon_phi"});
                     df1_datas.Snapshot("Events",filepath_datas_fil,
-                            {"Muon_pt","nMuon","Muon_eta","Muon_charge","Muon_mass","Muon_phi"});
+                            {"Muon_pt","Muon_eta","Muon_mass","Muon_phi"});
                     report_MC->Print();
                     report_datas->Print();
                     return 0;     

@@ -1,11 +1,6 @@
-/******************************************************************************
-* 
-* \file dimuon_spectrum_Z.cpp
-* \brief Creating dimuon spectrum histogram of Z from filtered dataframe
-* 
-******************************************************************************/
-#include "utilities.h"
-#include "graphical_utilities.h"
+#include "../include/dimuon_spectrum_Z.h"
+#include "../include/graphical_utilities.h"
+#include "../include/utilities.h"
 #include <ROOT/RDataFrame.hxx>
 #include <ROOT/RVec.hxx>
 #include <Math/Vector4Dfwd.h>
@@ -22,16 +17,7 @@
 
 
 void dimuon_spectrum_Z(std::string filepath_MC, std::string filepath_datas){
-/******************************************************************************
-* 
-* \brief Creating dimuon spectrum histogram of Z from filtered dataframe
-* 
-* @param filepath_MC: dataframe of the MC datas
-* @param filepath_datas: dataframe of the Run datas
-* 
-* \return None
-* 
-*****************************************************************************/
+
     //check if the path is correct
     if(TFile::Open(filepath_datas.c_str())!=nullptr && TFile::Open(filepath_MC.c_str())!=nullptr){
 
@@ -40,7 +26,7 @@ void dimuon_spectrum_Z(std::string filepath_MC, std::string filepath_datas){
         ROOT::RDataFrame df_datas("Events", filepath_datas);
 
         //checking if they have the right column
-        if(df_MC.HasColumn("nMuon")&& df_MC.HasColumn("Muon_pt") && df_MC.HasColumn("Muon_mass")&& df_MC.HasColumn("Muon_charge") && df_MC.HasColumn("Muon_phi") && df_MC.HasColumn("Muon_eta") &&  df_datas.HasColumn("nMuon")&& df_datas.HasColumn("Muon_pt") && df_datas.HasColumn("Muon_mass")&& df_datas.HasColumn("Muon_charge") && df_datas.HasColumn("Muon_phi")  && df_datas.HasColumn("Muon_eta") ){
+        if( df_MC.HasColumn("Muon_pt") && df_MC.HasColumn("Muon_mass") && df_MC.HasColumn("Muon_phi") && df_MC.HasColumn("Muon_eta") &&  df_datas.HasColumn("Muon_pt") && df_datas.HasColumn("Muon_mass") && df_datas.HasColumn("Muon_phi")  && df_datas.HasColumn("Muon_eta") ){
         
             //defining all the necessary quantities
             auto df_mass_MC=df_MC.Define("quadrivectot", quadrivectot,{"Muon_pt", "Muon_eta", "Muon_phi", "Muon_mass"});

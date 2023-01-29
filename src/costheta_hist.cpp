@@ -1,11 +1,6 @@
-/******************************************************************************
-* 
-* \file costheta_hist.cpp
-* \brief Creating costheta histogram from filtered dataframe
-* 
-******************************************************************************/
-#include "utilities.h"
-#include "graphical_utilities.h"
+#include "../include/costheta_hist.h"
+#include "../include/utilities.h"
+#include "../include/graphical_utilities.h"
 #include <ROOT/RDataFrame.hxx>
 #include <ROOT/RVec.hxx>
 #include <Math/Vector4Dfwd.h>
@@ -22,16 +17,7 @@
 
 
 void costheta_hist(std::string filepath_MC, std::string filepath_datas){
-/******************************************************************************
-* 
-* \brief Creating costheta histogram from filtered dataframe
-* 
-* @param filepath_MC: dataframe of the MC datas
-* @param filepath_datas: dataframe of the Run datas
-* 
-* \return None
-* 
-******************************************************************************/
+
     //check if the path is correct
     if(TFile::Open(filepath_datas.c_str())!=nullptr && TFile::Open(filepath_MC.c_str())!=nullptr){
 
@@ -40,7 +26,7 @@ void costheta_hist(std::string filepath_MC, std::string filepath_datas){
         ROOT::RDataFrame df_datas("Events", filepath_datas);
 
         //checking if they have the right column
-        if(df_MC.HasColumn("nMuon")&& df_MC.HasColumn("Muon_pt") && df_MC.HasColumn("Muon_mass")&& df_MC.HasColumn("Muon_charge") && df_MC.HasColumn("Muon_phi") && df_MC.HasColumn("Muon_eta") &&  df_datas.HasColumn("nMuon")&& df_datas.HasColumn("Muon_pt") && df_datas.HasColumn("Muon_mass")&& df_datas.HasColumn("Muon_charge") && df_datas.HasColumn("Muon_phi")  && df_datas.HasColumn("Muon_eta") ){
+        if( df_MC.HasColumn("Muon_pt") && df_MC.HasColumn("Muon_mass") && df_MC.HasColumn("Muon_phi") && df_MC.HasColumn("Muon_eta") && df_datas.HasColumn("Muon_pt") && df_datas.HasColumn("Muon_mass") && df_datas.HasColumn("Muon_phi")  && df_datas.HasColumn("Muon_eta") ){
         
             //defining all the necessary quantities
             auto df_2mu_MC= allquantities(df_MC);
@@ -57,7 +43,7 @@ void costheta_hist(std::string filepath_MC, std::string filepath_datas){
     
             //making histograms
             coshisto(df_2mu_MCy1,df_2mu_datasy1, "costheta1","#bf{0.0<|y_{#mu#mu}|<0.4}",0.45,0.80,0.65,0.86,"c1");
-            coshisto(df_2mu_MCy2,df_2mu_datasy2, "costheta2","#bf{1.2<|y_{#mu#mu}|<1.8}",0.15,0.82,0.35,0.88,"c2");
+            coshisto(df_2mu_MCy2,df_2mu_datasy2, "costheta2","#bf{0.8<|y_{#mu#mu}|<1.2}",0.15,0.82,0.35,0.88,"c2");
             coshisto(df_2mu_MCy3,df_2mu_datasy3, "costheta3","#bf{1.6<|y_{#mu#mu}|<2.0}",0.70,0.80,0.90,0.86,"c3");
 
         }else{
