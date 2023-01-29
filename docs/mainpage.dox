@@ -21,63 +21,65 @@
  * * CERN ROOT 6.26
  * * Python3
  *
- * \section example_usage A simple example usage
+ * \section example_usage An example of usage
  * The whole project is done in C++ files, but the compilation is done with python.
- * This is simply done by typing in the terminal:
+ * This is simply done by typing in the terminal, in the main "cmepdaexam" folder:
  * \code
  * $ python3 openfiles.py
  * \endcode
  *
+ * Be careful: in order to make your analysis working you have to be in the main folder "cmepdaexam".
+ *
  * The program will ask you if you want to filter your datas or not. 
  *
  * If you type 'y', you have to insert your root path to the file for MC and Run, and also the path where you want to save your filtered dataframes. 
- * We used root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola_merged.root
- * for the MC simulation datas.
- * We used root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/Run2012C_DoubleMuParked_merged.root
- * for the Run datas.
- * 
- * 
- * If you type 'n', you will have to insert the path of your filtered file.
  *
- * 
- *  The default applied filters are:
- * * number of muons equal to 2;
- * * 
- * *
- * *
- * *
- * *
- * *
+ * * We used root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola_merged.root for the MC simulation datas.
  *
+ * * We used root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/Run2012C_DoubleMuParked_merged.root for the Run datas.
  *
- * \image html dimuon_spectrum_Z1.pdf "Bild2"
- * \image html dimuon_spectrum_Z2.pdf "Bild2"
- * \image html dimuon_spectrum_Z3.pdf "Bild2"
- *
- *
- *
- * 
- * 
- * \subsubsection custOpt Custimize options
- *
- * In Fit mode we can customize some cuts on the dimuon state using the flags 
- * described in the documentation of the file  \c OptionParse.h.
- *
- * Say for example, that we want to apply the cuts \f$20.0 < p_T < 30.0\f$ GeV and \f$|y| < 0.5\f$
- * for the dimuon state and save the plot in a file named CustomizeCuts.pdf. 
- * 
- * We can type in the terminal
+ * This is simply done (this is an example) by typing in the terminal:
  * \code
- * $ ./build/main/YLaunch -n "CustomizeCuts" -p 20. -P 30. -Y 0.5
+ * $ Insert your MC path:
+ * $ root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola_merged.root
+ * $ Insert your Run path:
+ * $ root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/Run2012C_DoubleMuParked_merged.root
  * \endcode
- * and the following figure is produced and saved in the file **CustomizeCut.pdf** inside the Plots folder.
  * 
- * An exhaustive list of options are flags can also be obtained by typing in the terminal
- * \code 
- * $ ./build/main/YLaunch --help
- * \endcode 
+ * Then the program will ask you where do you want to put your filtered dataframes.
+ *
+ * This is simply done (this is an example) by typing in the terminal:
+ * \code
+ * $ Insert where you want to save your filtered MC path:
+ * $ datas/Events_MC.root
+ * $ Insert where you want to save your filtered Run path:
+ * $ datas/Events_datas.root
+ * \endcode
+ *
+ * If you type 'n', you will have to insert the path of your filtered file. It only accepts root files, with the right columns.
+ * This is simply done (this is an example) by typing in the terminal:
+ * \code
+ * $ Insert your filtered MC path:
+ * $ datas/Events_MC.root
+ * $ Insert your filtered Run path:
+ * $ datas/Events_datas.root
+ * \endcode
+ *
  * 
- * \image html CustomizeCuts.pdf "CustomizeCuts.pdf"
+ * You will be able to choose the Analysis you want: 
+ * * 1: the measurement of the angle of the negative muon in the Collins–Soper frame of the dimuon system;
+ * * 2: the measurement of the Z resonance; 
+ * * 3: the measurement of the forward-backward asymmetry;
+ * * 0: quit.
+ *
+ *  The default applied filters are on the following columns of the dataframes:
+ * * nMuon;
+ * * Muon_charge;
+ * * Muon_eta;
+ * * Muon_pt;
+ * * Muon_dxy;
+ * * Muon_pfRelIso03_chg.
+ * 
  *
  *
  * \section program_des Description of main (and functionality of libraries)
@@ -85,129 +87,144 @@
  * In order to use the library as the author thought, a main is provided with it. 
  * In this section, the structure of the program is explained as if we were reading 
  * the code starting from the main and following the function calls.
- * \subsection option_param Choose of the parameters and flags
- * The first thing one wants to do is to initialize some parameters. 
- * This step is necessary because the options and flags are passed as pointers in the 
- * function \c ProcessArgs(), so that they can be modified by the user 
- * with the flag syntax while calling the executable from terminal. 
+ * \subsection filter Filter function
+ * The filter function is the first function we have to use. It has the main target to filter the CMS 
+ * Open Data. We have 100GB of MC events and almost 100GB of Run events.
+ * We have to filter them, as said before, with this filters:
+ * * number of muons equal to 2;
+ * * the product of the first muon charge and the second is equal to -1;
+ * * the two pseudorapidities are less than 2.4;
+ * * The \f$Muon_{first,pt}\f$ is greater than 25 and \f$Muon_{second,pt}\f$ is greater than 15 or vice versa;
+ * * the transverse distance of the two muons is less than 0.2;
+ * * the muon isolation is less than 10% of \f$Muon_{pt}\f$.
  * 
- * The default values are:
- * * fitFunction = 0, i.e. Breit-Wigner
- * * ptm, ptM, ym, yM = NaN, i.e. no cuts on \f$ p_T \f$ or rapidity y
- * * nameFile = "YResonacesFit", name of the figure that will be saved
- * * verbose = 0, i.e. no output stream from Minuit
- * * mode = 1, i.e. CrossMode
- * * canvas = 0, i.e. Display canvas
  * 
- * In the \c optionParse.C file are also defined functions in order to handle parameters out of bounds and non-existing ones.
+ * The Dataset of MC datas and Run datas are saved through two Snapshots of the Dataframes with new useful variables:
+ * * \f$Muon_{pt}\f$: Trasversal momentum of the two muons;
+ * * \f$Muon_{eta}\f$: Pseudorapidity of the two muons;
+ * * \f$Muon_{phi}\f$: Coordinate phi of the two muons;
+ * * \f$Muon_{mass}\f$: Mass of the muons.
  * 
- * \subsection data_load Data Loading
- * The data are loaded and manipulated (to have useful variables) using the functions defined inside  
- * \c df_set.C. Since the data are heavy, it is really slow to read them online every time one calls the program.
- * Therefore, it was decided to download them and store them in a folder Data.
- * \note The folder Data is not in this repository because is too heavy. 
- * The first time you call this function, the data are going to be downloaded 
- * from the CMS Open Data portal, so it might take a while (up to 40 minutes depending on the internet connection).
  *
- * The Dataset is saved through a Snapshot of the Dataframe with new useful variables:
- * * Dimuon_FourVec: Four Vector containing the Pt, Eta, Phi and Mass of the Dimuon pair
- * * Dimuon_mass: Invariant Mass of the Dimuon Four Vector
- * * Dimuon_pt: Transverse Momentum of the Dimuon Four Vector
- * * Dimuon_beta: Beta (velocity) of the Dimuon Four Vector
- * * Dimuon_y: Rapidity of the Dimuon Four Vector
+ *
+ * \subsection spectrum Dimuon mass Spectrum of Z
+ * This macro will do the normalized histograms of the dimuon mass Spectrum of Z.
+ * First it will be created a column of the dimuon four vector, passing the four column we have saved
+ * to the function in **utilities.h** that returns the four vector of the dimuon system.
+ * Then we will calculate the dimuon invariant mass.
+ * We have also calculated the rapidity in order to plot three different plots with different costraints of rapidity.
+ * The MC datas will be plotted in yellow and the Run datas will be plotted as black points.
+ * We normalized the histograms with the total number of the events of MC and Run datas.
  * 
- * This variables are defined in order to make fast and efficient cuts on the Dataframe.
- * In the function \c df_set() is also handled the creation of the folder Data if not already existing.
- * \subsection apply_cut Apply some cuts!
- * In the file Cuts.C one can decide the cuts to be applied in the dataframe. 
- *
- * It is possible to choose custom cuts on the trasverse momentum and the rapidity of the dimuon state, 
- * by adding an option while calling the program from the terminal. For example, the line
- *
- * \code 
- * $ ./build/main/YLaunch -m fit -p 12 -P 50 -y 0.2 -Y 1.4
- * \endcode 
- *
- * requests the cuts to be \f$ 12 < p_T <50 \f$ GeV and \f$ 0.2 < |y| < 1.4 \f$, but this dataframe is not saved. 
- * Once the dataframe is cut, the report on the cuts is printed on stream.
- *
- * \subsection spectrum_draw Draw a preliminary Spectrum Plot
- * The selected data are preliminary drawn on a canvas as an histohgramm of the invariant mass of the dimuon.
- * The canvas is saved as **nameFile_Preliminary.pdf**, where nameFile is the name passed through 
- * command line with the flag -n or --nameFile.
- * If no argument is provided, the default value for nameFile is "YResonacesFit".
- * In the file \c SpectrumPlot.C is also defined a function in order to handle the saving of figures in the folder Plots. 
- * If it does not exist, it is recreated.
- *
- * \subsection fit_roo Fit the Function and save it in a canvas
- *
- * In \c fitRoo.C the plotted histogramm is fitted by RooFit to a PDF choosable with the flag 
- * -f [--fitFunction]. The options are:
- * * a BreitWigner [-f bw] (default)
- * * a Gaussian [-f gaus]
- * * a t-Student [-f stud] (still not stable in this version)
- *
- * The histogram and the fitted function are drawn on a canvas which is saved as nameFile.pdf. 
- * If there are custom cuts, these are printed on the canvas.
- *
- * \subsection diffCS Calculate and plot the differential cross section
+ * The canvas is saved in the directory **images** and in the subdirectory **dimuonspectrum** as **dimuon_spectrum_Zi.pdf** and **dimuon_spectrum_Zi.png**,
+ * where \f$i\f$ is the costraints of rapidity. If the directories don't exist, then the program will create them.
  * 
- * Using the customizable function \c fitRoo(), it is possible calculate the differential cross section of the process \f$Y\rightarrow\mu^+\mu^-\f$
+ * We report our dimuon mass spectrum of Z particle with different costraints of rapidity. In this pictures we have the yellow histogram that represent the MC datas, and the black point the Run datas. The low histogram is the ratio between the other two. All the histogram are normalized with the total number of events.
+ * \image html dimuon_spectrum_Z1.png "Dimuon mass spectrum histogram with range rapidity from 0.0 to 0.4."
+ * \image html dimuon_spectrum_Z2.png "Dimuon mass spectrum histogram with range rapidity from 0.8 to 1.2."
+ * \image html dimuon_spectrum_Z3.png "Dimuon mass spectrum histogram with range rapidity from 1.6 to 1.8."
  *
- * \f[
- * \frac{d\sigma}{dp_t} = \frac{N}{L \Delta p_T e_{uu} e_{sg} e_{vp} A}
- * \f]
+ * A more detail description of the functions used it can be found in \c dimuon_spectrum_Z.h, \c utilities.h and \c graphical_utilities.h.
+ * \subsection costheta cos(theta*)
+ * This macro will do the normalized histograms of the angle of the negative muon in the Collins–Soper frame of the dimuon system.
+ * First it will be created three columns of the dimuon four vector, first muon four vector and second muon four vector, passing the four column we have saved
+ * to the function in **utilities.h**.
+ * Then we will calculate the dimuon invariant mass and othe quantities foundamental to calculate \f$cos(\theta^*)\f$.
+ * We have also calculated the rapidity in order to plot three different plots with different costraints of rapidity.
+ * The MC datas will be plotted in yellow and the Run datas will be plotted as black points.
+ * We normalized the histograms with the total number of the events of MC and Run datas.
  *
- * where \f$N\f$ is a fit parameter that says how many events are under the signal function and
- * \f$\Delta p_T\f$ is the width of the bin in \f$p_T\f$ (i.e. the width of cut
- * on the trasverse momentum). The value of the acceptance A is fixed to 1,
- * and the other values are some costants taken from the article
- * ["Measurements of the Υ(1S), Υ(2S), and Υ(3S) differential cross sections in pp collisions at √s = 7 TeV"]
- * (https://arxiv.org/pdf/1501.07750.pdf).
+ * The canvas is saved in the directory **images** and in the subdirectory **costheta** as **costhetai.pdf** and **costhetai.png**,
+ * where \f$i\f$ is the costraints of rapidity. If the directories don't exist, then the program will create them.
  *
- * A more detail description of the functions used it can be found in \c diffCrossSection.h.
- * \image html diffCrossSection.pdf "diffCrossSection.pdf"
+ * We report our measurement of the angle of the negative muon in the Collins–Soper frame of the dimuon system with different costraints of rapidity. In this pictures we have the yellow histogram that represent the MC datas, and the black point the Run datas. The low histogram is the ratio between the other two. All the histogram are normalized with the total number of events.
+ * \image html costheta1.png "Histogram of the angle of the negative muon in the Collins–Soper frame of the dimuon system with range rapidity from 0.0 to 0.4."
+ * \image html costheta2.png "Histogram of the angle of the negative muon in the Collins–Soper frame of the dimuon system with range rapidity from 0.8 to 1.2."
+ * \image html costheta3.png "Histogram of the angle of the negative muon in the Collins–Soper frame of the dimuon systemm with range rapidity from 1.6 to 1.8."
+ *
+ * A more detail description of the functions used it can be found in \c costheta_hist.h , \c utilities.h and \c graphical_utilities.h.
+ * \subsection afb Afb
+ * This macro will do the 2D histogram of Afb in function of dimuon mass only of MC events.
+ * First it will be created three columns of the dimuon four vector, first muon four vector and second muon four vector, passing the four column we have saved
+ * to the function in **utilities.h**.
+ * Then we will calculate the dimuon invariant mass and othe quantities foundamental to calculate \f$cos(\theta^*)\f$, \f$wd\f$ and \f$wn\f$ (variables you can find in the [article](https://arxiv.org/abs/1806.00863)).
+ * We have also calculated the rapidity in order to plot six different plots in one canvas with different costraints of rapidity.
+ * The MC datas will be plotted as black points.
+ *
+ * The canvas is saved in the directory **images** and in the subdirectory **afb** as **afb.pdf** and **afb.png**,
+ * If the directories don't exist, then the program will create them.
+ *
+ * A more detail description of the functions used it can be found in \c afb.h , \c utilities.h and \c graphical_utilities.h.
  * 
- * \section test_doc Testing
- *
- * Since the program is built with CMake, the testing was performed using CTest. 
- * A brief description of each test is presented below. 
- * To run the test, one must move inside the build folder and run the simple command ctest.
- * \code {.bash}
- * $ cd build
- * $ ctest
+ * We report our measurement of the asymmetry forward backward. We have drawn only th MC events.
+ * \image html afb.png "Histogram of the asymmetry forward backward with six different ranges of rapidity."
+ * 
+ * \section tests Testing
+ * 
+ * This is simply done by typing in the terminal:
+ * \code
+ * $ python3 testing.py
  * \endcode
  * 
- * \subsection test0 Test 0
- * Test0 handles the reading of the command arguments and flags. 
- * In this test one define some variables, call the \c processArgs() 
- * and sees if the definition stands, then one modify the arguments and check 
- * if the options are evolved according to the made changes
+ * Be careful: in order to make your analysis working you have to be in the main folder "cmepdaexam".
  *
- * \subsection test1 Test 1
- * Here is tested the online reading of the data and the behavior in case the Data folder or the Data 
- * file is missing. In the test, the folder Data is deleted and the function \c df_set() is called. 
- * This function should handle the creation of the folder Data and the downloading and saving of the data. 
- * Once finished this first step, we check if the Data folder exists and if it contains the file data.root. 
- * Next, we keep the folder Data and we eliminate the file data.root. The function \c df_set() is called 
- * again and after it finished, one check if the data is successfully recreated.
+ * The program will ask you if you want to filter your datas or not. 
  *
- * \subsection test2 Test 2
- * In this test the fit results are controlled. First off, one defines a model with a similar shape to the one 
- * expected and calls the function \c fitRoo() passing this model as an argument instead of the real data. 
- * The test checks if the fit converged by looking at the fitStatus and also check if the returned parameters 
- * are inside 5 sigma of the initial value.
+ * If you type 'y', you have to insert your root path to the file for MC and Run, and also the path where you want to save your filtered dataframes. 
  *
- * \subsection test3 Test 3
- * This one tests the function \c SavePlot() which handles the saving of a canvas with a specific filename.
- * If the folder Plots does not exist, it creates it.
- * \subsection test4 Test 4
- * This test is useful to check if the printing of the custom cuts on the canvas work.
- * It compares the strings returned by the function \c formatYString() or \c formatPtString() 
- * with the expected ones.
+ * * We used root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola_merged.root for the MC simulation datas.
+ *
+ * * We used root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/Run2012C_DoubleMuParked_merged.root for the Run datas.
  * 
- * \section styleOpt Coding Style Options
+ * Then the program will ask you where do you want to put your filtered dataframes.
+ *
+ * This is simply done (this is an example) by typing in the terminal:
+ * \code
+ * $ Insert where you want to save your filtered MC path:
+ * $ datas/Events_MC.root
+ * $ Insert where you want to save your filtered Run path:
+ * $ datas/Events_datas.root
+ * \endcode
+ *
+ * If you type 'n', you will have to insert the path of your filtered file.
+ * This is simply done by typing in the terminal:
+ * \code
+ * $ Insert your filtered MC path:
+ * $ datas/Events_MC.root
+ * $ Insert your filtered Run path:
+ * $ datas/Events_datas.root
+ * \endcode
+ *
+ * You will be able to choose the test you want to do: 
+ * * 1: test on filter function;
+ * * 2: test on costheta value; 
+ * * 3: test on energy value;
+ * * 4: test on energy formula value;
+ * * 0: quit.
  * 
- * The styling of the code files is formatted and checked using the library clang-format, 
- * using the guidelines provided by the [ROOT official page](https://root.cern/contribute/coding_conventions/#clangformat).
+ * \subsection test1 Test on filter function
+ * Test on filter function handles the correct error given by the filter function. 
+ * In this test we call \c filter_df(), with wrong path, empty dataframe, right dataframe, dataframe with few columns
+ * to see if the error given by the function corresponds to our previsions.
+ * It prints "Test passed!" everything was done correctly or "Test failed!".
+ * A more detail description of the functions used it can be found in \c test_filt.cpp.
+ *
+ * \subsection test2 Test on costheta value
+ * Test on costheta function handles if \f$|cos(\theta^*)|\f$, defined in \c utilities.h, is <1.
+ * It creates all quantities in \c all_quantities() and we check how many rows left with \f$|cos(\theta^*)|>1\f$.
+ * It prints "Test passed!" if there are no rows left or "Test failed!".
+ * A more detail description of the functions used it can be found in \c test_cos.cpp.
+ *
+ * \subsection test2 Test on energy value
+ * Test on energy values function handles if \f$E_1+E_2-E_{tot}\f$, defined in \c utilities.h, is less or higher than 0.01% of \f$E_{tot}\f$.
+ * It creates all quantities in \c all_quantities() and we check how many rows left with \f$|E_1+E_2-E_{tot}|>0.01%*E_{tot}\f$.
+ * It prints "Test passed!" if there are no rows left or "Test failed!".
+ * A more detail description of the functions used it can be found in \c test_energy.cpp.
+ *
+ * \subsection test3 Test on energy value formulas
+ * Test on energy values function handles if \f$E_i^2=p_i^2+m^2\f$, defined in \c utilities.h, is less or higher than 0.01% of \f$E_i\f$.
+ * It creates all quantities in \c all_quantities() and we check how many rows left with \f$|E_i-(p_i^2+m^2)|>0.01%*E_i\f$.
+ * It prints "Test passed!" if there are no rows left or "Test failed!".
+ * A more detail description of the functions used it can be found in \c test_energy_formulas.cpp.
+ * 
  */
