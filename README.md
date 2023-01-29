@@ -8,94 +8,58 @@ backward asymmetry Afb histogram in function to the invariant mass.
 
 ## How to run this?
 
-The analysis needs solely a ROOT installation (6.16 or greater). You have to download a set of datas from this site:
-
+The whole project is done in C++ files, but the compilation is done with python.
+This is simply done by typing in the terminal, in the main "cmepdaexam" folder:
 ```bash
-[source /cvmfs/sft.cern.ch/lcg/views/LCG_95/x86_64-slc6-gcc8-opt/setup.sh](https://eospublichttp01.cern.ch/eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola)
+$ python3 openfiles.py
 ```
-and put in the folder `datas`.
-
-Just run the filter_df.cpp with:
-
-**Root (interactive):**
-
+Be careful: in order to make your analysis working you have to be in the main folder "cmepdaexam".
+ 
+The program will ask you if you want to filter your datas or not. 
+ 
+If you type 'y', you have to insert your root path to the file for MC and Run, and also the path where you want to save your filtered dataframes. 
+ 
+We used root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola_merged.root for the MC simulation datas.
+ 
+We used root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/Run2012C_DoubleMuParked_merged.root for the Run datas.
+ 
+This is simply done (this is an example) by typing in the terminal:
 ```bash
-root[0] .L filter_df.cpp
-root[1] filter_df()
-```
-or 
-
-```bash
-root -l "filter_df.cpp(\"00C074C0-1C19-4933-9407-5A05484E1F1E.root\")"
-```
-
-then you'll create the file `Events.root`, where there are some filtered columns of the initial dataframe. Be sure in the first dataset there are the following columns:
-
-```bash
-nMuon
-Muon_charge
-Muon_mass
-Muon_eta
-Muon_phi
-Muon_pt
-Muon_dxy
-Muon_pfRelIso03
+$ Insert your MC path:
+$ root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola_merged.root
+$ Insert your Run path:
+$ root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/Run2012C_DoubleMuParked_merged.root
 ```
 
-The analysis code itself is provided in C++. There are different files for each macro. The instructions to run the scripts is shown below:
-
-**Root (interactive):**
-
+Then the program will ask you where do you want to put your filtered dataframes.
+ 
+This is simply done (this is an example) by typing in the terminal:
 ```bash
-root[0] .L dimuon_spectrum_Z.cpp
-root[1] dimuon_spectrum_Z()
+$ Insert where you want to save your filtered MC path:
+$ datas/Events_MC.root
+$ Insert where you want to save your filtered Run path:
+$ datas/Events_datas.root
+```
+ 
+If you type 'n', you will have to insert the path of your filtered file. It only accepts root files, with the right columns.
+This is simply done (this is an example) by typing in the terminal:
+```bash
+$ Insert your filtered MC path:
+$ datas/Events_MC.root
+$ Insert your filtered Run path:
+$ datas/Events_datas.root
 ```
 
-or 
-
-```bash
-root[0] .L costheta.cpp
-root[1] costheta()
-```
-
-or
-
-```bash
-root[0] .L afb.cpp
-root[1] afb()
-```
-
-**C++ (interactive):**
-
-```bash
-root -l dimuon_spectrum_Z.cpp
-```
-or
-
-```bash
-root -l costheta.cpp
-```
-
-or
-
-```bash
-root -l afb.cpp
-```
-
-
-Download also the "images" folder and its content to be able to save histogram. Otherwise change the path on the macros programs.
-You can also change the threads number in function 
-
-```bash
-ROOT::EnableImplicitMT()
-```
-depending on your system.
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxxxx
-**C++ (compiled):**
-
-Note that you have to select the compiler based on your system.
-
-```bash
-g++ -O3 -o dimuonSpectrum dimuonSpectrum.C $(root-config --cflags --libs)
-./dimuonSpectrum
-```
+You will be able to choose the Analysis you want: 
+ 1: the measurement of the angle of the negative muon in the Collins–Soper frame of the dimuon system;
+ 2: the measurement of the Z resonance; 
+ 3: the measurement of the forward-backward asymmetry;
+ 0: quit.
+ 
+ The default applied filters are on the following columns of the dataframes:
+ - nMuon;
+ - Muon_charge;
+ - Muon_eta;
+ - Muon_pt;
+ - Muon_dxy;
+ - Muon_pfRelIso03_chg.
