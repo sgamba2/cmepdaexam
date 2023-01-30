@@ -30,14 +30,14 @@ filepath_datas = ""
 filepath_MC = ""
 
 ##
-# the filepath of the MC filtered datas 
+# the filename of the MC filtered datas 
 #
-filepath_MC_fil=""
+filename_MC_fil=""
 
 ##
-# the filepath of the Run filtered datas
+# the filename of the Run filtered datas
 #
-filepath_datas_fil=""
+filename_datas_fil=""
 
 ## 
 # choice make choosing if the user wants to filter datas or not
@@ -51,17 +51,20 @@ while(choice != 'y' and choice != 'n'):
 
 #filtering datas and opening filtered datas
 if(choice == 'y'):
-    ROOT.gInterpreter.ProcessLine(".L filter_df.cpp")
+    ROOT.gInterpreter.ProcessLine(".L src/filter_df.cpp")
     filepath_MC = input('Insert your MC path: ')
     filepath_datas = input('Insert your datas path: ')
-    filepath_MC_fil = input('Insert wher you want to save your filtered MC path: ')
-    filepath_datas_fil = input('Insert wher you want to save your filtered datas path: ')
-    fil=ROOT.filter_df(filepath_MC, filepath_datas, filepath_MC_fil, filepath_datas_fil)
+    filename_MC_fil = input('Insert your filtered MC name (Be careful, put file extension .root too): \n ')
+    filename_datas_fil = input('Insert your filtered Run name (Be careful, put file extension .root too): \n ')
+    fil=ROOT.filter_df(filepath_MC, filepath_datas, filename_MC_fil, filename_datas_fil)
 
 #not filtering datas, opening MC and Run filtered datas
 else:
-    filepath_MC_fil = input('Insert your filtered MC path: ')
-    filepath_datas_fil = input('Insert your filtered datas path: ')
+    filename_MC_fil = input('Insert your filtered MC name (Be careful, put file extension .root too): \n ')
+    filename_datas_fil = input('Insert your filtered datas name (Be careful, put file extension .root too): \n  ')
+
+filename_MC_fil="datas/"+filename_MC_fil
+filename_datas_fil="datas/"+filename_datas_fil
 
 #if the filtered datas returns 0 you can access your filtered datas
 #if you chose not to filter datas, fil is already 0
@@ -82,16 +85,16 @@ if fil==0:
         quit()
     if (testopt==2): 
         ROOT.gInterpreter.ProcessLine(".L tests/test_cos.cpp")
-        ROOT.test_cos(filepath_MC_fil, filepath_datas_fil)
+        ROOT.test_cos(filename_MC_fil, filename_datas_fil)
         print("Goodbye!")
         quit()
     if (testopt==3): 
         ROOT.gInterpreter.ProcessLine(".L tests/test_energy.cpp") 
-        ROOT.test_energy(filepath_MC_fil, filepath_datas_fil)
+        ROOT.test_energy(filename_MC_fil, filename_datas_fil)
         print("Goodbye!")
         quit()
     if (testopt==4):
         ROOT.gInterpreter.ProcessLine(".L tests/test_energy_formulas.cpp")
-        ROOT.test_energy_formulas(filepath_MC_fil, filepath_datas_fil)
+        ROOT.test_energy_formulas(filename_MC_fil, filename_datas_fil)
         print("Goodbye!")
         quit()

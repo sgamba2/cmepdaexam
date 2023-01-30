@@ -31,14 +31,14 @@ filepath_datas = ""
 filepath_MC = ""
 
 ##
-# the filepath of the MC filtered datas 
+# the filename of the MC filtered datas 
 #
-filepath_MC_fil=""
+filename_MC_fil=""
 
 ##
-# the filepath of the Run filtered datas
+# the filename of the Run filtered datas
 #
-filepath_datas_fil=""
+filename_datas_fil=""
 
 ## 
 # choice make choosing if the user wants to filter datas or not
@@ -51,17 +51,20 @@ while(choice != 'y' and choice != 'n'):
 
 #filtering datas and opening filtered datas
 if(choice == 'y'):
-    ROOT.gInterpreter.ProcessLine(".L filter_df.cpp")
+    ROOT.gInterpreter.ProcessLine(".L src/filter_df.cpp")
     filepath_MC = input('Insert your MC path: ')
     filepath_datas = input('Insert your datas path: ')
-    filepath_MC_fil = input('Insert where you want to save your filtered MC path: ')
-    filepath_datas_fil = input('Insert where you want to save your filtered datas path: ')
-    fil=ROOT.filter_df(filepath_MC, filepath_datas, filepath_MC_fil, filepath_datas_fil)
+    filename_MC_fil = input('Insert your filtered MC name (Be careful, put file extension .root too): \n ')
+    filename_datas_fil = input('Insert your filtered Run name (Be careful, put file extension .root too): \n ')
+    fil=ROOT.filter_df(filepath_MC, filepath_datas, filename_MC_fil, filename_datas_fil)
 
 #not filtering datas, opening MC and Run filtered datas
 else:
-    filepath_MC_fil = input('Insert your filtered MC path: ')
-    filepath_datas_fil = input('Insert your filtered datas path: ')
+    filename_MC_fil = input('Insert your filtered MC name (Be careful, put file extension .root too): \n  ')
+    filename_datas_fil = input('Insert your filtered datas name (Be careful, put file extension .root too): \n  ')
+
+filename_MC_fil="datas/"+filename_MC_fil
+filename_datas_fil="datas/"+filename_datas_fil
 
 #if the filtered datas returns 0 you can access your filtered datas, if you chose not to filter datas, fil is already 0
 if fil==0:
@@ -72,25 +75,24 @@ if fil==0:
     while(analysis != 0 and analysis != 1 and analysis != 2 and analysis != 3):
         analysis = int(input('Which analysis do you want to do? \n0: no analysis \n1: costheta histograms \n2: Dimuon spectrum of Z \n3: Asimmetry forward backward \n'))
     if(analysis==0):
-        print("Your files have saved correctly. Goodbye!")  
+        print("Goodbye!")  
         quit()
     if (analysis==1): 
         ROOT.gInterpreter.ProcessLine(".L src/costheta_hist.cpp")
-        ROOT.costheta_hist(filepath_MC_fil,filepath_datas_fil)
-        print("Your files have saved correctly. Goodbye!")  
+        ROOT.costheta_hist(filename_MC_fil,filename_datas_fil)
+        print("Goodbye!")  
         quit()
     if (analysis==2): 
         ROOT.gInterpreter.ProcessLine(".L src/dimuon_spectrum_Z.cpp") 
-        ROOT.dimuon_spectrum_Z(filepath_MC_fil,filepath_datas_fil)
-        print("Your files have saved correctly. Goodbye!")  
+        ROOT.dimuon_spectrum_Z(filename_MC_fil,filename_datas_fil)
+        print("Goodbye!")  
         quit()
     if (analysis==3): 
         ROOT.gInterpreter.ProcessLine(".L src/afb.cpp")
-        ROOT.afb(filepath_MC_fil)
-        print("Your files have saved correctly. Goodbye!")  
+        ROOT.afb(filename_MC_fil)
+        print("Goodbye!")  
         quit()
-    print("Goodbye!") 
-    
+
     
         
 
