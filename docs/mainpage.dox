@@ -45,32 +45,35 @@
  * $ Insert your Run path:
  * $ root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/Run2012C_DoubleMuParked_merged.root
  * \endcode
- * 
- * Then the program will ask you where do you want to put your filtered dataframes.
+ * The program will accept only files that exist and that have the right columns, if there aren't the program will stop.
+ * Then the program will ask you the name of your filtered dataframes files.
  *
  * This is simply done (this is an example) by typing in the terminal:
  * \code
- * $ Insert where you want to save your filtered MC path:
- * $ datas/Events_MC.root
- * $ Insert where you want to save your filtered Run path:
- * $ datas/Events_datas.root
+ * $ Insert where you want to save your filtered MC name (Be careful, put file extension .root too):
+ * $ Events_MC.root
+ * $ Insert where you want to save your filtered Run name (Be careful, put file extension .root too):
+ * $ Events_datas.root
  * \endcode
+ * You'll find your files on the directory "datas".
  *
  * If you type 'n', you will have to insert the path of your filtered file. It only accepts root files, with the right columns.
  * This is simply done (this is an example) by typing in the terminal:
  * \code
- * $ Insert your filtered MC path:
- * $ datas/Events_MC.root
- * $ Insert your filtered Run path:
- * $ datas/Events_datas.root
+ * $ Insert your filtered MC path (Be careful, put file extension .root too):
+ * $ Events_MC.root
+ * $ Insert your filtered Run path (Be careful, put file extension .root too):
+ * $ Events_datas.root
  * \endcode
- *
+ * Be careful, the program will only look for files that are in the "datas" directory, if there aren't the program will stop.
  * 
  * You will be able to choose the Analysis you want: 
  * * 1: the measurement of the angle of the negative muon in the Collins–Soper frame of the dimuon system;
  * * 2: the measurement of the Z resonance; 
  * * 3: the measurement of the forward-backward asymmetry;
  * * 0: quit.
+ *
+ * After the analysis the program will stop. If your analysis well ended, you can find your plots on the directory "images".
  *
  *  The default applied filters are on the following columns of the dataframes:
  * * nMuon;
@@ -82,11 +85,8 @@
  * 
  *
  *
- * \section program_des Description of main (and functionality of libraries)
- * 
- * In order to use the library as the author thought, a main is provided with it. 
- * In this section, the structure of the program is explained as if we were reading 
- * the code starting from the main and following the function calls.
+ * \section program Description of main (and functionality of libraries)
+ *  
  * \subsection filter Filter function
  * The filter function is the first function we have to use. It has the main target to filter the CMS 
  * Open Data. We have 100GB of MC events and almost 100GB of Run events.
@@ -175,26 +175,28 @@
  * * We used root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola_merged.root for the MC simulation datas.
  *
  * * We used root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/Run2012C_DoubleMuParked_merged.root for the Run datas.
- * 
- * Then the program will ask you where do you want to put your filtered dataframes.
+ * The program will accept only files that exist and that have the right columns, if there aren't the program will stop.
+ * Then the program will ask you the name of filtered dataframes files.
  *
  * This is simply done (this is an example) by typing in the terminal:
  * \code
- * $ Insert where you want to save your filtered MC path:
- * $ datas/Events_MC.root
- * $ Insert where you want to save your filtered Run path:
- * $ datas/Events_datas.root
+ * $ Insert your filtered MC name (Be careful, put file extension .root too):
+ * $ Events_MC.root
+ * $ Insert your filtered Run name (Be careful, put file extension .root too):
+ * $ Events_datas.root
  * \endcode
+ * This files will be saved in "datas" directory.
  *
  * If you type 'n', you will have to insert the path of your filtered file.
  * This is simply done by typing in the terminal:
  * \code
- * $ Insert your filtered MC path:
- * $ datas/Events_MC.root
- * $ Insert your filtered Run path:
- * $ datas/Events_datas.root
+ * $ Insert your filtered MC name (Be careful, put file extension .root too):
+ * $ Events_MC.root
+ * $ Insert your filtered Run name (Be careful, put file extension .root too):
+ * $ Events_datas.root
  * \endcode
- *
+ * The program will automatically look for your files in the "datas" directory, if there aren't the program will stop.
+ * For semplicity you'll have to write your datas and MC names also if you want to do test1 (filter function test).
  * You will be able to choose the test you want to do: 
  * * 1: test on filter function;
  * * 2: test on costheta value; 
@@ -211,19 +213,19 @@
  *
  * \subsection test2 Test on costheta value
  * Test on costheta function handles if \f$|cos(\theta^*)|\f$, defined in \c utilities.h, is <1.
- * It creates all quantities in \c all_quantities() and we check how many rows left with \f$|cos(\theta^*)|>1\f$.
+ * It creates all quantities in \c allquantities() and we check how many rows left with \f$|cos(\theta^*)|>1\f$.
  * It prints "Test passed!" if there are no rows left or "Test failed!".
  * A more detail description of the functions used it can be found in \c test_cos.cpp.
  *
  * \subsection test2 Test on energy value
  * Test on energy values function handles if \f$E_1+E_2-E_{tot}\f$, defined in \c utilities.h, is less or higher than 0.01% of \f$E_{tot}\f$.
- * It creates all quantities in \c all_quantities() and we check how many rows left with \f$|E_1+E_2-E_{tot}|>0.01%*E_{tot}\f$.
+ * It creates all quantities in \c allquantities() and we check how many rows left with \f$|E_1+E_2-E_{tot}|>0.01\f$% \f$E_{tot}\f$.
  * It prints "Test passed!" if there are no rows left or "Test failed!".
  * A more detail description of the functions used it can be found in \c test_energy.cpp.
  *
  * \subsection test3 Test on energy value formulas
  * Test on energy values function handles if \f$E_i^2=p_i^2+m^2\f$, defined in \c utilities.h, is less or higher than 0.01% of \f$E_i\f$.
- * It creates all quantities in \c all_quantities() and we check how many rows left with \f$|E_i-(p_i^2+m^2)|>0.01%*E_i\f$.
+ * It creates all quantities in \c allquantities() and we check how many rows left with \f$|E_i-(p_i^2+m^2)|>0.01\f$% \f$E_i\f$.
  * It prints "Test passed!" if there are no rows left or "Test failed!".
  * A more detail description of the functions used it can be found in \c test_energy_formulas.cpp.
  * 
