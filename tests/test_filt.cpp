@@ -22,6 +22,10 @@ void test_filt(){
 * \return None
 * 
 ******************************************************************************/
+    namespace fs = std::filesystem;
+    if (!fs::is_directory("datas") || !fs::exists("datas")) {
+        fs::create_directory("datas");
+    }
     //creating an empty dataframe with all columns and an empty dataframe with a missing column
     TFile file1("datas/SimpleTree1.root","RECREATE"); 
     TTree * tree1 = new TTree("Events","Events");
@@ -65,12 +69,14 @@ void test_filt(){
     
     //test on files with wrong path
     int test6 = filter_df("datas/file.root","datas/file.root","MC.root","dat.root"); //looking for files that don't exist
-    int test7 = filter_df("dati/00C074C0-1C19-4933-9407-5A05484E1F1E.root","datas/file.root","MC.root","dat.root"); //looking for a file exist and a file that doesn't exist
-    int test8 = filter_df("datas/file.root","dati/00C074C0-1C19-4933-9407-5A05484E1F1E.root","MC.root","/dat.root"); //looking for a file exist and a file that doesn't exist
+    int test7 = filter_df("dati/SimpleTree.root","datas/file.root","MC.root","dat.root"); //looking for a file exist and a file that doesn't exist
+    int test8 = filter_df("datas/file.root","dati/SimpleTree.root","MC.root","/dat.root"); //looking for a file exist and a file that doesn't exist
     int test9 = filter_df("dati/file.root","dati/file.root","MC.root","dat.root"); //looking for a file and a folder that don't exist
-    int test10 = filter_df("dati/00C074C0-1C19-4933-9407-5A05484E1F1E.root","dati/00C074C0-1C19-4933-9407-5A05484E1F1E.root","MC.root","dat.root");//looking for a folder that doesn't exist
+    int test10 = filter_df("dati/SimpleTree.root","dati/SimpleTree.root","MC.root","dat.root");//looking for a folder that doesn't exist
     int test11 = filter_df("root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola/0A55428E-3FFA-40D8-ABDE-BD877B402134.root","root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola/0A55428E-3FFA-40D8-ABDE-BD877B402134.root","MC.root","dat.root"); //looking for a file and a folder that exist
 
+    printf("test6,test7,test8,test9,test10,test11\n%d,%d,%d,%d,%d,%d,",test6,test7,test8,test9,test10,test11);
+    printf("test6==1 && test7==1 && test8==1 && test9==1 && test10==1, test11==0");
     //test on files with a wrong extension
     TFile file2("datas/filedummy.txt","RECREATE");
     int test12 = filter_df("datas/filedummy.txt","datas/filedummy.txt","MC.root","dat.root");//two files with wrong extention
