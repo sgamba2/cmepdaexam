@@ -13,6 +13,7 @@ This is simply done by typing in the terminal, in the main "cmepdaexam" folder:
 ```bash
 $ python3 openfiles.py
 ```
+
 Be careful: in order to make your analysis working you have to be in the main folder "cmepdaexam".
  
 The program will ask you if you want to filter your datas or not. 
@@ -31,24 +32,32 @@ $ Insert your Run path:
 $ root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/Run2012C_DoubleMuParked_merged.root
 ```
 
+Be careful: if files don't exist, the program will stop.
+
 Then the program will ask you where do you want to put your filtered dataframes.
  
 This is simply done (this is an example) by typing in the terminal:
 ```bash
-$ Insert where you want to save your filtered MC path:
-$ datas/Events_MC.root
-$ Insert where you want to save your filtered Run path:
-$ datas/Events_datas.root
+$ Insert the name of your filtered MC path (Be careful, put file extension .root too):
+$ Events_MC.root
+$ Insert the name of your filtered Run path (Be careful, put file extension .root too):
+$ Events_datas.root
 ```
- 
-If you type 'n', you will have to insert the path of your filtered file. It only accepts root files, with the right columns.
+
+Be careful: if files don't exist, the program will stop.
+
+If you type 'n', you will have to insert the name of your filtered file. It only accepts root files, with the right columns.
+
 This is simply done (this is an example) by typing in the terminal:
 ```bash
-$ Insert your filtered MC path:
-$ datas/Events_MC.root
-$ Insert your filtered Run path:
-$ datas/Events_datas.root
+$ Insert your filtered MC path (Be careful, put file extension .root too):
+$ Events_MC.root
+$ Insert your filtered Run path (Be careful, put file extension .root too):
+$ Events_datas.root
 ```
+The program will automatically look for your files in the "datas" directory, if there aren't the program will stop.
+
+Be careful: if files don't exist, the program will stop.
 
 You will be able to choose the Analysis you want: 
 - 1: the measurement of the angle of the negative muon in the Collins–Soper frame of the dimuon system;
@@ -80,26 +89,38 @@ If you type 'y', you have to insert your root path to the file for MC and Run, a
 We used root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola_merged.root for the MC simulation datas.
  
 We used root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/Run2012C_DoubleMuParked_merged.root for the Run datas.
-  
-Then the program will ask you where do you want to put your filtered dataframes.
- 
+
+Be careful: if files don't exist, the program will stop.
+
 This is simply done (this is an example) by typing in the terminal:
 ```bash
-$ Insert where you want to save your filtered MC path:
-$ datas/Events_MC.root
-$ Insert where you want to save your filtered Run path:
-$ datas/Events_datas.root
+$ Insert your MC path:
+$ root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola_merged.root
+$ Insert your Run path:
+$ root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/Run2012C_DoubleMuParked_merged.root
 ```
- 
-If you type 'n', you will have to insert the path of your filtered file.
-This is simply done by typing in the terminal:
+Then the program will ask you where do you want to put your filtered dataframes.
+ This is simply done (this is an example) by typing in the terminal:
 ```bash
-$ Insert your filtered MC path:
-$ datas/Events_MC.root
-$ Insert your filtered Run path:
-$ datas/Events_datas.root
+$ Insert the name of your filtered MC path (Be careful, put file extension .root too):
+$ Events_MC.root
+$ Insert the name of your filtered Run path (Be careful, put file extension .root too):
+$ Events_datas.root
 ```
  
+If you type 'n', you will have to insert the name of your filtered file. It only accepts root files, with the right columns.
+This is simply done (this is an example) by typing in the terminal:
+```bash
+$ Insert your filtered MC path (Be careful, put file extension .root too):
+$ Events_MC.root
+$ Insert your filtered Run path (Be careful, put file extension .root too):
+$ Events_datas.root
+```
+The program will automatically look for your files in the "datas" directory, if there aren't the program will stop.
+
+Be careful: if files don't exist or they haven't the right column, the program will stop.
+
+For semplicity you'll have to write your datas and MC names also if you want to do test1 (filter function test).
 You will be able to choose the test you want to do: 
 - 1: test on filter function;
 - 2: test on costheta value; 
