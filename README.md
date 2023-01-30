@@ -65,7 +65,9 @@ You will be able to choose the Analysis you want:
 - 3: the measurement of the forward-backward asymmetry;
 - 0: quit.
  
- The default applied filters are on the following columns of the dataframes:
+After the analysis the program will stop. If your analysis well ended, you can find your plots on the directory "images". 
+ 
+The default applied filters are on the following columns of the dataframes:
  - nMuon;
  - Muon_charge;
  - Muon_eta;
