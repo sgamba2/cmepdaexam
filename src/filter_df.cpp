@@ -4,10 +4,11 @@
 #include <string>
 #include <TFile.h>
 #include <iostream>
+#include <filesystem>
 
+int filter_df(std::string filepath_MC, std::string filepath_datas, std::string filename_MC_fil, std::string filename_datas_fil){   
 
-int filter_df(std::string filepath_MC, std::string filepath_datas, std::string filepath_MC_fil, std::string filepath_datas_fil){   
-
+    namespace fs = std::filesystem;
     //checking if the paths exist
     if(TFile::Open(filepath_datas.c_str())!=nullptr && TFile::Open(filepath_MC.c_str())!=nullptr){
         
@@ -48,21 +49,36 @@ int filter_df(std::string filepath_MC, std::string filepath_datas, std::string f
             }else if(nEntries1_MC.GetValue() > 50 && nEntries1_datas.GetValue() <= 50){
                 std::cout << "Your filtered dataframe (Run) is almost empty, change datas!\n";
                 return 3;
-            }else{
+            }else{   
+                filename_MC_fil= "datas/" + filename_MC_fil; 
+                filename_datas_fil= "datas/" + filename_datas_fil;                                       
+                if (!fs::is_directory("datas") || !fs::exists("datas")) {
+                    std::cout << "Coudn't find the directory datas: creating new directory!\n";
+                    fs::create_directory("datas");
                     std::cout << "Creating filtered dataframes!\n";
-                    df1_MC.Snapshot("Events",filepath_MC_fil,
+                    df1_MC.Snapshot("Events",filename_MC_fil,
                             {"Muon_pt","Muon_eta","Muon_mass","Muon_phi"});
-                    df1_datas.Snapshot("Events",filepath_datas_fil,
+                    df1_datas.Snapshot("Events",filename_datas_fil,
                             {"Muon_pt","Muon_eta","Muon_mass","Muon_phi"});
                     report_MC->Print();
                     report_datas->Print();
-                    return 0;     
-            } 
+                    return 0;  
+                }else{
+                    std::cout << "Creating filtered dataframes!\n";
+                    df1_MC.Snapshot("Events",filename_MC_fil,
+                            {"Muon_pt","Muon_eta","Muon_mass","Muon_phi"});
+                    df1_datas.Snapshot("Events",filename_datas_fil,
+                            {"Muon_pt","Muon_eta","Muon_mass","Muon_phi"});
+                    report_MC->Print();
+                    report_datas->Print();
+                    return 0;  
+                }   
+            }
         }else{
             std::cout << "Your dataset can't be processed for our analysis, few columns!\n";
             return 2;
         }
-    }else {
+    }else{
         std::cout << "Doesn't exist the path you have insert or it is has wrong extension, can't reach the file! Try again!\n";
         return 1;
     }
