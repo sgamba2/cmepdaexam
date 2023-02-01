@@ -88,7 +88,7 @@ options:
   --MCfile MCFILE       Choose the name of your filtered MC dataframe in datas (with .root extension)
   --RUNfile RUNFILE     Choose the name of your filtered RUN dataframe in datas (with .root extension)
   --testopt TESTOPT     Which test do you want to do? 0: no test, 1: test on filter function (no files input needed), 2: costheta
-                        test (files needed), 3: test on energy (files needed), 4: test on energy formulas (files needed)
+                        test (files needed), 3: test on energy (files needed), 4: test on energy formulas (files needed), 5:test on operation_hist
 ```
 So you can run Test1 without any other parameter, then for the others you have to insert file names and path, as before.
 
@@ -100,6 +100,7 @@ You will be able to choose the test you want to do:
 - 2: test on costheta value; 
 - 3: test on energy value;
 - 4: test on energy formula value;
+- 5: test on the operation hist;
 - 0: quit.
 
 ## Documentation
