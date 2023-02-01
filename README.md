@@ -11,58 +11,52 @@ backward asymmetry Afb histogram in function to the invariant mass.
 The whole project is done in C++ files, but the compilation is done with python.
 This is simply done by typing in the terminal, in the main "cmepdaexam" folder:
 ```bash
-$ python3 openfiles.py
+$ python3 openfiles.py --help
 ```
 
-Be careful: in order to make your analysis working you have to be in the main folder "cmepdaexam".
- 
-The program will ask you if you want to filter your datas or not. 
- 
-If you type 'y', you have to insert your root path to the file for MC and Run, and also the path where you want to save your filtered dataframes. 
- 
-We used root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola_merged.root for the MC simulation datas.
- 
-We used root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/Run2012C_DoubleMuParked_merged.root for the Run datas.
- 
-This is simply done (this is an example) by typing in the terminal:
+You can have some options:
+
 ```bash
-$ Insert your MC path:
-$ root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola_merged.root
-$ Insert your Run path:
-$ root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/Run2012C_DoubleMuParked_merged.root
+options:
+  -h, --help            show this help message and exit
+  --filter FILTER       Do you want to filter your datas? [y/n]
+  --filterMC FILTERMC   If filter is y: Choose the path of your MC dataframe (with .root extension) if filter is n: write none
+  --filterRUN FILTERRUN
+                        Choose the path of your RUN dataframe (with .root extension)
+  --MCfile MCFILE       Choose the name of your filtered MC dataframe in datas (with .root extension)
+  --RUNfile RUNFILE     Choose the name of your filtered RUN dataframe in datas (with .root extension)
+  --analysis ANALYSIS   Which analysis do you want to do? 0: no analysis, cos: costheta histograms, dimspec: Dimuon spectrum of
+                        Z, afb: Asimmetry forward backward
 ```
 
-Be careful: if files don't exist, the program will stop.
-
-Then the program will ask you where do you want to put your filtered dataframes.
- 
-This is simply done (this is an example) by typing in the terminal:
+You can choose (it is mandatory):
 ```bash
-$ Insert the name of your filtered MC path (Be careful, put file extension .root too):
-$ Events_MC.root
-$ Insert the name of your filtered Run path (Be careful, put file extension .root too):
-$ Events_datas.root
+--filter y
 ```
-
-Be careful: if files don't exist, the program will stop.
-
-If you type 'n', you will have to insert the name of your filtered file. It only accepts root files, with the right columns.
-
-This is simply done (this is an example) by typing in the terminal:
+if you want to filter you data. In this case you have to write also:
 ```bash
-$ Insert your filtered MC path (Be careful, put file extension .root too):
-$ Events_MC.root
-$ Insert your filtered Run path (Be careful, put file extension .root too):
-$ Events_datas.root
+--filterMC fileMC --filterRUN fileRUN --MCfile Events_MC.root --RUNfile Events_datas.root
 ```
-The program will automatically look for your files in the "datas" directory, if there aren't the program will stop.
-
-Be careful: if files don't exist, the program will stop.
-
-You will be able to choose the Analysis you want: 
-- 1: the measurement of the angle of the negative muon in the Collins–Soper frame of the dimuon system;
-- 2: the measurement of the Z resonance; 
-- 3: the measurement of the forward-backward asymmetry;
+For example we chose file from [here](https://eospublichttp01.cern.ch/eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/):
+```bash
+--filterMC root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola_merged.root
+```
+You can also choose:
+```bash
+--filter n
+```
+In this case you have to choose only file name already filtered:
+```bash
+--MCfile Events_MC.root --RUNfile Events_datas.root
+```
+Then you have to insert which analysis you want to do, with this option:
+```bash
+--analysis 
+```
+You can choose between:
+- cos: the measurement of the angle of the negative muon in the Collins–Soper frame of the dimuon system;
+- dimspec: the measurement of the Z resonance; 
+- afb: the measurement of the forward-backward asymmetry;
 - 0: quit.
  
 After the analysis the program will stop. If your analysis well ended, you can find your plots on the directory "images". 
@@ -75,50 +69,28 @@ The default applied filters are on the following columns of the dataframes:
  - Muon_dxy;
  - Muon_pfRelIso03_chg.
 
+Be careful: if files don't exist or they haven't the right column, the program will stop.
+
 ## How to run tests?
+You can run tests just making:
+```bash
+$ python3 testing.py --help
+```
 
-This is simply done by typing in the terminal:
+It will appear some options:
 ```bash
-$ python3 testing.py
+options:
+  -h, --help            show this help message and exit
+  --filter FILTER       Do you want to filter your datas? [y/n]
+  --filterMC FILTERMC   If filter is y: Choose the path of your MC dataframe (with .root extension)
+  --filterRUN FILTERRUN
+                        If filter is y: Choose the path of your RUN dataframe (with .root extension)
+  --MCfile MCFILE       Choose the name of your filtered MC dataframe in datas (with .root extension)
+  --RUNfile RUNFILE     Choose the name of your filtered RUN dataframe in datas (with .root extension)
+  --testopt TESTOPT     Which test do you want to do? 0: no test, 1: test on filter function (no files input needed), 2: costheta
+                        test (files needed), 3: test on energy (files needed), 4: test on energy formulas (files needed)
 ```
-  
-Be careful: in order to make your analysis working you have to be in the main folder "cmepdaexam".
- 
-The program will ask you if you want to filter your datas or not. 
- 
-If you type 'y', you have to insert your root path to the file for MC and Run, and also the path where you want to save your filtered dataframes. 
- 
-We used root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola_merged.root for the MC simulation datas.
- 
-We used root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/Run2012C_DoubleMuParked_merged.root for the Run datas.
-
-Be careful: if files don't exist, the program will stop.
-
-This is simply done (this is an example) by typing in the terminal:
-```bash
-$ Insert your MC path:
-$ root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola_merged.root
-$ Insert your Run path:
-$ root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/Run2012C_DoubleMuParked_merged.root
-```
-Then the program will ask you where do you want to put your filtered dataframes.
- This is simply done (this is an example) by typing in the terminal:
-```bash
-$ Insert the name of your filtered MC path (Be careful, put file extension .root too):
-$ Events_MC.root
-$ Insert the name of your filtered Run path (Be careful, put file extension .root too):
-$ Events_datas.root
-```
- 
-If you type 'n', you will have to insert the name of your filtered file. It only accepts root files, with the right columns.
-This is simply done (this is an example) by typing in the terminal:
-```bash
-$ Insert your filtered MC path (Be careful, put file extension .root too):
-$ Events_MC.root
-$ Insert your filtered Run path (Be careful, put file extension .root too):
-$ Events_datas.root
-```
-The program will automatically look for your files in the "datas" directory, if there aren't the program will stop.
+So you can run Test1 without any other parameter, then for the others you have to insert file names and path, as before.
 
 Be careful: if files don't exist or they haven't the right column, the program will stop.
 
