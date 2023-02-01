@@ -329,10 +329,10 @@ void afbhist(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC
    auto df_cp_MC=df_MC.Filter("costheta>=0", "forward");
    
    //creating four histogram 2D of the dimuonmass and rapidity weighted with wn
-   auto histDf_MC = df_cp_MC.Histo2D({"cp,Df", "", 10, 60,120,10,-2.4,2.4},"dimuon_mass","y","wd");
-   auto histNf_MC = df_cp_MC.Histo2D({"cp,Nf", "", 10, 60,120,10,-2.4,2.4},"dimuon_mass","y","wn");
-   auto histDb_MC = df_cm_MC.Histo2D({"cm,Db", "", 10, 60,120,10,-2.4,2.4},"dimuon_mass","y","wd");
-   auto histNb_MC = df_cm_MC.Histo2D({"cm,Nb", "", 10, 60,120,10,-2.4,2.4},"dimuon_mass","y","wn");
+   auto histDf_MC = df_cp_MC.Histo2D({"cp,Df", "", 5, 60,120,5,-2.4,2.4},"dimuon_mass","y","wd");
+   auto histNf_MC = df_cp_MC.Histo2D({"cp,Nf", "", 5, 60,120,5,-2.4,2.4},"dimuon_mass","y","wn");
+   auto histDb_MC = df_cm_MC.Histo2D({"cm,Db", "", 5, 60,120,5,-2.4,2.4},"dimuon_mass","y","wd");
+   auto histNb_MC = df_cm_MC.Histo2D({"cm,Nb", "", 5, 60,120,5,-2.4,2.4},"dimuon_mass","y","wn");
 
    //operation on histogram
    auto hist_MC=operationhist(histNf_MC, histDf_MC, histNb_MC, histDb_MC);
