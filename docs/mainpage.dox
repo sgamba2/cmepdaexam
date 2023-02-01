@@ -217,13 +217,13 @@
  * It prints "Test passed!" if there are no rows left or "Test failed!".
  * A more detail description of the functions used it can be found in \c test_cos.cpp.
  *
- * \subsection test2 Test on energy value
+ * \subsection test3 Test on energy value
  * Test on energy values function handles if \f$E_1+E_2-E_{tot}\f$, defined in \c utilities.h, is less or higher than 0.01% of \f$E_{tot}\f$.
  * It creates all quantities in \c allquantities() and we check how many rows left with \f$|E_1+E_2-E_{tot}|>0.01\f$% \f$E_{tot}\f$.
  * It prints "Test passed!" if there are no rows left or "Test failed!".
  * A more detail description of the functions used it can be found in \c test_energy.cpp.
  *
- * \subsection test3 Test on energy value formulas
+ * \subsection test4 Test on energy value formulas
  * Test on energy values function handles if \f$E_i^2=p_i^2+m^2\f$, defined in \c utilities.h, is less or higher than 0.01% of \f$E_i\f$.
  * It creates all quantities in \c allquantities() and we check how many rows left with \f$|E_i-(p_i^2+m^2)|>0.01\f$% \f$E_i\f$.
  * It prints "Test passed!" if there are no rows left or "Test failed!".
