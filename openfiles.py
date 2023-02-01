@@ -74,7 +74,7 @@ if __name__ == '__main__':
     elif(args.filter == 'y' and (args.filterMC is None or args.filterRUN is None or args.MCfile is None or args.RUNfile is None)):
         print('Cannot start the program: missing the path of your files or the name of your filtered files!')
     elif(args.filter=='n' and (args.filterMC is not None or args.filterRUN is not None)):
-        print('Cannot start the program: too many arguments!')
+        print('Cannot start the program: cannot reach your filtered files!')
     elif(args.filter=='n' and (args.MCfile is None or args.RUNfile is None)):
         print('Cannot start the program: few arguments!')
     else:

@@ -59,6 +59,11 @@ def process(choice,filepath_MC,filepath_datas,filename_MC_fil, filename_datas_fi
             ROOT.test_energy_formulas(filename_MC_fil, filename_datas_fil)
             print("Goodbye!")
             quit()
+        if (testopt=='5'):
+            ROOT.gInterpreter.ProcessLine(".L tests/test_operationhist.cpp")
+            ROOT.test_operationhist()
+            print("Goodbye!")
+            quit()
 
 if __name__ == '__main__':
 
@@ -69,28 +74,32 @@ if __name__ == '__main__':
     parser.add_argument('--filterRUN', type=str, help='If filter is y: Choose the path of your RUN dataframe (with .root extension)')
     parser.add_argument('--MCfile', type=str, help='Choose the name of your filtered MC dataframe in datas (with .root extension)')
     parser.add_argument('--RUNfile', type=str, help='Choose the name of your filtered RUN dataframe in datas (with .root extension)')
-    parser.add_argument('--testopt', type=str, help='Which test do you want to do? 0: no test, 1: test on filter function (no files input needed), 2: costheta test (files needed), 3: test on energy (files needed), 4: test on energy formulas (files needed)')
+    parser.add_argument('--testopt', type=str, help='Which test do you want to do? 0: no test, 1: test on filter function (no files needed), 2: costheta test (files needed), 3: test on energy (files needed), 4: test on energy formulas (files needed), 5: test on operation_hist (no files needed)')
     
     args = parser.parse_args()
 
     #if this stats are true I can process datas and make tests
     if (args.testopt is None):
         print("Cannot start the program: missing the testopt!")
-    elif(args.filter is None and args.testopt != '1'):
+    elif(args.filter is None and args.testopt != '1' and args.testopt != '5'):
         print('Cannot start the program: missing one of the arguments (filter or testopt)!')
-    elif(args.filter!= 'n' and args.filter!= 'y' and args.testopt != '1'):
+    elif(args.filter!= 'n' and args.filter!= 'y' and args.testopt != '1' and args.testopt != '5'):
         print('Cannot start the program: filter is incorrect!')
-    elif(args.testopt!= '0' and args.testopt!= '1' and args.testopt!= '2' and args.testopt!= '3' and args.testopt!= '4'):
+    elif(args.testopt!= '0' and args.testopt!= '1' and args.testopt!= '2' and args.testopt!= '3' and args.testopt!= '4' and args.testopt != '5'):
         print('Cannot start the program: testopt is incorrect!')
-    elif(args.filter == 'y' and (args.filterMC is None or args.filterRUN is None or args.MCfile is None or args.RUNfile is None) and args.testopt != '1'):
+    elif(args.filter == 'y' and (args.filterMC is None or args.filterRUN is None or args.MCfile is None or args.RUNfile is None) and args.testopt != '1' and args.testopt != '5'):
         print('Cannot start the program: missing the path of your files or the name of your filtered files!')
-    elif(args.filter=='n' and (args.filterMC is not None or args.filterRUN is not None) and args.testopt != '1'):
-        print('Cannot start the program: too many arguments!')
-    elif(args.filter=='n' and (args.MCfile is None or args.RUNfile is None) and args.testopt != '1'):
+    elif(args.filter=='n' and (args.filterMC is not None or args.filterRUN is not None) and args.testopt != '1' and args.testopt != '5'):
+        print('Cannot start the program: cannot reach your filtered files!')
+    elif(args.filter=='n' and (args.MCfile is None or args.RUNfile is None) and args.testopt != '1' and args.testopt != '5'):
         print('Cannot start the program: few arguments!')
     elif((args.filter=='n' or args.filter=='y') and args.testopt=='1'):
         process('n','','','','',args.testopt)
+    elif((args.filter=='n' or args.filter=='y') and args.testopt=='5'):
+        process('n','','','','',args.testopt)
     elif(args.testopt=='1'):
+        process("n",'','','','',args.testopt)
+    elif(args.testopt=='5'):
         process("n",'','','','',args.testopt)
     else:
         process(args.filter,args.filterMC,args.filterRUN,args.MCfile, args.RUNfile,args.testopt)
