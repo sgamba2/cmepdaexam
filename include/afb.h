@@ -26,15 +26,16 @@
 
 /******************************************************************************
 * 
-* \brief Creating afb histogram in function of dimuon mass. Firstly checks if in the dataframe exists and if
+* \brief Creating afb histogram in function of dimuon mass. Firstly checks if in the dataframes exist and if
 * there are the right columns, then creates all quantities necessary to the analysis, then makes 
 * six filters for the rapidity conditions and creates six histograms in one canvas, saving them in .pdf and .png
 * 
 * @param filepath_MC: dataframe of the MC datas
+* @param filepath_datas: dataframe of the RUN datas
 *
 * \return None
 * 
 ******************************************************************************/
-void afb(std::string filepath_MC);
+void afb(std::string filepath_MC,std::string filepath_datas);
 
 #endif /* AFB_H */
