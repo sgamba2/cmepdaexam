@@ -9,9 +9,10 @@
 #include <ROOT/RVec.hxx>
 #include <Math/Vector4Dfwd.h>
 #include <Math/Vector4D.h>
-#include <stdio.h>
 #include <TH2D.h>
-
+#include <iostream>
+#include <cmath>
+#include <cstdlib>
 
 void test_operationhist(){
 /******************************************************************************
@@ -35,35 +36,48 @@ void test_operationhist(){
   //opening dataframes
   ROOT::RDataFrame df1("Events", "../datas/tree1.root");
 
+  //creating four different histos
   auto hist1 = df1.Histo2D({"", "", 10, 0.,10.,10,-1000,1000},"b1","b2","b3");
   auto hist2 = df1.Histo2D({"", "", 10, 0.,10.,10,-1000,1000},"b1","b2","b3");
   auto hist3 = df1.Histo2D({"", "", 10, 0.,10.,10,-1000,1000},"b1","b2","b3");
   auto hist4 = df1.Histo2D({"", "", 10, 0.,10.,10,-1000,1000},"b1","b2","b3");
+ 
+  //creating random variables from 0 to 1 or -1 to 0
+  float n1= static_cast <float> (rand()) / ( static_cast <float> (RAND_MAX));
+  float n2= (-1) * static_cast <float> (rand()) / ( static_cast <float> (RAND_MAX));
+  float n3= (-1) * static_cast <float> (rand()) / ( static_cast <float> (RAND_MAX));
+  float n4= static_cast <float> (rand()) / ( static_cast <float> (RAND_MAX));
 
   //adding to the histograms some content
-  hist1->AddBinContent(1,120);
-  hist2->AddBinContent(1,80);
-  hist3->AddBinContent(1,10);
-  hist4->AddBinContent(1,90);
-  hist1->AddBinContent(2,-120);
-  hist2->AddBinContent(2,80);
-  hist3->AddBinContent(2,10);
-  hist4->AddBinContent(2,90);
-  hist1->AddBinContent(4,0.1);
-  hist2->AddBinContent(4,-2);
-  hist3->AddBinContent(4,0.3);
-  hist4->AddBinContent(4,0.09);
-  hist1->AddBinContent(9,-1.);
-  hist2->AddBinContent(9,8.);
-  hist3->AddBinContent(9,-0.10);
-  hist4->AddBinContent(9,9);
-    
+  hist1->AddBinContent(1,n1);
+  hist2->AddBinContent(1,n2);
+  hist3->AddBinContent(1,n3);
+  hist4->AddBinContent(1,n4);
+  hist1->AddBinContent(2,n1*100);
+  hist2->AddBinContent(2,n2*(-4));
+  hist3->AddBinContent(2,n3*5);
+  hist4->AddBinContent(2,n4);
+  hist1->AddBinContent(4,n1*2);
+  hist2->AddBinContent(4,n2*(-1));
+  hist3->AddBinContent(4,n3*22);
+  hist4->AddBinContent(4,n4);
+  hist1->AddBinContent(9,n1-10);
+  hist2->AddBinContent(9,n2+3);
+  hist3->AddBinContent(9,n3+17);
+  hist4->AddBinContent(9,n4*8);
+  
+  //creating variables I expect
+  auto var1=(n1-n3)*0.375/(n2+n4);
+  auto var2=(n1*100-n3*5)*0.375/(n2*(-4)+n4);
+  auto var3=(n1*2-n3*22)*0.375/(n2*(-1)+n4);
+  auto var4=(n1-10-n3-17)*0.375/(n2+3+n4*8);
+
   //try to do operations on histograms
   auto hista=operationhist(hist1, hist2, hist3, hist4);
 
   std::cout<<"Testing if the operations between histograms works! \n";
 
-  if(fabs(hista->GetBinContent(1)-0.242647)<0.242647*0.0001 && fabs(hista->GetBinContent(2)+0.286765)<0.0001*0.286765 && fabs(hista->GetBinContent(4)-0.039267)<0.0001*0.039267 && fabs(hista->GetBinContent(9)+0.0198529)<0.0001*0.0198529){
+  if(fabs(hista->GetBinContent(1)-var1)<fabs(var1*0.0001) && fabs(hista->GetBinContent(2)-var2)<fabs(var2*0.0001) && fabs(hista->GetBinContent(4)-var3)<fabs(var3*0.0001) && fabs(hista->GetBinContent(9)-var4)<fabs(var4*0.0001)){
     std::cout<<"Test passed! \n";
   }else{
     std::cout<<"Test failed! \n";
