@@ -17,22 +17,27 @@
 #include <iostream>
 
 
-void afb(std::string filepath_MC){
+void afb(std::string filepath_MC, std::string filepath_datas){
 
     //checking the correct path
-    if( TFile::Open(filepath_MC.c_str())!=nullptr){
+    if( TFile::Open(filepath_MC.c_str())!=nullptr && TFile::Open(filepath_datas.c_str())!=nullptr){
 
         //creating the dataframe
         ROOT::RDataFrame df_MC("Events", filepath_MC);
+        ROOT::RDataFrame df_datas("Events", filepath_datas);
         
         //checking if there are the right columns
-        if( df_MC.HasColumn("Muon_pt") && df_MC.HasColumn("Muon_mass") && df_MC.HasColumn("Muon_phi") && df_MC.HasColumn("Muon_eta") ){
+        if( df_MC.HasColumn("Muon_pt") && df_MC.HasColumn("Muon_mass") && df_MC.HasColumn("Muon_phi") && df_MC.HasColumn("Muon_eta") && df_datas.HasColumn("Muon_pt") && df_datas.HasColumn("Muon_mass") && df_datas.HasColumn("Muon_phi") && df_datas.HasColumn("Muon_eta") ){
             
             //defining all quantities
             auto df_2mu_MC = allquantities(df_MC);
             df_2mu_MC=df_2mu_MC.Define("wd","0.5*pow(costheta,2)/pow((pow(costheta,2)+1+0.005*(1-3*pow(costheta,2))),3)");
             df_2mu_MC=df_2mu_MC.Define("wn","0.5*fabs(costheta)/pow((pow(costheta,2)+1+0.005*(1-3*pow(costheta,2))),2)");
 
+            auto df_2mu_datas = allquantities(df_datas);
+            df_2mu_datas=df_2mu_datas.Define("wd","0.5*pow(costheta,2)/pow((pow(costheta,2)+1+0.005*(1-3*pow(costheta,2))),3)");
+            df_2mu_datas=df_2mu_datas.Define("wn","0.5*fabs(costheta)/pow((pow(costheta,2)+1+0.005*(1-3*pow(costheta,2))),2)");
+            
             //filter the dataframe
             auto df_2mu_MC1= df_2mu_MC.Filter("fabs(y)<=0.4 ", "y1");
             auto df_2mu_MC2= df_2mu_MC.Filter("fabs(y)<=0.8 && fabs(y)>0.4", "y2");
@@ -40,6 +45,12 @@ void afb(std::string filepath_MC){
             auto df_2mu_MC4= df_2mu_MC.Filter("fabs(y)<=1.6 && fabs(y)>1.2", "y4");
             auto df_2mu_MC5= df_2mu_MC.Filter("fabs(y)<=2.0 && fabs(y)>1.6", "y5");
             auto df_2mu_MC6= df_2mu_MC.Filter("fabs(y)<=2.4 && fabs(y)>2.0", "y6");
+            auto df_2mu_datas1= df_2mu_datas.Filter("fabs(y)<=0.4 ", "y1");
+            auto df_2mu_datas2= df_2mu_datas.Filter("fabs(y)<=0.8 && fabs(y)>0.4", "y2");
+            auto df_2mu_datas3= df_2mu_datas.Filter("fabs(y)<=1.2 && fabs(y)>0.8", "y3");
+            auto df_2mu_datas4= df_2mu_datas.Filter("fabs(y)<=1.6 && fabs(y)>1.2", "y4");
+            auto df_2mu_datas5= df_2mu_datas.Filter("fabs(y)<=2.0 && fabs(y)>1.6", "y5");
+            auto df_2mu_datas6= df_2mu_datas.Filter("fabs(y)<=2.4 && fabs(y)>2.0", "y6");
     
             //setting canvas
             auto c = new TCanvas("c","",1000,800);
@@ -60,7 +71,7 @@ void afb(std::string filepath_MC){
             auto pad5 = new TPad("pad5","pad5",0.69,0,0.84,0.9);
             auto pad6 = new TPad("pad6","pad6",0.86,0,1,0.9);
             pad1->SetTopMargin(0.1);
-            pad1->SetLeftMargin(0.17);
+            pad1->SetLeftMargin(0.20);
             pad1->SetBottomMargin(0.1);
             pad1->SetBorderMode(0);
             pad2->SetTopMargin(0.1);
@@ -90,19 +101,19 @@ void afb(std::string filepath_MC){
             pad5->Draw();
             pad6->Draw();
 
-            //drawing pads
+            //drawing histograms
             pad1->cd();
-            afbhist(df_2mu_MC1,"afb1","#bf{0.0<|y_{#mu#mu}|<0.4}");
+            afbhist(df_2mu_MC1,df_2mu_datas1,1,"#bf{0.0<|y_{#mu#mu}|<0.4}");
             pad2->cd();
-            afbhist(df_2mu_MC2,"afb2","#bf{0.4<|y_{#mu#mu}|<0.8}");
+            afbhist(df_2mu_MC2,df_2mu_datas2,2,"#bf{0.4<|y_{#mu#mu}|<0.8}");
             pad3->cd();
-            afbhist(df_2mu_MC3,"afb3","#bf{0.8<|y_{#mu#mu}|<1.2}");
+            afbhist(df_2mu_MC3,df_2mu_datas3,3,"#bf{0.8<|y_{#mu#mu}|<1.2}");
             pad4->cd();
-            afbhist(df_2mu_MC4,"afb4","#bf{1.2<|y_{#mu#mu}|<1.6}");
+            afbhist(df_2mu_MC4,df_2mu_datas4,4,"#bf{1.2<|y_{#mu#mu}|<1.6}");
             pad5->cd();
-            afbhist(df_2mu_MC5,"afb5","#bf{1.6<|y_{#mu#mu}|<2.0}");
+            afbhist(df_2mu_MC5,df_2mu_datas5,5,"#bf{1.6<|y_{#mu#mu}|<2.0}");
             pad6->cd();
-            afbhist(df_2mu_MC6,"afb6","#bf{2.0<|y_{#mu#mu}|<2.4}");
+            afbhist(df_2mu_MC6,df_2mu_datas6,6,"#bf{2.0<|y_{#mu#mu}|<2.4}");
 
             //saving histogram
             save_histogram(c, "afb", "afb");
