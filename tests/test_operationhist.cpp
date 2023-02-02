@@ -77,7 +77,7 @@ void test_operationhist(){
 
   std::cout<<"Testing if the operations between histograms works! \n";
 
-  if(fabs(hista->GetBinContent(1)-var1)<fabs(var1*0.0001) && fabs(hista->GetBinContent(2)-var2)<fabs(var2*0.0001) && fabs(hista->GetBinContent(4)-var3)<fabs(var3*0.0001) && fabs(hista->GetBinContent(9)-var4)<fabs(var4*0.0001) && hista->GetBinContent(9)*var4>0 && hista->GetBinContent(4)*var3>0 && hista->GetBinContent(2)*var2>0 && hista->GetBinContent(1)*var1>0 ){
+  if(fabs(hista->GetBinContent(1)-var1)<fabs(var1*0.0001) && fabs(hista->GetBinContent(2)-var2)<fabs(var2*0.0001) && fabs(hista->GetBinContent(4)-var3)<fabs(var3*0.0001) && fabs(hista->GetBinContent(9)-var4)<fabs(var4*0.0001) && hista->GetBinContent(9)*var4>0 && hista->GetBinContent(4)*var3>0 && hista->GetBinContent(2)*var2>0 && hista->GetBinContent(1)*var1>0){
     std::cout<<"Test passed! \n";
   }else{
     std::cout<<"Test failed! \n";
