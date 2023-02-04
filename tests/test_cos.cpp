@@ -41,17 +41,17 @@ void test_cos(std::string filepath_MC, std::string filepath_datas){
             //counting how many rows are left
             auto nEntries_datas=df_2mucontrol_datas.Count();
 
-            std::cout<<"Testing if |costheta|<1 \n";
+            std::cout<<"Testing if |costheta|<1"<<std::endl;
 
             if( nEntries_MC.GetValue()==0 && nEntries_datas.GetValue()==0){
-                std::cout<<"Test passed!\n";
+                std::cout<<"Test passed!"<<std::endl;
             }else{
-                std::cout<<"Test failed!\n";
+                std::cout<<"Test failed!"<<std::endl;
             }
         }else{
-            std::cout << "Your file haven't the right columns\n";
+            std::cerr << "Your file haven't the right columns"<<std::endl;
         }
     }else{
-        std::cout << "Your files don't exist, change datas!\n";
+        std::cerr << "Your files don't exist, change datas!"<<std::endl;
     }
 }

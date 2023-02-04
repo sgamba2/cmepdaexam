@@ -57,17 +57,17 @@ void test_energy_formulas(std::string filepath_MC, std::string filepath_datas){
             auto nEntries_MC=df_2mucontrol2_MC.Count();
             auto nEntries_datas=df_2mucontrol2_datas.Count();
 
-            std::cout<<"Testing if E_i^2 is almost equal to m^2+p_i^2 \n";
+            std::cout<<"Testing if E_i^2 is almost equal to m^2+p_i^2"<<std::endl;
 
             if( nEntries_datas.GetValue()==0 && nEntries_MC.GetValue()==0){
-                std::cout<<"Test passed!\n";
+                std::cout<<"Test passed!"<<std::endl;
             }else{
-                std::cout<<"Test failed!\n";
+                std::cout<<"Test failed!"<<std::endl;
             }
         }else{
-            std::cout << "Your file haven't the right columns\n";
+            std::cerr << "Your file haven't the right columns"<<std::endl;
         }
     }else{
-        std::cout << "Your files don't exist, change datas!\n";
+        std::cerr << "Your files don't exist, change datas!"<<std::endl;
     }
 }

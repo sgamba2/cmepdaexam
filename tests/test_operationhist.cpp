@@ -75,12 +75,12 @@ void test_operationhist(){
   //try to do operations on histograms
   auto hista=operationhist(hist1, hist2, hist3, hist4);
 
-  std::cout<<"Testing if the operations between histograms works! \n";
+  std::cout<<"Testing if the operations between histograms works!"<<std::endl;
 
   if(fabs(hista->GetBinContent(1)-var1)<fabs(var1*0.0001) && fabs(hista->GetBinContent(2)-var2)<fabs(var2*0.0001) && fabs(hista->GetBinContent(4)-var3)<fabs(var3*0.0001) && fabs(hista->GetBinContent(9)-var4)<fabs(var4*0.0001) && hista->GetBinContent(9)*var4>0 && hista->GetBinContent(4)*var3>0 && hista->GetBinContent(2)*var2>0 && hista->GetBinContent(1)*var1>0){
-    std::cout<<"Test passed! \n";
+    std::cout<<"Test passed!"<<std::endl;
   }else{
-    std::cout<<"Test failed! \n";
+    std::cout<<"Test failed!"<<std::endl;
   }
 }
 

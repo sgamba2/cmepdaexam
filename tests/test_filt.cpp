@@ -23,6 +23,7 @@ void test_filt(){
 * 
 ******************************************************************************/
     namespace fs = std::filesystem;
+    
     if (!fs::is_directory("datas") || !fs::exists("datas")) {
         fs::create_directory("datas");
     }
@@ -75,8 +76,6 @@ void test_filt(){
     int test10 = filter_df("dati/SimpleTree.root","dati/SimpleTree.root","MC.root","dat.root");//looking for a folder that doesn't exist
     int test11 = filter_df("root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola/0A55428E-3FFA-40D8-ABDE-BD877B402134.root","root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola/0A55428E-3FFA-40D8-ABDE-BD877B402134.root","MC.root","dat.root"); //looking for a file and a folder that exist
 
-    printf("test6,test7,test8,test9,test10,test11\n%d,%d,%d,%d,%d,%d,",test6,test7,test8,test9,test10,test11);
-    printf("test6==1 && test7==1 && test8==1 && test9==1 && test10==1, test11==0");
     //test on files with a wrong extension
     TFile file2("datas/filedummy.txt","RECREATE");
     int test12 = filter_df("datas/filedummy.txt","datas/filedummy.txt","MC.root","dat.root");//two files with wrong extention
@@ -84,8 +83,8 @@ void test_filt(){
     int test14 = filter_df("datas/filedummy.txt","root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola/0A55428E-3FFA-40D8-ABDE-BD877B402134.root","MC.root","dat.root");//first file with wrong extention
     
     if(test0==2 && test1==2 && test2==2 && test3==3 && test4==3 && test5==3 && test11==0 && test6==1 && test7==1 && test8==1 && test9==1 && test10==1 && test12==1 && test13==1 && test14==1){
-        std::cout << "Test passed!\n";
+        std::cout << "Test passed!"<<std::endl;
     }else{
-        std::cout << "Test failed!\n";
+        std::cout << "Test failed!"<<std::endl;
     }
 }
