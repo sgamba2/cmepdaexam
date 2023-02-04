@@ -1,7 +1,7 @@
 /******************************************************************************
 * 
 * \file graphical_utilities.h
-* \brief Graphical utilities for displaying histograms of Afb, Z spectrum, cos(theta*)
+* \brief Graphical utilities for displaying histograms of Afb, Z spectrum, cos(theta*) and saving the plots.
 * 
 ******************************************************************************/
 #ifndef GRAPHICAL_UTILITIES_H
@@ -42,8 +42,8 @@ void save_histogram(TCanvas *c, string namehist, string type){
    // define path where to save plot
    type = "/" + type;
    string subpath = "images" + type;
-   string filepath_pdf =  subpath + "/"  + namehist + ".pdf"; 
-   string filepath_png =  subpath + "/"  + namehist + ".png"; 
+   string filepath_pdf = subpath + "/" + namehist + ".pdf"; 
+   string filepath_png = subpath + "/" + namehist + ".png"; 
    
    //if the folder "images" doesn't exist, it will create it
    try {                                        
@@ -73,7 +73,7 @@ void save_histogram(TCanvas *c, string namehist, string type){
 }
 
 
-void coshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC,ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_datas, string filename, string rapiditylim, float x1, float y1, float x2, float y2,string canvasname){
+void coshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC, ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_datas, string filename, string rapiditylim, float x1, float y1, float x2, float y2, string canvasname){
 /******************************************************************************
 * 
 * \brief creating cos(theta*) histogram and save
@@ -94,11 +94,11 @@ void coshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_M
    constexpr int nbins = 40; //widthbins = 0.05
 
    //creating new canvas
-   auto c = new TCanvas(canvasname.c_str(), "", 1000,800);
+   auto c = new TCanvas(canvasname.c_str(), "", 1000, 800);
 
    //creating pads
-   auto pad1 = new TPad("pad1","pad1",0,0.33,1,1);
-   auto pad2 = new TPad("pad2","pad2",0,0.08,1,0.30);
+   auto pad1 = new TPad("pad1","pad1",0., 0.33, 1., 1.00);
+   auto pad2 = new TPad("pad2","pad2",0., 0.08, 1., 0.30);
    pad1->SetBottomMargin(0.05);
    pad1->SetBorderMode(0);
    pad1->SetLogy();
@@ -148,7 +148,7 @@ void coshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_M
    label.DrawLatex(0.6, 0.94, "#sqrt{s} = 8 TeV, L_{int} = 18.8 fb^{-1}");
 
    //writing legend
-   auto legend = new TLegend(x1,y1,x2,y2);
+   auto legend = new TLegend(x1, y1, x2, y2);
    legend->AddEntry("hist_MC","MC:Z->#mu#mu","f");
    legend->AddEntry("hist_datas","Datas","lep");
    legend->SetBorderSize(0);
@@ -181,7 +181,7 @@ void coshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_M
 }
 
 
-void dmmasshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC,ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_datas, string filename, string rapiditylim,string canvasname){
+void dmmasshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC, ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_datas, string filename, string rapiditylim, string canvasname){
 /******************************************************************************
 * 
 * \brief creating Z dimuon spectrum histogram and save
@@ -198,11 +198,11 @@ void dmmasshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> d
    constexpr int nbins = 100; //widthbins = 0.05
 
    //creating new canvas
-   auto c = new TCanvas(canvasname.c_str(), "", 1000,800);
+   auto c = new TCanvas(canvasname.c_str(), "", 1000, 800);
 
    //creating pads
-   auto pad1 = new TPad("pad1","pad1",0,0.33,1,1);
-   auto pad2 = new TPad("pad2","pad2",0,0.08,1,0.30);
+   auto pad1 = new TPad("pad1","pad1",0., 0.33, 1., 1.00);
+   auto pad2 = new TPad("pad2","pad2",0., 0.08, 1., 0.30);
    pad1->SetBottomMargin(0.05);
    pad1->SetBorderMode(0);
    pad1->SetLogy();
@@ -289,7 +289,7 @@ void dmmasshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> d
 }
 
 
-auto operationhist( ROOT::RDF::RResultPtr<::TH2D> & histNf, ROOT::RDF::RResultPtr<::TH2D> & histDf,ROOT::RDF::RResultPtr<::TH2D> & histNb, ROOT::RDF::RResultPtr<::TH2D> & histDb){
+auto operationhist( ROOT::RDF::RResultPtr<::TH2D> & histNf, ROOT::RDF::RResultPtr<::TH2D> & histDf, ROOT::RDF::RResultPtr<::TH2D> & histNb, ROOT::RDF::RResultPtr<::TH2D> & histDb){
 /******************************************************************************
 * 
 * \brief making sum, division and rescaling of an histogram
@@ -303,8 +303,8 @@ auto operationhist( ROOT::RDF::RResultPtr<::TH2D> & histNf, ROOT::RDF::RResultPt
 * 
 ******************************************************************************/
    //making operation on histogram
-   histNf->Add(histNb.GetPtr(),-1.0);
-   histDf->Add(histDb.GetPtr(),+1.0);
+   histNf->Add(histNb.GetPtr(), -1.0);
+   histDf->Add(histDb.GetPtr(), +1.0);
    histNf->Divide(histDf.GetPtr());
    histNf->Scale(0.375);
 
@@ -326,10 +326,10 @@ void afbhist(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC
 * 
 ******************************************************************************/
    //creating two filtered datframes, one with costheta=>0, one with costheta<0
-   auto df_cm_MC=df_MC.Filter("costheta<0", "backward");
-   auto df_cp_MC=df_MC.Filter("costheta>=0", "forward");
-   auto df_cm_datas=df_datas.Filter("costheta<0", "backward");
-   auto df_cp_datas=df_datas.Filter("costheta>=0", "forward");
+   auto df_cm_MC = df_MC.Filter("costheta<0", "backward");
+   auto df_cp_MC = df_MC.Filter("costheta>=0", "forward");
+   auto df_cm_datas = df_datas.Filter("costheta<0", "backward");
+   auto df_cp_datas = df_datas.Filter("costheta>=0", "forward");
 
    //creating report
    auto report_cm_MC = df_cm_MC.Report();
@@ -342,14 +342,15 @@ void afbhist(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC
    report_cp_datas->Print();
 
    //creating four histogram 2D of the dimuonmass and rapidity weighted with wn
-   auto histDf_MC = df_cp_MC.Histo2D({"cp,Df", "", 5, 60,120,5,-2.4,2.4},"dimuon_mass","y","wd");
-   auto histNf_MC = df_cp_MC.Histo2D({"cp,Nf", "", 5, 60,120,5,-2.4,2.4},"dimuon_mass","y","wn");
-   auto histDb_MC = df_cm_MC.Histo2D({"cm,Db", "", 5, 60,120,5,-2.4,2.4},"dimuon_mass","y","wd");
-   auto histNb_MC = df_cm_MC.Histo2D({"cm,Nb", "", 5, 60,120,5,-2.4,2.4},"dimuon_mass","y","wn");
-   auto histDf_datas = df_cp_datas.Histo2D({"cp,Df", "", 5, 60,120,5,-2.4,2.4},"dimuon_mass","y","wd");
-   auto histNf_datas = df_cp_datas.Histo2D({"cp,Nf", "", 5, 60,120,5,-2.4,2.4},"dimuon_mass","y","wn");
-   auto histDb_datas = df_cm_datas.Histo2D({"cm,Db", "", 5, 60,120,5,-2.4,2.4},"dimuon_mass","y","wd");
-   auto histNb_datas = df_cm_datas.Histo2D({"cm,Nb", "", 5, 60,120,5,-2.4,2.4},"dimuon_mass","y","wn");
+   auto histDf_MC = df_cp_MC.Histo2D({"cp,Df", "", 5, 60,120,5,-2.4,2.4}, "dimuon_mass", "y", "wd");
+   auto histNf_MC = df_cp_MC.Histo2D({"cp,Nf", "", 5, 60,120,5,-2.4,2.4}, "dimuon_mass", "y", "wn");
+   auto histDb_MC = df_cm_MC.Histo2D({"cm,Db", "", 5, 60,120,5,-2.4,2.4}, "dimuon_mass", "y", "wd");
+   auto histNb_MC = df_cm_MC.Histo2D({"cm,Nb", "", 5, 60,120,5,-2.4,2.4}, "dimuon_mass", "y", "wn");
+
+   auto histDf_datas = df_cp_datas.Histo2D({"cp,Df", "", 5, 60,120,5,-2.4,2.4}, "dimuon_mass", "y", "wd");
+   auto histNf_datas = df_cp_datas.Histo2D({"cp,Nf", "", 5, 60,120,5,-2.4,2.4}, "dimuon_mass", "y", "wn");
+   auto histDb_datas = df_cm_datas.Histo2D({"cm,Db", "", 5, 60,120,5,-2.4,2.4}, "dimuon_mass", "y", "wd");
+   auto histNb_datas = df_cm_datas.Histo2D({"cm,Nb", "", 5, 60,120,5,-2.4,2.4}, "dimuon_mass", "y", "wn");
 
    //normalizing histograms
    histDf_MC->Scale(1./float((df_cp_MC.Count()).GetValue()));
@@ -363,12 +364,12 @@ void afbhist(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC
    histNb_datas->Scale(1./float((df_cm_datas.Count()).GetValue()));
 
    //operation on histogram
-   auto hist_MC=operationhist(histNf_MC, histDf_MC, histNb_MC, histDb_MC);
-   auto hist_datas=operationhist(histNf_datas, histDf_datas, histNb_datas, histDb_datas);
+   auto hist_MC = operationhist(histNf_MC, histDf_MC, histNb_MC, histDb_MC);
+   auto hist_datas = operationhist(histNf_datas, histDf_datas, histNb_datas, histDb_datas);
    
    //drawing two subpads
-   auto pad1 = new TPad("pad1","pad1",0.06,0.33,1,1);
-   auto pad2 = new TPad("pad2","pad2",0.06,0.08,1,0.30);
+   auto pad1 = new TPad("pad1","pad1", 0.06, 0.33, 1., 1.00);
+   auto pad2 = new TPad("pad2","pad2", 0.06, 0.08, 1., 0.30);
    pad1->SetBorderMode(0);
    pad2->SetTopMargin(0.00001);
    pad2->SetBorderMode(0);
@@ -382,8 +383,8 @@ void afbhist(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC
    pad1->cd();
    
    //projection of the final histogram
-   auto h_MC= hist_MC->ProjectionX("MC");
-   auto h_datas= hist_datas->ProjectionX("datas");
+   auto h_MC = hist_MC->ProjectionX("MC");
+   auto h_datas = hist_datas->ProjectionX("datas");
 
    //graphical set
    h_MC->SetStats(0); 
@@ -422,9 +423,9 @@ void afbhist(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC
    //legend only on the first pad
    if (filenumber == 1){
 
-      auto legend = new TLegend(0.3,0.3,0.5,0.45);
-      legend->AddEntry(h_MC,"MC","l");
-      legend->AddEntry(h_datas,"Datas","lep");
+      auto legend = new TLegend(0.30, 0.30, 0.50, 0.45);
+      legend->AddEntry(h_MC, "MC", "l");
+      legend->AddEntry(h_datas, "Datas", "lep");
       legend->SetBorderSize(0);
       legend->SetFillColor(0);
       legend->SetTextSize(0.13);
@@ -444,7 +445,7 @@ void afbhist(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC
    pad2->SetGridy();
    
    //creating histo Data-MC
-   h_datas->Add(h_MC,-1.);
+   h_datas->Add(h_MC, -1.0);
 
    //setting histogram properties
    h_datas->SetStats(0);

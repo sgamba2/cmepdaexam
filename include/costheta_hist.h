@@ -29,8 +29,8 @@
 * there are the right columns, then creates all quantities necessary to the analysis, then makes 
 * three filters for the rapidity conditions and creates three histograms, saving them in .pdf and .png
 * 
-* @param filepath_MC: dataframe of the MC datas
-* @param filepath_datas: dataframe of the Run datas
+* @param filepath_MC: file path of the dataframe of the MC datas
+* @param filepath_datas: file path of the dataframe of the Run datas
 * 
 * \return None
 * 

@@ -22,8 +22,8 @@
 * The filter is based on the following columns: "Muon_pt" , "Muon_eta",
 * "nMuon", "Muon_dxy", "Muon_charge", "Muon_pfRelIso03_chg".
 * 
-* @param filepath_MC: dataframe of the MC datas 
-* @param filepath_datas: dataframe of the Run datas
+* @param filepath_MC: file path of the dataframe of the MC datas 
+* @param filepath_datas: file path of the dataframe of the Run datas
 * @param filename_MC_fil: file name of the dataframe of the MC datas filtered
 * @param filename_datas_fil: file name of the dataframe of the Run datas filtered
 *
