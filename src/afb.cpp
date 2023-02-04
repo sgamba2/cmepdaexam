@@ -119,9 +119,9 @@ void afb(std::string filepath_MC, std::string filepath_datas){
             save_histogram(c, "afb", "afb");
 
         }else{
-            std::cout << "Your file haven't the right columns\n";
+            std::cerr << "Your file haven't the right columns"<<std::endl;
         }
     }else{
-        std::cout << "Your files don't exist, change datas!\n";
+        std::cerr << "Your files don't exist, change datas!"<<std::endl;
     }
 }

@@ -41,45 +41,37 @@ int filter_df(std::string filepath_MC, std::string filepath_datas, std::string f
             auto report_datas = df1_datas.Report();
 
             if( nEntries1_MC.GetValue() <= 50 && nEntries1_datas.GetValue() <= 50){
-                std::cout << "Your filtered dataframes (MC and Run) are almost empty, change datas!\n";
+                std::cerr << "Your filtered dataframes (MC and Run) are almost empty, change datas!"<<std::endl;
                 return 3;
             }else if(nEntries1_MC.GetValue() <= 50 && nEntries1_datas.GetValue() > 50){
-                std::cout << "Your filtered dataframe (MC) is almost empty, change datas! \n";
+                std::cerr << "Your filtered dataframe (MC) is almost empty, change datas!"<<std::endl;
                 return 3;
             }else if(nEntries1_MC.GetValue() > 50 && nEntries1_datas.GetValue() <= 50){
-                std::cout << "Your filtered dataframe (Run) is almost empty, change datas!\n";
+                std::cerr << "Your filtered dataframe (Run) is almost empty, change datas!"<<std::endl;
                 return 3;
             }else{   
                 filename_MC_fil= "datas/" + filename_MC_fil; 
                 filename_datas_fil= "datas/" + filename_datas_fil;                                       
                 if (!fs::is_directory("datas") || !fs::exists("datas")) {
-                    std::cout << "Coudn't find the directory datas: creating new directory!\n";
+                    std::cerr << "Coudn't find the directory datas: creating new directory!"<<std::endl;
                     fs::create_directory("datas");
-                    std::cout << "Creating filtered dataframes!\n";
-                    df1_MC.Snapshot("Events",filename_MC_fil,
-                            {"Muon_pt","Muon_eta","Muon_mass","Muon_phi"});
-                    df1_datas.Snapshot("Events",filename_datas_fil,
-                            {"Muon_pt","Muon_eta","Muon_mass","Muon_phi"});
-                    report_MC->Print();
-                    report_datas->Print();
-                    return 0;  
-                }else{
-                    std::cout << "Creating filtered dataframes!\n";
-                    df1_MC.Snapshot("Events",filename_MC_fil,
-                            {"Muon_pt","Muon_eta","Muon_mass","Muon_phi"});
-                    df1_datas.Snapshot("Events",filename_datas_fil,
-                            {"Muon_pt","Muon_eta","Muon_mass","Muon_phi"});
-                    report_MC->Print();
-                    report_datas->Print();
-                    return 0;  
-                }   
-            }
+                    std::cerr << "Creating filtered dataframes!"<<std::endl;
+                }
+                df1_MC.Snapshot("Events",filename_MC_fil,
+                        {"Muon_pt","Muon_eta","Muon_mass","Muon_phi"});
+                df1_datas.Snapshot("Events",filename_datas_fil,
+                        {"Muon_pt","Muon_eta","Muon_mass","Muon_phi"});
+                std::cout<<"Filtered dataframes successfully created in "<<filename_MC_fil<<" and "<<filename_datas_fil<<std::endl;
+                report_MC->Print();
+                report_datas->Print();
+                return 0; 
+            }    
         }else{
-            std::cout << "Your dataset can't be processed for our analysis, few columns!\n";
+            std::cerr << "Your dataset can't be processed for our analysis, few columns!"<<std::endl;
             return 2;
         }
     }else{
-        std::cout << "Doesn't exist the path you have insert or it is has wrong extension, can't reach the file! Try again!\n";
+        std::cerr << "Doesn't exist the path you have insert or it is has wrong extension, can't reach the file! Try again!"<<std::endl;
         return 1;
     }
 }

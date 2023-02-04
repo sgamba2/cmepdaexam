@@ -52,9 +52,9 @@ void dimuon_spectrum_Z(std::string filepath_MC, std::string filepath_datas){
             dmmasshisto(df_mass3_MC,df_mass3_datas, "dimuon_spectrum_Z3","#bf{1.6<|y_{#mu#mu}|<2.0}","c3");
 
         }else{
-            std::cout << "Your file haven't the right columns\n";
+            std::cerr << "Your file haven't the right columns"<<std::endl;
         }
     }else{
-        std::cout << "Your files don't exist, change datas!\n";
+        std::cerr << "Your files don't exist, change datas!"<<std::endl;
     }
 }

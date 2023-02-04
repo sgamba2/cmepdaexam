@@ -47,9 +47,9 @@ void costheta_hist(std::string filepath_MC, std::string filepath_datas){
             coshisto(df_2mu_MCy3,df_2mu_datasy3, "costheta3","#bf{1.6<|y_{#mu#mu}|<2.0}",0.70,0.80,0.90,0.86,"c3");
 
         }else{
-            std::cout << "Your file haven't the right columns\n";
+            std::cerr << "Your file haven't the right columns"<<std::endl;
         }
     }else{
-        std::cout << "Your files don't exist, change datas!\n";
+        std::cerr << "Your files don't exist, change datas!"<<std::endl;
     }
 }
