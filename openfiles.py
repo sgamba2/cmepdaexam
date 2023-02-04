@@ -61,10 +61,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description = 'Study of the CMS Monte Carlo and Run open data for the dimuon system')
 
     parser.add_argument('--filter', type = str, help = 'Do you want to filter your datas? [y/n]')
-    parser.add_argument('--filterMC', type = str, help = 'If filter is y: Choose the path of your MC dataframe (with .root extension) \nif filter is n: write none ')
-    parser.add_argument('--filterRUN', type = str, help = 'Choose the path of your RUN dataframe (with .root extension)')
-    parser.add_argument('--MCfile', type = str, help = 'Choose the name of your filtered MC dataframe in datas (with .root extension)')
-    parser.add_argument('--RUNfile', type = str, help = 'Choose the name of your filtered RUN dataframe in datas (with .root extension)')
+    parser.add_argument('--filterMC', type = str, help = 'Only if filter is y: Choose the path of your MC dataframe (with .root extension)')
+    parser.add_argument('--filterRUN', type = str, help = 'Only if filter is y: Choose the path of your RUN dataframe (with .root extension)')
+    parser.add_argument('--MCfile', type = str, help = 'Choose the name of your filtered MC dataframe in datas (add .root extension)')
+    parser.add_argument('--RUNfile', type = str, help = 'Choose the name of your filtered RUN dataframe in datas (add .root extension)')
     parser.add_argument('--analysis', type = str, help = 'Which analysis do you want to do? 0: no analysis, cos: costheta histograms, dimspec: Dimuon spectrum of Z, afb: Asimmetry forward backward')
     
     args = parser.parse_args()
