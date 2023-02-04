@@ -405,7 +405,7 @@ void afbhist(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC
    h_MC->GetXaxis()->SetTitleOffset(0.34);
    h_MC->GetXaxis()->SetTickLength(0.05);
 
-   h_MC->GetYaxis()->SetRangeUser(-1.2, 1.2);
+   h_MC->GetYaxis()->SetRangeUser(-1.3, 1.3);
    h_MC->GetYaxis()->SetLabelSize(0.09);
    h_MC->GetYaxis()->SetTitleSize(0.13);
    h_MC->GetYaxis()->SetLabelOffset(0.01);
