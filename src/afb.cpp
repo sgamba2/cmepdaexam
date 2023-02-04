@@ -30,13 +30,13 @@ void afb(std::string filepath_MC, std::string filepath_datas){
         if(df_MC.HasColumn("Muon_pt") && df_MC.HasColumn("Muon_mass") && df_MC.HasColumn("Muon_phi") && df_MC.HasColumn("Muon_eta") && df_datas.HasColumn("Muon_pt") && df_datas.HasColumn("Muon_mass") && df_datas.HasColumn("Muon_phi") && df_datas.HasColumn("Muon_eta")){
             
             //defining all quantities
-            auto df_2mu_MC = allquantities(df_MC);
-            df_2mu_MC = df_2mu_MC.Define("wd","0.5*pow(costheta,2)/pow((pow(costheta,2)+1+0.005*(1-3*pow(costheta,2))),3)");
-            df_2mu_MC = df_2mu_MC.Define("wn","0.5*fabs(costheta)/pow((pow(costheta,2)+1+0.005*(1-3*pow(costheta,2))),2)");
+            auto df_2mu_MC = allquantities(df_MC); 
+            df_2mu_MC = df_2mu_MC.Define("wd","0.5*pow(costheta,2)/pow((pow(costheta,2)+1+0.05*(1-3*pow(costheta,2))),3)");
+            df_2mu_MC = df_2mu_MC.Define("wn","0.5*fabs(costheta)/pow((pow(costheta,2)+1+0.05*(1-3*pow(costheta,2))),2)");
 
             auto df_2mu_datas = allquantities(df_datas);
-            df_2mu_datas = df_2mu_datas.Define("wd", "0.5*pow(costheta,2)/pow((pow(costheta,2)+1+0.005*(1-3*pow(costheta,2))),3)");
-            df_2mu_datas = df_2mu_datas.Define("wn", "0.5*fabs(costheta)/pow((pow(costheta,2)+1+0.005*(1-3*pow(costheta,2))),2)");
+            df_2mu_datas = df_2mu_datas.Define("wd", "0.5*pow(costheta,2)/pow((pow(costheta,2)+1+0.05*(1-3*pow(costheta,2))),3)");
+            df_2mu_datas = df_2mu_datas.Define("wn", "0.5*fabs(costheta)/pow((pow(costheta,2)+1+0.05*(1-3*pow(costheta,2))),2)");
             
             //filter the dataframe
             auto df_2mu_MC1 = df_2mu_MC.Filter("fabs(y)<=0.4 ", "y1");
