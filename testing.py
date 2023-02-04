@@ -4,12 +4,11 @@
 # We enabled multi-threading. The default here is set to a single thread. You can choose the number of threads based on your system.
 #
 import argparse
-import sys
 import ROOT
 
 ROOT.EnableImplicitMT()
 
-def process(choice,filepath_MC,filepath_datas,filename_MC_fil, filename_datas_fil,testopt):
+def process(choice, filepath_MC, filepath_datas, filename_MC_fil, filename_datas_fil, testopt):
     '''
     This function takes six strings given by argparse, which the user will give from terminal. It will process datas
     and it will do the test chosen by the user.
@@ -26,6 +25,7 @@ def process(choice,filepath_MC,filepath_datas,filename_MC_fil, filename_datas_fi
     
     return: None
     '''
+
     #only if fil is equal to 0 I can process the datas
     fil=0
     if(choice == 'y'):
@@ -34,6 +34,7 @@ def process(choice,filepath_MC,filepath_datas,filename_MC_fil, filename_datas_fi
    
     filename_MC_fil="datas/"+filename_MC_fil
     filename_datas_fil="datas/"+filename_datas_fil
+
     #if the filtered datas returns 0 you can access your filtered datas, if you chose not to filter datas, fil is already 0
     if fil==0:
         if (testopt=='0'):
@@ -64,6 +65,7 @@ def process(choice,filepath_MC,filepath_datas,filename_MC_fil, filename_datas_fi
             ROOT.test_operationhist()
             print("Goodbye!")
             quit()
+
 
 if __name__ == '__main__':
 

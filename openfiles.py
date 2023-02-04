@@ -4,12 +4,11 @@
 # We enabled multi-threading. The default here is set to a single thread. You can choose the number of threads based on your system.
 #
 import argparse
-import sys
 import ROOT
 
 ROOT.EnableImplicitMT()
 
-def process(choice,filepath_MC,filepath_datas,filename_MC_fil, filename_datas_fil,analysis):
+def process(choice, filepath_MC, filepath_datas, filename_MC_fil, filename_datas_fil, analysis):
     '''
     This function takes six strings given by argparse, which the user will give from terminal. It will process datas
     and it will do the test chosen by the user.
@@ -35,21 +34,22 @@ def process(choice,filepath_MC,filepath_datas,filename_MC_fil, filename_datas_fi
     filename_datas_fil="datas/"+filename_datas_fil
     
     if fil==0:
-        if(analysis=='0'):
+        if(analysis == '0'):
             print("Goodbye!")  
             quit()
-        if (analysis=='cos'): 
+        if(analysis == 'cos'): 
             ROOT.gInterpreter.ProcessLine(".L src/costheta_hist.cpp")
             ROOT.costheta_hist(filename_MC_fil,filename_datas_fil)
             print("If the process was fine, you'll find your files in images/costheta. Goodbye!")  
-        if (analysis=='dimspec'): 
+        if(analysis == 'dimspec'): 
             ROOT.gInterpreter.ProcessLine(".L src/dimuon_spectrum_Z.cpp") 
             ROOT.dimuon_spectrum_Z(filename_MC_fil,filename_datas_fil)
             print("If the process was fine, you'll find your files in images/dimuonspectrum.Goodbye!")  
-        if (analysis=='afb'): 
+        if(analysis == 'afb'): 
             ROOT.gInterpreter.ProcessLine(".L src/afb.cpp")
             ROOT.afb(filename_MC_fil,filename_datas_fil)
             print("If the process was fine, you'll find your files in images/afb.Goodbye!")  
+
 
 if __name__ == '__main__':
 
@@ -68,9 +68,9 @@ if __name__ == '__main__':
     if args.filter is None or args.analysis is None:
         print('Cannot start the program: missing one of the arguments (filter or analysis)!')
     elif(args.filter!= 'n' and args.filter!= 'y'):
-        print('Cannot start the program: filter is incorrect!')
+        print('Cannot start the program: filter is incorrect, please choose y or n!')
     elif(args.analysis!= '0' and args.analysis!= 'cos' and args.analysis!= 'dimspec' and args.analysis!= 'afb'):
-        print('Cannot start the program: analysis is incorrect!')
+        print('Cannot start the program: analysis is incorrect! Please choose between 0, dimspec, cos or afb')
     elif(args.filter == 'y' and (args.filterMC is None or args.filterRUN is None or args.MCfile is None or args.RUNfile is None)):
         print('Cannot start the program: missing the path of your files or the name of your filtered files!')
     elif(args.filter=='n' and (args.filterMC is not None or args.filterRUN is not None)):
