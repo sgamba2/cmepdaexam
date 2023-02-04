@@ -22,23 +22,35 @@
  * * Python3
  *
  * \section example_usage An example of usage
+ *
  * The whole project is done in C++ files, but the compilation is done with python.
- * This is simply done by typing in the terminal, in the main "cmepdaexam" folder:
+ * You can type in the terminal, in the main "cmepdaexam" folder:
  * \code
- * $ python3 openfiles.py
+ * $ python3 openfiles.py --help
  * \endcode
  *
- * Be careful: in order to make your analysis working you have to be in the main folder "cmepdaexam".
+ * You can have some options:
+ * \code
+ * $ options:
+ * $ -h, --help            show this help message and exit
+ * $ --filter FILTER       Do you want to filter your datas? [y/n]
+ * $ --filterMC FILTERMC   If filter is y: Choose the path of your MC dataframe  
+ * $ --filterRUN FILTERRUN If filter is y: Choose the path of your RUN dataframe 
+ * $ --MCfile MCFILE       Choose the name of your filtered MC dataframe in datas (add .root extension)
+ * $ --RUNfile RUNFILE     Choose the name of your filtered RUN dataframe in datas (add .root extension)
+ * $ --analysis ANALYSIS   Which analysis do you want to do? 0: no analysis, cos: costheta histograms, dimspec: Dimuon spectrum of Z, afb: Asimmetry forward backward
+ * \endcode
+ * 
  *
- * The program will ask you if you want to filter your datas or not. 
- *
- * If you type 'y', you have to insert your root path to the file for MC and Run, and also the path where you want to save your filtered dataframes. 
- *
- * * We used root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola_merged.root for the MC simulation datas.
- *
- * * We used root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/Run2012C_DoubleMuParked_merged.root for the Run datas.
- *
- * This is simply done (this is an example) by typing in the terminal:
+ * You have to choose (the filter option is mandatory) if you want to filter your datas or not. In the first case:
+ * \code
+ * $--filter y
+ * \endcode
+ * In this case you have to write also:
+ * \code
+ * $--filterMC fileMC --filterRUN fileRUN --MCfile Events_MC.root --RUNfile Events_datas.root
+ * \endcode
+ * For example we chose file from [here](https://eospublichttp01.cern.ch/eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/):
  * \code
  * $ Insert your MC path:
  * $ root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola_merged.root
@@ -46,43 +58,43 @@
  * $ root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/Run2012C_DoubleMuParked_merged.root
  * \endcode
  * The program will accept only files that exist and that have the right columns, if there aren't the program will stop.
- * Then the program will ask you the name of your filtered dataframes files.
- *
- * This is simply done (this is an example) by typing in the terminal:
+ * Then you have to choose the name of your filtered dataframes files.
+ * Be careful: you have to put the .root extension to your filtered files or you won't be able to use them.
+ * In this case you have to choose only file name already filtered:
  * \code
- * $ Insert where you want to save your filtered MC name (Be careful, put file extension .root too):
- * $ Events_MC.root
- * $ Insert where you want to save your filtered Run name (Be careful, put file extension .root too):
- * $ Events_datas.root
+ * $--MCfile Events_MC.root --RUNfile Events_datas.root
  * \endcode
- * You'll find your files on the directory "datas".
- *
- * If you type 'n', you will have to insert the path of your filtered file. It only accepts root files, with the right columns.
- * This is simply done (this is an example) by typing in the terminal:
+ * If you have already used the filter function for one of the analysis and you don't want to
+ * repeat it, you can choose to not filter your datas:
  * \code
- * $ Insert your filtered MC path (Be careful, put file extension .root too):
- * $ Events_MC.root
- * $ Insert your filtered Run path (Be careful, put file extension .root too):
- * $ Events_datas.root
+ * $ --filter n
  * \endcode
- * Be careful, the program will only look for files that are in the "datas" directory, if there aren't the program will stop.
- * 
- * You will be able to choose the Analysis you want: 
- * * 1: the measurement of the angle of the negative muon in the Collins–Soper frame of the dimuon system;
- * * 2: the measurement of the Z resonance; 
- * * 3: the measurement of the forward-backward asymmetry;
- * * 0: quit.
+ * Then you have to choose the name of your filtered dataframes files.
+ * Be careful: you have to put the .root extension to your filtered files or you won't be able to use them.
+ * In this case you have to choose only file name already filtered:
+ * \code
+ * $--MCfile Events_MC.root --RUNfile Events_datas.root
+ * \endcode
+ * Then you have to insert which analysis you want to do, with this option:
+ * \code
+ * $ --analysis 
+ * \endcode
  *
- * After the analysis the program will stop. If your analysis well ended, you can find your plots on the directory "images".
+ * You can choose between:
+ * - cos: the measurement of the angle of the negative muon in the Collins–Soper frame of the dimuon system;
+ * - dimspec: the measurement of the Z resonance; 
+ * - afb: the measurement of the forward-backward asymmetry;
+ * - 0: quit.
  *
- *  The default applied filters are on the following columns of the dataframes:
- * * nMuon;
- * * Muon_charge;
- * * Muon_eta;
- * * Muon_pt;
- * * Muon_dxy;
- * * Muon_pfRelIso03_chg.
- * 
+ * After the analysis the program will stop. If your analysis well ended, you can find your plots on the directory "images". 
+ *
+ * The default applied filters are on the following columns of the dataframes:
+ * - nMuon;
+ * - Muon_charge;
+ * - Muon_eta;
+ * - Muon_pt;
+ * - Muon_dxy;
+ * - Muon_pfRelIso03_chg.
  *
  *
  * \section program Description of main (and functionality of libraries)
@@ -161,48 +173,85 @@
  * 
  * \section tests Testing
  * 
- * This is simply done by typing in the terminal:
+ * We have done tests in C++, but the compilation is done with python.
+ * You can type in the terminal, in the main "cmepdaexam" folder:
  * \code
- * $ python3 testing.py
+ * $ python3 testing.py --help
+ * \endcode
+ *
+ * You can have some options:
+ * \code
+ * $ options:
+ * $ -h, --help            show this help message and exit
+ * $ --filter FILTER       Do you want to filter your datas? [y/n]
+ * $ --filterMC FILTERMC   If filter is y: Choose the path of your MC dataframe  
+ * $ --filterRUN FILTERRUN If filter is y: Choose the path of your RUN dataframe 
+ * $ --MCfile MCFILE       Choose the name of your filtered MC dataframe in datas (add .root extension)
+ * $ --RUNfile RUNFILE     Choose the name of your filtered RUN dataframe in datas (add .root extension)
+ * $ --testopt TESTOPT     Which test do you want to do? 0: no test, 1: test on
+ * $                       filter function (no files needed), 2: costheta test
+ * $                       (files needed), 3: test on energy (files needed), 4:
+ * $                       test on energy formulas (files needed), 5: test on
+ * $                       operation_hist (no files needed)
  * \endcode
  * 
- * Be careful: in order to make your analysis working you have to be in the main folder "cmepdaexam".
  *
- * The program will ask you if you want to filter your datas or not. 
- *
- * If you type 'y', you have to insert your root path to the file for MC and Run, and also the path where you want to save your filtered dataframes. 
- *
- * * We used root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola_merged.root for the MC simulation datas.
- *
- * * We used root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/Run2012C_DoubleMuParked_merged.root for the Run datas.
+ * You have to choose (the filter option is mandatory only for tests 2, 3, 4) if you want to filter your datas or not. In the first case:
+ * \code
+ * $--filter y
+ * \endcode
+ * In this case you have to write also:
+ * \code
+ * $--filterMC fileMC --filterRUN fileRUN --MCfile Events_MC.root --RUNfile Events_datas.root
+ * \endcode
+ * For example we chose file from [here](https://eospublichttp01.cern.ch/eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/):
+ * \code
+ * $ Insert your MC path:
+ * $ root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola_merged.root
+ * $ Insert your Run path:
+ * $ root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/Run2012C_DoubleMuParked_merged.root
+ * \endcode
  * The program will accept only files that exist and that have the right columns, if there aren't the program will stop.
- * Then the program will ask you the name of filtered dataframes files.
- *
- * This is simply done (this is an example) by typing in the terminal:
+ * Then you have to choose the name of your filtered dataframes files.
+ * Be careful: you have to put the .root extension to your filtered files or you won't be able to use them.
+ * In this case you have to choose only file name already filtered:
  * \code
- * $ Insert your filtered MC name (Be careful, put file extension .root too):
- * $ Events_MC.root
- * $ Insert your filtered Run name (Be careful, put file extension .root too):
- * $ Events_datas.root
+ * $--MCfile Events_MC.root --RUNfile Events_datas.root
  * \endcode
- * This files will be saved in "datas" directory.
- *
- * If you type 'n', you will have to insert the path of your filtered file.
- * This is simply done by typing in the terminal:
+ * If you have already used the filter function for one of the analysis and you don't want to
+ * repeat it, you can choose to not filter your datas:
  * \code
- * $ Insert your filtered MC name (Be careful, put file extension .root too):
- * $ Events_MC.root
- * $ Insert your filtered Run name (Be careful, put file extension .root too):
- * $ Events_datas.root
+ * $ --filter n
  * \endcode
- * The program will automatically look for your files in the "datas" directory, if there aren't the program will stop.
- * For semplicity you'll have to write your datas and MC names also if you want to do test1 (filter function test).
+ * Then you have to choose the name of your filtered dataframes files.
+ * Be careful: you have to put the .root extension to your filtered files or you won't be able to use them.
+ * In this case you have to choose only file name already filtered:
+ * \code
+ * $--MCfile Events_MC.root --RUNfile Events_datas.root
+ * \endcode
+ * Then you have to insert which test you want to do, with this option:
+ * \code
+ * $ --testopt 
+ * \endcode
+ * If you want to do test 5 or 1 it is not necessary to write the filter option. You can only put the testopt.
+ *
  * You will be able to choose the test you want to do: 
  * * 1: test on filter function;
  * * 2: test on costheta value; 
  * * 3: test on energy value;
  * * 4: test on energy formula value;
+ * * 5: test on operation histograms;
  * * 0: quit.
+ *
+ * After a test your program will stop. If the test well ended there will be written "Test passed!".
+ * The default applied filters are on the following columns of the dataframes:
+ * - nMuon;
+ * - Muon_charge;
+ * - Muon_eta;
+ * - Muon_pt;
+ * - Muon_dxy;
+ * - Muon_pfRelIso03_chg.
+ *
  * 
  * \subsection test1 Test on filter function
  * Test on filter function handles the correct error given by the filter function. 
@@ -228,5 +277,13 @@
  * It creates all quantities in \c allquantities() and we check how many rows left with \f$|E_i-(p_i^2+m^2)|>0.01\f$% \f$E_i\f$.
  * It prints "Test passed!" if there are no rows left or "Test failed!".
  * A more detail description of the functions used it can be found in \c test_energy_formulas.cpp.
- * 
+ *
+ * \subsection test5 Test on operation histograms
+ * Test on \c operationhist() function handles if the operations done on 4 different histograms have the correct result.
+ * It creates four histograms and then four random variables. We have inserted the variables in four different bins of the four
+ * histograms, rearranged to create new variables. Then we have test if the difference between the content of each bin and
+ * the variable calculated (\f$var_{calc}\f$) as we expect is < 0.1%\f$var_{calc}\f$. Then the program checks if the content of each bin and
+ * the variable calculated are concord.
+ * It prints "Test passed!" if the statements are true or "Test failed!" if not.
+ * A more detail description of the functions used it can be found in \c test_operationhist.cpp. 
  */
