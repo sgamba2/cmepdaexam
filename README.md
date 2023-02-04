@@ -109,18 +109,18 @@ python3 testing.py --help
 
 You can have some options:
 ```bash
-$ options:
-$ -h, --help            show this help message and exit
-$ --filter FILTER       Do you want to filter your datas? [y/n]
-$ --filterMC FILTERMC   If filter is y: Choose the path of your MC dataframe  
-$ --filterRUN FILTERRUN If filter is y: Choose the path of your RUN dataframe 
-$ --MCfile MCFILE       Choose the name of your filtered MC dataframe in datas (add .root extension)
-$ --RUNfile RUNFILE     Choose the name of your filtered RUN dataframe in datas (add .root extension)
-$ --testopt TESTOPT     Which test do you want to do? 0: no test, 1: test on
-$                       filter function (no files needed), 2: costheta test
-$                       (files needed), 3: test on energy (files needed), 4:
-$                       test on energy formulas (files needed), 5: test on
-$                       operation_hist (no files needed)
+ options:
+ -h, --help            show this help message and exit
+ --filter FILTER       Do you want to filter your datas? [y/n]
+ --filterMC FILTERMC   If filter is y: Choose the path of your MC dataframe  
+ --filterRUN FILTERRUN If filter is y: Choose the path of your RUN dataframe 
+ --MCfile MCFILE       Choose the name of your filtered MC dataframe in datas (add .root extension)
+ --RUNfile RUNFILE     Choose the name of your filtered RUN dataframe in datas (add .root extension)
+ --testopt TESTOPT     Which test do you want to do? 0: no test, 1: test on
+                       filter function (no files needed), 2: costheta test
+                       (files needed), 3: test on energy (files needed), 4:
+                       test on energy formulas (files needed), 5: test on
+                       operation_hist (no files needed)
 ```
 
 
