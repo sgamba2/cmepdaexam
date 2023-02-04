@@ -27,28 +27,28 @@ def process(choice, filepath_MC, filepath_datas, filename_MC_fil, filename_datas
     #only if fil is equal to 0 I can process the datas
     fil=0
     if(choice == 'y'):
-        ROOT.gInterpreter.ProcessLine(".L src/filter_df.cpp")
+        ROOT.gInterpreter.ProcessLine('.L src/filter_df.cpp')
         fil=ROOT.filter_df(filepath_MC, filepath_datas, filename_MC_fil, filename_datas_fil)
         
-    filename_MC_fil="datas/"+filename_MC_fil
-    filename_datas_fil="datas/"+filename_datas_fil
+    filename_MC_fil='datas/'+filename_MC_fil
+    filename_datas_fil='datas/'+filename_datas_fil
     
     if fil==0:
         if(analysis == '0'):
-            print("Goodbye!")  
+            print('Goodbye!')  
             quit()
         if(analysis == 'cos'): 
-            ROOT.gInterpreter.ProcessLine(".L src/costheta_hist.cpp")
+            ROOT.gInterpreter.ProcessLine('.L src/costheta_hist.cpp')
             ROOT.costheta_hist(filename_MC_fil,filename_datas_fil)
-            print("If the process was fine, you'll find your files in images/costheta. Goodbye!")  
+            print('If the process was fine, you will find your files in images/costheta. Goodbye!')  
         if(analysis == 'dimspec'): 
-            ROOT.gInterpreter.ProcessLine(".L src/dimuon_spectrum_Z.cpp") 
+            ROOT.gInterpreter.ProcessLine('.L src/dimuon_spectrum_Z.cpp') 
             ROOT.dimuon_spectrum_Z(filename_MC_fil,filename_datas_fil)
-            print("If the process was fine, you'll find your files in images/dimuonspectrum.Goodbye!")  
+            print('If the process was fine, you will find your files in images/dimuonspectrum. Goodbye!')  
         if(analysis == 'afb'): 
-            ROOT.gInterpreter.ProcessLine(".L src/afb.cpp")
+            ROOT.gInterpreter.ProcessLine('.L src/afb.cpp')
             ROOT.afb(filename_MC_fil,filename_datas_fil)
-            print("If the process was fine, you'll find your files in images/afb.Goodbye!")  
+            print('If the process was fine, you will find your files in images/afb. Goodbye!')  
 
 
 if __name__ == '__main__':
@@ -73,10 +73,10 @@ if __name__ == '__main__':
         print('Cannot start the program: analysis is incorrect! Please choose between 0, dimspec, cos or afb')
     elif(args.filter == 'y' and (args.filterMC is None or args.filterRUN is None or args.MCfile is None or args.RUNfile is None)):
         print('Cannot start the program: missing the path of your files or the name of your filtered files!')
-    elif(args.filter=='n' and (args.filterMC is not None or args.filterRUN is not None)):
-        print('Cannot start the program: cannot reach your filtered files!')
     elif(args.filter=='n' and (args.MCfile is None or args.RUNfile is None)):
         print('Cannot start the program: few arguments!')
+    elif(args.filter=='n'):
+       process(args.filter,'','',args.MCfile, args.RUNfile,args.analysis) 
     else:
         process(args.filter,args.filterMC,args.filterRUN,args.MCfile, args.RUNfile,args.analysis)
   

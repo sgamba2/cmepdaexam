@@ -29,41 +29,41 @@ def process(choice, filepath_MC, filepath_datas, filename_MC_fil, filename_datas
     #only if fil is equal to 0 I can process the datas
     fil=0
     if(choice == 'y'):
-        ROOT.gInterpreter.ProcessLine(".L src/filter_df.cpp")
+        ROOT.gInterpreter.ProcessLine('.L src/filter_df.cpp')
         fil=ROOT.filter_df(filepath_MC, filepath_datas, filename_MC_fil, filename_datas_fil)
    
-    filename_MC_fil="datas/"+filename_MC_fil
-    filename_datas_fil="datas/"+filename_datas_fil
+    filename_MC_fil='datas/'+filename_MC_fil
+    filename_datas_fil='datas/'+filename_datas_fil
 
     #if the filtered datas returns 0 you can access your filtered datas, if you chose not to filter datas, fil is already 0
     if fil==0:
         if (testopt=='0'):
-            print("Goodbye!")
+            print('Goodbye!')
             quit()
         if (testopt=='1'): 
-            ROOT.gInterpreter.ProcessLine(".L tests/test_filt.cpp")
+            ROOT.gInterpreter.ProcessLine('.L tests/test_filt.cpp')
             ROOT.test_filt()
-            print("Goodbye!")
+            print('Goodbye!')
             quit()
         if (testopt=='2'): 
-            ROOT.gInterpreter.ProcessLine(".L tests/test_cos.cpp")
+            ROOT.gInterpreter.ProcessLine('.L tests/test_cos.cpp')
             ROOT.test_cos(filename_MC_fil, filename_datas_fil)
-            print("Goodbye!")
+            print('Goodbye!')
             quit()
         if (testopt=='3'): 
-            ROOT.gInterpreter.ProcessLine(".L tests/test_energy.cpp") 
+            ROOT.gInterpreter.ProcessLine('.L tests/test_energy.cpp') 
             ROOT.test_energy(filename_MC_fil, filename_datas_fil)
-            print("Goodbye!")
+            print('Goodbye!')
             quit()
         if (testopt=='4'):
-            ROOT.gInterpreter.ProcessLine(".L tests/test_energy_formulas.cpp")
+            ROOT.gInterpreter.ProcessLine('.L tests/test_energy_formulas.cpp')
             ROOT.test_energy_formulas(filename_MC_fil, filename_datas_fil)
-            print("Goodbye!")
+            print('Goodbye!')
             quit()
         if (testopt=='5'):
-            ROOT.gInterpreter.ProcessLine(".L tests/test_operationhist.cpp")
+            ROOT.gInterpreter.ProcessLine('.L tests/test_operationhist.cpp')
             ROOT.test_operationhist()
-            print("Goodbye!")
+            print('Goodbye!')
             quit()
 
 
@@ -82,7 +82,7 @@ if __name__ == '__main__':
 
     #if this stats are true I can process datas and make tests
     if (args.testopt is None):
-        print("Cannot start the program: missing the testopt!")
+        print('Cannot start the program: missing the testopt!')
     elif(args.filter is None and args.testopt != '1' and args.testopt != '5'):
         print('Cannot start the program: missing one of the arguments (filter or testopt)!')
     elif(args.filter!= 'n' and args.filter!= 'y' and args.testopt != '1' and args.testopt != '5'):
@@ -91,17 +91,13 @@ if __name__ == '__main__':
         print('Cannot start the program: testopt is incorrect!')
     elif(args.filter == 'y' and (args.filterMC is None or args.filterRUN is None or args.MCfile is None or args.RUNfile is None) and args.testopt != '1' and args.testopt != '5'):
         print('Cannot start the program: missing the path of your files or the name of your filtered files!')
-    elif(args.filter=='n' and (args.filterMC is not None or args.filterRUN is not None) and args.testopt != '1' and args.testopt != '5'):
-        print('Cannot start the program: cannot reach your filtered files!')
     elif(args.filter=='n' and (args.MCfile is None or args.RUNfile is None) and args.testopt != '1' and args.testopt != '5'):
         print('Cannot start the program: few arguments!')
-    elif((args.filter=='n' or args.filter=='y') and args.testopt=='1'):
-        process('n','','','','',args.testopt)
-    elif((args.filter=='n' or args.filter=='y') and args.testopt=='5'):
-        process('n','','','','',args.testopt)
     elif(args.testopt=='1'):
-        process("n",'','','','',args.testopt)
+        process('n','','','','',args.testopt)
     elif(args.testopt=='5'):
-        process("n",'','','','',args.testopt)
+        process('n','','','','',args.testopt)
+    elif(args.filter=='n' and args.testopt != '1' and args.testopt != '5'):
+        process(args.filter,'','',args.MCfile,args.RUNfile,args.testopt)
     else:
         process(args.filter,args.filterMC,args.filterRUN,args.MCfile, args.RUNfile,args.testopt)
