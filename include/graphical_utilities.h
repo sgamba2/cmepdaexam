@@ -50,10 +50,10 @@ void save_histogram(TCanvas *c, string namehist, string type){
       if (!fs::is_directory("images") || !fs::exists("images")) 
          throw("images");
    } catch (const char *path) { 
-      std::cerr << "The folder " << path << " does not exist.\n" << std::endl;
-      std::cerr << "Creating folder...\n" << std::endl;
+      std::cerr << "The folder " << path << " does not exist." << std::endl;
+      std::cerr << "Creating folder..." << std::endl;
       fs::create_directory(path); 
-      std::cout << "The folder " << path << " successfully created\n" << std::endl;
+      std::cout << "The folder " << path << " successfully created!" << std::endl;
    }
 
    //if the subfolder "type" doesn't exist, it will create it
@@ -63,10 +63,10 @@ void save_histogram(TCanvas *c, string namehist, string type){
       if (!fs::is_directory(subpath.c_str()) || !fs::exists(subpath.c_str())) 
          throw(subpath.c_str());
    }catch(const char *newpath){
-      std::cerr << "The folder " << newpath << " does not exist.\n" << std::endl;
-      std::cerr << "Creating folder...\n" << std::endl;
+      std::cerr << "The folder " << newpath << " does not exist." << std::endl;
+      std::cerr << "Creating folder..." << std::endl;
       fs::create_directory(newpath);
-      std::cout << "The folder " << newpath << " successfully created\n" << std::endl;
+      std::cout << "The folder " << newpath << " successfully created" << std::endl;
       c->SaveAs(filepath_pdf.c_str());
       c->SaveAs(filepath_png.c_str());
    }
@@ -114,8 +114,8 @@ void coshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_M
    //creating a histogram 
    auto hist_MC = df_MC.Histo1D({"hist_MC", "", nbins, -1, 1}, "costheta");
    auto hist_datas = df_datas.Histo1D({"hist_datas", "", nbins, -1, 1}, "costheta");
-   hist_datas->Scale(1/float((df_datas.Count()).GetValue()));
-   hist_MC->Scale(1/float((df_MC.Count()).GetValue()));
+   hist_datas->Scale(1./float((df_datas.Count()).GetValue()));
+   hist_MC->Scale(1./float((df_MC.Count()).GetValue()));
 
    //creating report
    auto report_MC = df_MC.Report();
@@ -218,8 +218,8 @@ void dmmasshisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> d
    //creating a histogram
    auto hist_MC = df_MC.Histo1D({"hist_MC", "", nbins, 70, 110}, "dimuon_mass");
    auto hist_datas = df_datas.Histo1D({"hist_datas", "", nbins, 70, 110}, "dimuon_mass");
-   hist_datas->Scale(1/float((df_datas.Count()).GetValue()));
-   hist_MC->Scale(1/float((df_MC.Count()).GetValue()));
+   hist_datas->Scale(1./float((df_datas.Count()).GetValue()));
+   hist_MC->Scale(1./float((df_MC.Count()).GetValue()));
 
    //creating report
    auto report_MC = df_MC.Report();
@@ -352,21 +352,20 @@ void afbhist(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC
    auto histNb_datas = df_cm_datas.Histo2D({"cm,Nb", "", 5, 60,120,5,-2.4,2.4},"dimuon_mass","y","wn");
 
    //normalizing histograms
-   histDf_MC->Scale(1/float((df_cp_MC.Count()).GetValue()));
-   histNf_MC->Scale(1/float((df_cp_MC.Count()).GetValue()));
-   histDb_MC->Scale(1/float((df_cm_MC.Count()).GetValue()));
-   histNb_MC->Scale(1/float((df_cm_MC.Count()).GetValue()));
+   histDf_MC->Scale(1./float((df_cp_MC.Count()).GetValue()));
+   histNf_MC->Scale(1./float((df_cp_MC.Count()).GetValue()));
+   histDb_MC->Scale(1./float((df_cm_MC.Count()).GetValue()));
+   histNb_MC->Scale(1./float((df_cm_MC.Count()).GetValue()));
 
-   histDf_datas->Scale(1/float((df_cp_datas.Count()).GetValue()));
-   histNf_datas->Scale(1/float((df_cp_datas.Count()).GetValue()));
-   histDb_datas->Scale(1/float((df_cm_datas.Count()).GetValue()));
-   histNb_datas->Scale(1/float((df_cm_datas.Count()).GetValue()));
+   histDf_datas->Scale(1./float((df_cp_datas.Count()).GetValue()));
+   histNf_datas->Scale(1./float((df_cp_datas.Count()).GetValue()));
+   histDb_datas->Scale(1./float((df_cm_datas.Count()).GetValue()));
+   histNb_datas->Scale(1./float((df_cm_datas.Count()).GetValue()));
 
    //operation on histogram
    auto hist_MC=operationhist(histNf_MC, histDf_MC, histNb_MC, histDb_MC);
    auto hist_datas=operationhist(histNf_datas, histDf_datas, histNb_datas, histDb_datas);
    
-
    //drawing two subpads
    auto pad1 = new TPad("pad1","pad1",0.06,0.33,1,1);
    auto pad2 = new TPad("pad2","pad2",0.06,0.08,1,0.30);
