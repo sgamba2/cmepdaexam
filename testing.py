@@ -20,7 +20,7 @@ def process(choice, filepath_MC, filepath_datas, filename_MC_fil, filename_datas
     filepath_datas: string of the path of the RUN file to filter
     filename_MC_fil: string of the name of the MC file already filtered
     filename_datas_fil: string of the name of the RUN file already filtered
-    testopt: string that represents the test I want to do 0: no test, 1: test on filter function
+    testopt: string that represents the test I want to do 1: test on filter function
     (no files input needed), 2: costheta test (files needed), 3: test on energy (files needed),
     4: test on energy formulas (files needed)
     
@@ -39,9 +39,6 @@ def process(choice, filepath_MC, filepath_datas, filename_MC_fil, filename_datas
     #if the filtered datas returns 0 you can access your filtered datas,
     # if you chose not to filter datas, fil is already 0
     if fil == 0:
-        if (testopt == '0'):
-            print('Goodbye!')
-            quit()
         if (testopt == '1'):
             ROOT.gInterpreter.ProcessLine('.L tests/testFilt.cpp')
             ROOT.testFilt()
@@ -80,7 +77,7 @@ if __name__ == '__main__':
     parser.add_argument('--filterRUN', type = str, help = 'Only if filter is y: Choose the path of your RUN dataframe (with .root extension)')
     parser.add_argument('--MCfile', type = str, help = 'Choose the name of your filtered MC dataframe in datas (add .root extension)')
     parser.add_argument('--RUNfile', type = str, help = 'Choose the name of your filtered RUN dataframe in datas (add .root extension)')
-    parser.add_argument('--testopt', type = str, help = 'Which test do you want to do? 0: no test, 1: test on filter function (no files needed), 2: costheta test (files needed), 3: test on energy (files needed), 4: test on energy formulas (files needed), 5: test on operation_hist (no files needed)')
+    parser.add_argument('--testopt', type = str, help = 'Which test do you want to do? 1: test on filter function (no files needed), 2: costheta test (files needed), 3: test on energy (files needed), 4: test on energy formulas (files needed), 5: test on operation_hist (no files needed)')
     
     args = parser.parse_args()
 
@@ -91,7 +88,7 @@ if __name__ == '__main__':
         print('Cannot start the program: missing one of the arguments (filter or testopt)!')
     elif(args.filter != 'n' and args.filter != 'y' and args.testopt != '1' and args.testopt != '5'):
         print('Cannot start the program: filter is incorrect!')
-    elif(args.testopt != '0' and args.testopt != '1' and args.testopt != '2' and args.testopt != '3' and args.testopt != '4' and args.testopt != '5'):
+    elif(args.testopt != '1' and args.testopt != '2' and args.testopt != '3' and args.testopt != '4' and args.testopt != '5'):
         print('Cannot start the program: testopt is incorrect!')
     elif(args.filter == 'y' and (args.filterMC is None or args.filterRUN is None or args.MCfile is None or args.RUNfile is None) and args.testopt != '1' and args.testopt != '5'):
         print('Cannot start the program: missing the path of your files or the name of the files that you want to create!')
