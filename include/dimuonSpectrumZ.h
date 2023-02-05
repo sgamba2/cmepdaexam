@@ -1,6 +1,6 @@
 /******************************************************************************
 * 
-* \file dimuonSpectrumZ.cpp
+* \file dimuonSpectrumZ.h
 * \brief Creating dimuon spectrum histogram of Z from filtered dataframe
 * 
 ******************************************************************************/

@@ -1,6 +1,6 @@
 /******************************************************************************
 * 
-* \file costheta.cpp
+* \file costheta.h
 * \brief Creating costheta histogram from filtered dataframe
 * 
 ******************************************************************************/
