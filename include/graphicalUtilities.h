@@ -196,7 +196,7 @@ void dmMassHisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> d
 * \return None
 * 
 ******************************************************************************/
-   constexpr int nbins = 100; //widthbins = 0.05
+   constexpr int nbins = 100;
 
    //creating new canvas
    auto c = new TCanvas(canvasname.c_str(), "", 1000, 800);
