@@ -1,24 +1,26 @@
 ##@file openfiles.py
-#In this program the user can choose to filter (or not) the datas and which analysis wants to do.
+# In this program the user can choose to filter (or not) the datas and which analysis wants to do.
 #
-# We enabled multi-threading. The default here is set to a single thread. You can choose the number of threads based on your system.
+# We enabled multi-threading. The default here is set to a single thread. You can choose the number of threads based
+# on your system.
 #
 
 import argparse
 import ROOT
 
 def process(choice, filepath_MC, filepath_datas, filename_MC_fil, filename_datas_fil, analysis):
+    
     '''
     This function takes six strings given by argparse, which the user will give from terminal. It will process datas
     and it will do the test chosen by the user.
    
-    choice: string that could be 'y' or 'n', if 'y' the program will filter the datas, if 'n' it will look for 
+    choice: string that could be 'y' or 'n', if 'y' the program will filter the datas, if 'n' it will look for
     files already filtered
     filepath_MC: string of the path of the MC file to filter
     filepath_datas: string of the path of the RUN file to filter
     filename_MC_fil: string of the name of the MC file already filtered
     filename_datas_fil: string of the name of the RUN file already filtered
-    analysis: string that represents the test I want to do  0: no analysis, 
+    analysis: string that represents the test I want to do  0: no analysis,
     cos: costheta histograms, dimspec: Dimuon spectrum of Z, afb: Asimmetry forward backward
     
     return: None
@@ -35,23 +37,26 @@ def process(choice, filepath_MC, filepath_datas, filename_MC_fil, filename_datas
     
     if fil == 0:
         if(analysis == '0'):
-            print('Goodbye!')  
+            print('Goodbye!')
             quit()
 
-        if(analysis == 'cos'): 
+        if(analysis == 'cos'):
             ROOT.gInterpreter.ProcessLine('.L src/costheta.cpp')
             ROOT.costheta(filename_MC_fil, filename_datas_fil)
-            print('If the process was fine, you will find your files in images/costheta. Goodbye!')  
+            print('If the process was fine, you will find your files in images/costheta. Goodbye!')
+            quit()
 
-        if(analysis == 'dimspec'): 
-            ROOT.gInterpreter.ProcessLine('.L src/dimuonSpectrumZ.cpp') 
+        if(analysis == 'dimspec'):
+            ROOT.gInterpreter.ProcessLine('.L src/dimuonSpectrumZ.cpp')
             ROOT.dimuonSpectrumZ(filename_MC_fil, filename_datas_fil)
-            print('If the process was fine, you will find your files in images/dimuonspectrum. Goodbye!') 
+            print('If the process was fine, you will find your files in images/dimuonspectrum. Goodbye!')
+            quit()
 
-        if(analysis == 'afb'): 
+        if(analysis == 'afb'):
             ROOT.gInterpreter.ProcessLine('.L src/afb.cpp')
             ROOT.afb(filename_MC_fil, filename_datas_fil)
-            print('If the process was fine, you will find your files in images/afb. Goodbye!')  
+            print('If the process was fine, you will find your files in images/afb. Goodbye!')
+            quit()
 
 
 if __name__ == '__main__':
@@ -77,11 +82,11 @@ if __name__ == '__main__':
     elif(args.analysis != '0' and args.analysis != 'cos' and args.analysis != 'dimspec' and args.analysis != 'afb'):
         print('Cannot start the program: analysis is incorrect! Please choose between 0, dimspec, cos or afb')
     elif(args.filter == 'y' and (args.filterMC is None or args.filterRUN is None or args.MCfile is None or args.RUNfile is None)):
-        print('Cannot start the program: missing the path of your files or the name of your filtered files!')
+        print('Cannot start the program: missing the path of your files or the name of the files that you want to create!')
     elif(args.filter == 'n' and (args.MCfile is None or args.RUNfile is None)):
-        print('Cannot start the program: few arguments!')
+        print('Cannot start the program: missing the filtered path!')
     elif(args.filter == 'n'):
-       process(args.filter, ' ', ' ', args.MCfile, args.RUNfile, args.analysis) 
+       process(args.filter, ' ', ' ', args.MCfile, args.RUNfile, args.analysis)
     else:
        process(args.filter, args.filterMC, args.filterRUN, args.MCfile, args.RUNfile, args.analysis)
   
