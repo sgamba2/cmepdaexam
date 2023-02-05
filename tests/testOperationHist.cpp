@@ -25,7 +25,7 @@ void testOperationHist(){
 ******************************************************************************/
   //creating two files to put inside the dataframe
   float b1, b2, b3;
-  TFile file1("./datas/tree1.root","RECREATE"); 
+  TFile file1("datas/tree1.root","RECREATE"); 
   TTree * tree1 = new TTree("Events","Events");
   tree1->Branch("b3",&b1,"b1/F");
   tree1->Branch("b2",&b2,"b2/F");
