@@ -7,8 +7,6 @@
 import argparse
 import ROOT
 
-ROOT.EnableImplicitMT()
-
 def process(choice, filepath_MC, filepath_datas, filename_MC_fil, filename_datas_fil, analysis):
     '''
     This function takes six strings given by argparse, which the user will give from terminal. It will process datas
@@ -58,6 +56,8 @@ def process(choice, filepath_MC, filepath_datas, filename_MC_fil, filename_datas
 
 if __name__ == '__main__':
 
+    ROOT.EnableImplicitMT()
+
     parser = argparse.ArgumentParser(description = 'Study of the CMS Monte Carlo and Run open data for the dimuon system')
 
     parser.add_argument('--filter', type = str, help = 'Do you want to filter your datas? [y/n]')
@@ -83,7 +83,7 @@ if __name__ == '__main__':
     elif(args.filter == 'n'):
        process(args.filter, ' ', ' ', args.MCfile, args.RUNfile, args.analysis) 
     else:
-        process(args.filter, args.filterMC, args.filterRUN, args.MCfile, args.RUNfile, args.analysis)
+       process(args.filter, args.filterMC, args.filterRUN, args.MCfile, args.RUNfile, args.analysis)
   
         
 
