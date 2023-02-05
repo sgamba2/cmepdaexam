@@ -20,7 +20,7 @@
 void afb(std::string filepath_MC, std::string filepath_datas){
 
     //checking the correct path
-    if( TFile::Open(filepath_MC.c_str()) != nullptr && TFile::Open(filepath_datas.c_str()) != nullptr){
+    if(TFile::Open(filepath_MC.c_str()) != nullptr && TFile::Open(filepath_datas.c_str()) != nullptr){
 
         //creating the dataframe
         ROOT::RDataFrame df_MC("Events", filepath_MC);
