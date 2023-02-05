@@ -24,12 +24,12 @@ void testOperationHist(){
 * 
 ******************************************************************************/
   //creating two files to put inside the dataframe
-  float b1,b2, b3;
+  float b1, b2, b3;
   TFile file1("../datas/tree1.root","RECREATE"); 
   TTree * tree1 = new TTree("Events","Events");
-  tree1->Branch("b3",&b1,"f/F");
-  tree1->Branch("b2",&b2,"f/F");
-  tree1->Branch("b1",&b3,"f/F");
+  tree1->Branch("b3",&b1,"b1/F");
+  tree1->Branch("b2",&b2,"b2/F");
+  tree1->Branch("b1",&b3,"b3/F");
   tree1->Write();
   file1.Close();
 
@@ -37,16 +37,16 @@ void testOperationHist(){
   ROOT::RDataFrame df1("Events", "../datas/tree1.root");
 
   //creating four different histos
-  auto hist1 = df1.Histo2D({"", "", 10, 0.,10.,10,-1000,1000},"b1","b2","b3");
-  auto hist2 = df1.Histo2D({"", "", 10, 0.,10.,10,-1000,1000},"b1","b2","b3");
-  auto hist3 = df1.Histo2D({"", "", 10, 0.,10.,10,-1000,1000},"b1","b2","b3");
-  auto hist4 = df1.Histo2D({"", "", 10, 0.,10.,10,-1000,1000},"b1","b2","b3");
+  auto hist1 = df1.Histo2D({"", "", 10, 0.,10.,10,-1000,1000}, "b1", "b2", "b3");
+  auto hist2 = df1.Histo2D({"", "", 10, 0.,10.,10,-1000,1000}, "b1", "b2", "b3");
+  auto hist3 = df1.Histo2D({"", "", 10, 0.,10.,10,-1000,1000}, "b1", "b2", "b3");
+  auto hist4 = df1.Histo2D({"", "", 10, 0.,10.,10,-1000,1000}, "b1", "b2", "b3");
  
   //creating random variables from 0 to 1 or -1 to 0
-  float n1= static_cast <float> (rand()) / ( static_cast <float> (RAND_MAX));
-  float n2= (-1) * static_cast <float> (rand()) / ( static_cast <float> (RAND_MAX));
-  float n3= (-1) * static_cast <float> (rand()) / ( static_cast <float> (RAND_MAX));
-  float n4= static_cast <float> (rand()) / ( static_cast <float> (RAND_MAX));
+  float n1 = static_cast <float> (rand()) / ( static_cast <float> (RAND_MAX));
+  float n2 = (-1) * static_cast <float> (rand()) / ( static_cast <float> (RAND_MAX));
+  float n3 = (-1) * static_cast <float> (rand()) / ( static_cast <float> (RAND_MAX));
+  float n4 = static_cast <float> (rand()) / ( static_cast <float> (RAND_MAX));
 
   //adding to the histograms some content
   hist1->AddBinContent(1,n1);
@@ -67,10 +67,10 @@ void testOperationHist(){
   hist4->AddBinContent(9,n4*8);
   
   //creating variables I expect
-  auto var1=(n1-n3)*0.375/(n2+n4);
-  auto var2=(n1*100-n3*5)*0.375/(n2*(-4)+n4);
-  auto var3=(n1*2-n3*22)*0.375/(n2*(-1)+n4);
-  auto var4=(n1-10-n3-17)*0.375/(n2+3+n4*8);
+  auto var1 = (n1-n3) * 0.375 / (n2+n4);
+  auto var2 = (n1*100-n3*5) * 0.375 / (n2*(-4)+n4);
+  auto var3 = (n1*2-n3*22) * 0.375 / (n2*(-1)+n4);
+  auto var4 = (n1-10-n3-17) * 0.375 / (n2+3+n4*8);
 
   //try to do operations on histograms
   auto hista = operationHist(hist1, hist2, hist3, hist4);
