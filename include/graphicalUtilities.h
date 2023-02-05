@@ -8,6 +8,7 @@
 #define GRAPHICALUTILITIES_H
 
 #include <filesystem>
+#include <iostream>
 #include <string>
 #include <TH2D.h>
 #include <TPad.h>
