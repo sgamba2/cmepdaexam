@@ -126,7 +126,7 @@
  * The MC datas will be plotted in yellow and the Run datas will be plotted as black points.
  * We normalized the histograms with the total number of the events of MC and Run datas.
  * 
- * The canvas is saved in the directory **images** and in the subdirectory **dimuonspectrum** as **dimuon_spectrum_Zi.pdf** and **dimuon_spectrum_Zi.png**,
+ * The canvas is saved in the directory **images** and in the subdirectory **dimuonspectrumZ** as **dimuon_spectrum_Zi.pdf** and **dimuon_spectrum_Zi.png**,
  * where \f$i\f$ is the costraints of rapidity. If the directories don't exist, then the program will create them.
  * 
  * We report our dimuon mass spectrum of Z particle with different costraints of rapidity. In this pictures we have the yellow histogram that represent the MC datas, and the black point the Run datas. The low histogram is the ratio between the other two. All the histogram are normalized with the total number of events.
