@@ -33,28 +33,29 @@ void testFilt(){
     TTree * tree1 = new TTree("Events", "Events");
 
     //random numbers 
-    float n;
+    float n=2.,f[2]={1.,2.};
+    int v[2]={3,3};
 
-    tree1->Branch("Muon_dxy",&n,"n/F");
-    tree1->Branch("Muon_pfRelIso03_chg",&n,"n/F");
+    tree1->Branch("Muon_dxy",f,"f[2]/F");
+    tree1->Branch("Muon_pfRelIso03_chg",f,"f[2]/F");
     tree1->Branch("nMuon",&n,"n/F");
-    tree1->Branch("Muon_eta",&n,"n/F");
-    tree1->Branch("Muon_charge",&n,"n/F");
-    tree1->Branch("Muon_pt",&n,"n/F");
-    tree1->Branch("Muon_phi",&n,"n/F");
+    tree1->Branch("Muon_eta",f,"f[2]/F");
+    tree1->Branch("Muon_charge",v,"v[2]/I");
+    tree1->Branch("Muon_pt",f,"f[2]/F");
+    tree1->Branch("Muon_phi",f,"f[2]/F");
     tree1->Write(); 
     file1.Close();
     
     TFile file("datas/SimpleTree.root", "RECREATE"); 
     TTree * tree = new TTree("Events","Events");
-    tree->Branch("Muon_dxy",&n,"n/F");
-    tree->Branch("Muon_pfRelIso03_chg",&n,"n/F");
+    tree->Branch("Muon_dxy",f,"f[2]/F");
+    tree->Branch("Muon_pfRelIso03_chg",f,"f[2]/F");
     tree->Branch("nMuon",&n,"n/F");
-    tree->Branch("Muon_eta",&n,"n/F");
-    tree->Branch("Muon_charge",&n,"n/F");
-    tree->Branch("Muon_pt",&n,"n/F");
-    tree->Branch("Muon_phi",&n,"n/F");
-    tree->Branch("Muon_mass",&n,"n/F");
+    tree->Branch("Muon_eta",f,"f[2]/F");
+    tree->Branch("Muon_charge",v,"v[2]/I");
+    tree->Branch("Muon_pt",f,"f[2]/F");
+    tree->Branch("Muon_phi",f,"f[2]/F");
+    tree->Branch("Muon_mass",f,"f[2]/F");
     tree->Write(); 
     file.Close();
 
@@ -81,7 +82,7 @@ void testFilt(){
     int test12 = filterDf("datas/filedummy.txt", "datas/filedummy.txt", "MC.root", "dat.root");//two files with wrong extention
     int test13 = filterDf("root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola/0A55428E-3FFA-40D8-ABDE-BD877B402134.root", "datas/filedummy.txt", "MC.root", "dat.root");//second file with wrong extention
     int test14 = filterDf("datas/filedummy.txt", "root://eospublic.cern.ch//eos/opendata/cms/derived-data/NanoAODRun1/01-Jul-22/MonteCarlo11_Summer11LegDR_DYJetsToLL_M-50_7TeV-madgraph-pythia6-tauola/0A55428E-3FFA-40D8-ABDE-BD877B402134.root", "MC.root", "dat.root");//first file with wrong extention
-    
+  
     if(test0 == 2 && test1 == 2 && test2 == 2 && test3 == 3 && test4 == 3 && test5 == 3 && test11 == 0 && test6 == 1 && test7 == 1 && test8 == 1 && test9 == 1 && test10 == 1 && test12 == 1 && test13 == 1 && test14 == 1){
         std::cout << "Test passed!" << std::endl;
     }else{
