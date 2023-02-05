@@ -1,6 +1,6 @@
 #include "../include/afb.h"
 #include "../include/utilities.h"
-#include "../include/graphical_utilities.h"
+#include "../include/graphicalUtilities.h"
 #include <ROOT/RDataFrame.hxx>
 #include <ROOT/RVec.hxx>
 #include <Math/Vector4Dfwd.h>
@@ -103,20 +103,20 @@ void afb(std::string filepath_MC, std::string filepath_datas){
 
             //drawing histograms
             pad1->cd();
-            afbhist(df_2mu_MC1, df_2mu_datas1, 1, "#bf{0.0<|y_{#mu#mu}|<0.4}");
+            afbHist(df_2mu_MC1, df_2mu_datas1, 1, "#bf{0.0<|y_{#mu#mu}|<0.4}");
             pad2->cd();
-            afbhist(df_2mu_MC2, df_2mu_datas2, 2, "#bf{0.4<|y_{#mu#mu}|<0.8}");
+            afbHist(df_2mu_MC2, df_2mu_datas2, 2, "#bf{0.4<|y_{#mu#mu}|<0.8}");
             pad3->cd();
-            afbhist(df_2mu_MC3, df_2mu_datas3, 3, "#bf{0.8<|y_{#mu#mu}|<1.2}");
+            afbHist(df_2mu_MC3, df_2mu_datas3, 3, "#bf{0.8<|y_{#mu#mu}|<1.2}");
             pad4->cd();
-            afbhist(df_2mu_MC4, df_2mu_datas4, 4, "#bf{1.2<|y_{#mu#mu}|<1.6}");
+            afbHist(df_2mu_MC4, df_2mu_datas4, 4, "#bf{1.2<|y_{#mu#mu}|<1.6}");
             pad5->cd();
-            afbhist(df_2mu_MC5, df_2mu_datas5, 5, "#bf{1.6<|y_{#mu#mu}|<2.0}");
+            afbHist(df_2mu_MC5, df_2mu_datas5, 5, "#bf{1.6<|y_{#mu#mu}|<2.0}");
             pad6->cd();
-            afbhist(df_2mu_MC6, df_2mu_datas6, 6, "#bf{2.0<|y_{#mu#mu}|<2.4}");
+            afbHist(df_2mu_MC6, df_2mu_datas6, 6, "#bf{2.0<|y_{#mu#mu}|<2.4}");
 
             //saving histogram
-            save_histogram(c, "afb", "afb");
+            saveHistogram(c, "afb", "afb");
 
         }else{
             std::cerr << "Your file haven't the right columns" << std::endl;
