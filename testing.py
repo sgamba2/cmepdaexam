@@ -30,8 +30,8 @@ def process(choice, filepath_MC, filepath_datas, filename_MC_fil, filename_datas
     #only if fil is equal to 0 I can process the datas
     fil=0
     if(choice == 'y'):
-        ROOT.gInterpreter.ProcessLine('.L src/filter_df.cpp')
-        fil=ROOT.filter_df(filepath_MC, filepath_datas, filename_MC_fil, filename_datas_fil)
+        ROOT.gInterpreter.ProcessLine('.L src/filterDf.cpp')
+        fil=ROOT.filterDf(filepath_MC, filepath_datas, filename_MC_fil, filename_datas_fil)
    
     filename_MC_fil = 'datas/' + filename_MC_fil
     filename_datas_fil = 'datas/' + filename_datas_fil
@@ -42,28 +42,28 @@ def process(choice, filepath_MC, filepath_datas, filename_MC_fil, filename_datas
             print('Goodbye!')
             quit()
         if (testopt == '1'): 
-            ROOT.gInterpreter.ProcessLine('.L tests/test_filt.cpp')
-            ROOT.test_filt()
+            ROOT.gInterpreter.ProcessLine('.L tests/testFilt.cpp')
+            ROOT.testFilt()
             print('Goodbye!')
             quit()
         if (testopt == '2'): 
-            ROOT.gInterpreter.ProcessLine('.L tests/test_cos.cpp')
-            ROOT.test_cos(filename_MC_fil, filename_datas_fil)
+            ROOT.gInterpreter.ProcessLine('.L tests/testCos.cpp')
+            ROOT.testCos(filename_MC_fil, filename_datas_fil)
             print('Goodbye!')
             quit()
         if (testopt == '3'): 
-            ROOT.gInterpreter.ProcessLine('.L tests/test_energy.cpp') 
-            ROOT.test_energy(filename_MC_fil, filename_datas_fil)
+            ROOT.gInterpreter.ProcessLine('.L tests/testEnergy.cpp') 
+            ROOT.testEnergy(filename_MC_fil, filename_datas_fil)
             print('Goodbye!')
             quit()
         if (testopt == '4'):
-            ROOT.gInterpreter.ProcessLine('.L tests/test_energy_formulas.cpp')
-            ROOT.test_energy_formulas(filename_MC_fil, filename_datas_fil)
+            ROOT.gInterpreter.ProcessLine('.L tests/testEnergyFormulas.cpp')
+            ROOT.testEnergyFormulas(filename_MC_fil, filename_datas_fil)
             print('Goodbye!')
             quit()
         if (testopt == '5'):
-            ROOT.gInterpreter.ProcessLine('.L tests/test_operationhist.cpp')
-            ROOT.test_operationhist()
+            ROOT.gInterpreter.ProcessLine('.L tests/testOperationHist.cpp')
+            ROOT.testOperationHist()
             print('Goodbye!')
             quit()
 

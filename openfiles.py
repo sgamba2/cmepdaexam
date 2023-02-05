@@ -29,8 +29,8 @@ def process(choice, filepath_MC, filepath_datas, filename_MC_fil, filename_datas
     #only if fil is equal to 0 I can process the datas
     fil = 0
     if(choice == 'y'):
-        ROOT.gInterpreter.ProcessLine('.L src/filter_df.cpp')
-        fil=ROOT.filter_df(filepath_MC, filepath_datas, filename_MC_fil, filename_datas_fil)
+        ROOT.gInterpreter.ProcessLine('.L src/filterDf.cpp')
+        fil=ROOT.filterDf(filepath_MC, filepath_datas, filename_MC_fil, filename_datas_fil)
         
     filename_MC_fil = 'datas/' + filename_MC_fil
     filename_datas_fil = 'datas/' + filename_datas_fil
@@ -41,13 +41,13 @@ def process(choice, filepath_MC, filepath_datas, filename_MC_fil, filename_datas
             quit()
 
         if(analysis == 'cos'): 
-            ROOT.gInterpreter.ProcessLine('.L src/costheta_hist.cpp')
-            ROOT.costheta_hist(filename_MC_fil, filename_datas_fil)
+            ROOT.gInterpreter.ProcessLine('.L src/costheta.cpp')
+            ROOT.costheta(filename_MC_fil, filename_datas_fil)
             print('If the process was fine, you will find your files in images/costheta. Goodbye!')  
 
         if(analysis == 'dimspec'): 
-            ROOT.gInterpreter.ProcessLine('.L src/dimuon_spectrum_Z.cpp') 
-            ROOT.dimuon_spectrum_Z(filename_MC_fil, filename_datas_fil)
+            ROOT.gInterpreter.ProcessLine('.L src/dimuonSpectrumZ.cpp') 
+            ROOT.dimuonSpectrumZ(filename_MC_fil, filename_datas_fil)
             print('If the process was fine, you will find your files in images/dimuonspectrum. Goodbye!') 
 
         if(analysis == 'afb'): 
