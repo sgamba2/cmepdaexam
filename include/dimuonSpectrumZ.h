@@ -1,41 +1,41 @@
 /******************************************************************************
 * 
-* \file afb.cpp
-* \brief Creating afb histogram in function of dimuon mass
+* \file dimuonSpectrumZ.cpp
+* \brief Creating dimuon spectrum histogram of Z from filtered dataframe
 * 
 ******************************************************************************/
-#ifndef AFB_H
-#define AFB_H
+#ifndef DIMUONSPECTRUMZ_H
+#define DIMUONSPECTRUMZ_H
 
-#include "utilities.h"
 #include "graphicalUtilities.h"
+#include "utilities.h"
 #include <ROOT/RDataFrame.hxx>
 #include <ROOT/RVec.hxx>
 #include <Math/Vector4Dfwd.h>
 #include <Math/Vector4D.h>
 #include <TCanvas.h>
 #include <TH1D.h>
-#include <TH2D.h>
 #include <TLatex.h>
 #include <TStyle.h>
-#include <TROOT.h>
 #include <TLegend.h>
+#include <TPad.h>
 #include <filesystem>
 #include <string>
 #include <iostream>
 
 /******************************************************************************
 * 
-* \brief Creating afb histogram in function of dimuon mass. Firstly checks if in the dataframes exist and if
+* \brief Creating dimuon spectrum histogram of Z from filtered dataframe. Firstly checks if in the dataframes exist and if
 * there are the right columns, then creates all quantities necessary to the analysis, then makes 
-* six filters for the rapidity conditions and creates six histograms in one canvas, saving them in .pdf and .png
+* three filters for the rapidity conditions and creates three histograms, saving them in .pdf and .png
 * 
 * @param filepath_MC: file path of the dataframe of the MC datas
-* @param filepath_datas: file path of the dataframe of the RUN datas
-*
+* @param filepath_datas: file path of the dataframe of the Run datas
+* 
 * \return None
 * 
-******************************************************************************/
-void afb(std::string filepath_MC, std::string filepath_datas);
+*****************************************************************************/
+void dimuonSpectrumZ(std::string filepath_MC, std::string filepath_datas);
 
-#endif /* AFB_H */
+#endif /* DIMUON_SPECTRUM_Z_H */
+
