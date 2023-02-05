@@ -177,4 +177,4 @@ The default applied filters are on the following columns of the dataframes:
  
 
 ## Documentation
-If you want to see the documentation done by Doxygen, click [here](https://sgamba2.github.io/index.html)
+If you want to see the documentation done by Doxygen, click [here](https://sgamba2.github.io/index.html).
