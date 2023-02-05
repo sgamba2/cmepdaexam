@@ -4,13 +4,12 @@
 * \brief Testing if the sum of E1 and E2 is almost equal to Etot
 * 
 ******************************************************************************/
+#include "../include/utilities.h"
 #include <ROOT/RDataFrame.hxx>
 #include <cmath>
-#include "../include/utilities.h"
 #include <ROOT/RVec.hxx>
 #include <Math/Vector4Dfwd.h>
 #include <Math/Vector4D.h>
-#include <vector>
 #include <iostream>
 
 void testEnergy(std::string filepath_MC, std::string filepath_datas){

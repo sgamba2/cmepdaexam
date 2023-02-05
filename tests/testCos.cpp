@@ -10,7 +10,6 @@
 #include <ROOT/RVec.hxx>
 #include <Math/Vector4Dfwd.h>
 #include <Math/Vector4D.h>
-#include <vector>
 #include <iostream>
 
 void testCos(std::string filepath_MC, std::string filepath_datas){

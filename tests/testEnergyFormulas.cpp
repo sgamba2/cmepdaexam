@@ -4,13 +4,12 @@
 * \brief Testing if E_i^2=m^2+p_i^2
 * 
 ******************************************************************************/
+#include "../include/utilities.h"
 #include <ROOT/RDataFrame.hxx>
 #include <cmath>
-#include "../include/utilities.h"
 #include <ROOT/RVec.hxx>
 #include <Math/Vector4Dfwd.h>
 #include <Math/Vector4D.h>
-#include <vector>
 #include <iostream>
 
 void testEnergyFormulas(std::string filepath_MC, std::string filepath_datas){

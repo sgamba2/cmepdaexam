@@ -4,13 +4,12 @@
 * \brief Testing if the filter function works
 * 
 ******************************************************************************/
+#include "../src/filterDf.cpp"
 #include <ROOT/RDataFrame.hxx>
 #include <cmath>
-#include "../src/filterDf.cpp"
 #include <ROOT/RVec.hxx>
 #include <Math/Vector4Dfwd.h>
 #include <Math/Vector4D.h>
-#include <vector>
 #include <iostream>
 #include <filesystem>
 
