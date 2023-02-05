@@ -285,7 +285,7 @@ void dmMassHisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> d
    hist_datas->DrawClone("PESAME");
 
    //save histogram in ../images/dimuonspectrum/
-   saveHistogram(c, filename, "dimuonspectrum");
+   saveHistogram(c, filename, "dimuonspectrumZ");
 
 }
 
