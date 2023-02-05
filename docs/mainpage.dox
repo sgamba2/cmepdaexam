@@ -136,7 +136,7 @@
  * \image html dimuon_spectrum_Z2.png "Dimuon mass spectrum histogram with range rapidity from 0.8 to 1.2."
  * \image html dimuon_spectrum_Z3.png "Dimuon mass spectrum histogram with range rapidity from 1.6 to 1.8."
  *
- * A more detail description of the functions used it can be found in \c dimuon_spectrum_Z.h, \c utilities.h and \c graphical_utilities.h.
+ * A more detail description of the functions used it can be found in \c dimuonSpectrumZ.h, \c utilities.h and \c graphicalUtilities.h.
  * \subsection costheta cos(theta*)
  * This macro will do the normalized histograms of the angle of the negative muon in the Collins–Soper frame of the dimuon system.
  * First it will be created three columns of the dimuon four vector, first muon four vector and second muon four vector, passing the four column we have saved
@@ -154,7 +154,7 @@
  * \image html costheta2.png "Histogram of the angle of the negative muon in the Collins–Soper frame of the dimuon system with range rapidity from 0.8 to 1.2."
  * \image html costheta3.png "Histogram of the angle of the negative muon in the Collins–Soper frame of the dimuon systemm with range rapidity from 1.6 to 1.8."
  *
- * A more detail description of the functions used it can be found in \c costheta_hist.h , \c utilities.h and \c graphical_utilities.h.
+ * A more detail description of the functions used it can be found in \c costheta.h , \c utilities.h and \c graphicalUtilities.h.
  * \subsection afb Afb
  * This macro will do the 2D histogram of Afb in function of dimuon mass only of MC events.
  * First it will be created three columns of the dimuon four vector, first muon four vector and second muon four vector, passing the four column we have saved
@@ -166,7 +166,7 @@
  * The canvas is saved in the directory **images** and in the subdirectory **afb** as **afb.pdf** and **afb.png**,
  * If the directories don't exist, then the program will create them.
  *
- * A more detail description of the functions used it can be found in \c afb.h , \c utilities.h and \c graphical_utilities.h.
+ * A more detail description of the functions used it can be found in \c afb.h , \c utilities.h and \c graphicalUtilities.h.
  * 
  * We report our measurement of the asymmetry forward backward. We have drawn only th MC events.
  * \image html afb.png "Histogram of the asymmetry forward backward with six different ranges of rapidity."
@@ -255,35 +255,35 @@
  * 
  * \subsection test1 Test on filter function
  * Test on filter function handles the correct error given by the filter function. 
- * In this test we call \c filter_df(), with wrong path, empty dataframe, right dataframe, dataframe with few columns
+ * In this test we call \c filterDf(), with wrong path, empty dataframe, right dataframe, dataframe with few columns
  * to see if the error given by the function corresponds to our previsions.
  * It prints "Test passed!" everything was done correctly or "Test failed!".
- * A more detail description of the functions used it can be found in \c test_filt.cpp.
+ * A more detail description of the functions used it can be found in \c testFilt.cpp.
  *
  * \subsection test2 Test on costheta value
  * Test on costheta function handles if \f$|cos(\theta^*)|\f$, defined in \c utilities.h, is <1.
  * It creates all quantities in \c allquantities() and we check how many rows left with \f$|cos(\theta^*)|>1\f$.
  * It prints "Test passed!" if there are no rows left or "Test failed!".
- * A more detail description of the functions used it can be found in \c test_cos.cpp.
+ * A more detail description of the functions used it can be found in \c testCos.cpp.
  *
  * \subsection test3 Test on energy value
  * Test on energy values function handles if \f$E_1+E_2-E_{tot}\f$, defined in \c utilities.h, is less or higher than 0.01% of \f$E_{tot}\f$.
  * It creates all quantities in \c allquantities() and we check how many rows left with \f$|E_1+E_2-E_{tot}|>0.01\f$% \f$E_{tot}\f$.
  * It prints "Test passed!" if there are no rows left or "Test failed!".
- * A more detail description of the functions used it can be found in \c test_energy.cpp.
+ * A more detail description of the functions used it can be found in \c testEnergy.cpp.
  *
  * \subsection test4 Test on energy value formulas
  * Test on energy values function handles if \f$E_i^2=p_i^2+m^2\f$, defined in \c utilities.h, is less or higher than 0.01% of \f$E_i\f$.
  * It creates all quantities in \c allquantities() and we check how many rows left with \f$|E_i-(p_i^2+m^2)|>0.01\f$% \f$E_i\f$.
  * It prints "Test passed!" if there are no rows left or "Test failed!".
- * A more detail description of the functions used it can be found in \c test_energy_formulas.cpp.
+ * A more detail description of the functions used it can be found in \c testEnergyFormulas.cpp.
  *
  * \subsection test5 Test on operation histograms
- * Test on \c operationhist() function handles if the operations done on 4 different histograms have the correct result.
+ * Test on \c operationHist() function handles if the operations done on 4 different histograms have the correct result.
  * It creates four histograms and then four random variables. We have inserted the variables in four different bins of the four
  * histograms, rearranged to create new variables. Then we have test if the difference between the content of each bin and
  * the variable calculated (\f$var_{calc}\f$) as we expect is < 0.1%\f$var_{calc}\f$. Then the program checks if the content of each bin and
  * the variable calculated are concord.
  * It prints "Test passed!" if the statements are true or "Test failed!" if not.
- * A more detail description of the functions used it can be found in \c test_operationhist.cpp. 
+ * A more detail description of the functions used it can be found in \c testOperationHist.cpp. 
  */
