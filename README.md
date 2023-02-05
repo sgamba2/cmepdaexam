@@ -114,7 +114,7 @@ You can have some options:
  --filterRUN FILTERRUN If filter is y: Choose the path of your RUN dataframe 
  --MCfile MCFILE       Choose the name of your filtered MC dataframe in datas (add .root extension)
  --RUNfile RUNFILE     Choose the name of your filtered RUN dataframe in datas (add .root extension)
- --testopt TESTOPT     Which test do you want to do? 0: no test, 1: test on
+ --testopt TESTOPT     Which test do you want to do? 1: test on
                        filter function (no files needed), 2: costheta test
                        (files needed), 3: test on energy (files needed), 4:
                        test on energy formulas (files needed), 5: test on
@@ -164,8 +164,7 @@ You will be able to choose the test you want to do:
 - 2: test on costheta value; 
 - 3: test on energy value;
 - 4: test on energy formula value;
-- 5: test on operation histograms;
-- 0: quit.
+- 5: test on operation histograms.
  
 After a test your program will stop. If the test well ended there will be written "Test passed!".
 The default applied filters are on the following columns of the dataframes:
