@@ -49,7 +49,7 @@ def process(choice, filepath_MC, filepath_datas, filename_MC_fil, filename_datas
         if(analysis == 'dimspec'):
             ROOT.gInterpreter.ProcessLine('.L src/dimuonSpectrumZ.cpp')
             ROOT.dimuonSpectrumZ(filename_MC_fil, filename_datas_fil)
-            print('If the process was fine, you will find your files in images/dimuonspectrum. Goodbye!')
+            print('If the process was fine, you will find your files in images/dimuonspectrumZ. Goodbye!')
             quit()
 
         if(analysis == 'afb'):
