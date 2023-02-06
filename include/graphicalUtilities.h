@@ -134,6 +134,7 @@ void cosHisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_M
    hist_MC->SetLineColor(kOrange-3); 
    hist_MC->SetLineStyle(0);
    hist_datas->SetMarkerStyle(8);
+   hist_datas->SetLineColor(1); 
    hist_datas->SetStats(0);
 
    //draw the histogram
@@ -173,6 +174,7 @@ void cosHisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_M
    hist_datas->GetYaxis()->SetTitleOffset(0.27);
    hist_datas->GetXaxis()->SetTitleSize(0.12);
    hist_datas->GetXaxis()->SetTitleOffset(0.93);
+   hist_datas->SetLineColor(1); 
    hist_datas->SetStats(0);
    hist_datas->DrawClone("PESAME");
 
@@ -239,6 +241,7 @@ void dmMassHisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> d
    hist_MC->SetLineStyle(0);
    hist_datas->SetMarkerStyle(8);
    hist_datas->SetStats(0);
+   hist_datas->SetLineColor(1); 
 
    //draw the histogram
    hist_MC->DrawClone("HF3SAME");
@@ -272,6 +275,7 @@ void dmMassHisto(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> d
 
    //setting histogram properties
    pad2->SetGridy();
+   hist_datas->SetLineColor(1); 
    hist_datas->GetXaxis()->SetTitle("m_{#mu#mu} (GeV)");
    hist_datas->GetYaxis()->SetTitle("Data/MC");
    hist_datas->GetXaxis()->SetLabelSize(0.12);
