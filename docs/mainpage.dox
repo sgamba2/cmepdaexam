@@ -277,7 +277,7 @@
  * Test on \c operationHist() function handles if the operations done on 4 different histograms have the correct result.
  * It creates four histograms and then four random variables. We have inserted the variables in four different bins of the four
  * histograms, rearranged to create new variables. Then we have test if the difference between the content of each bin and
- * the variable calculated (\f$var_{calc}\f$) as we expect is < 0.1%\f$var_{calc}\f$. Then the program checks if the content of each bin and
+ * the variable calculated (\f$var_{calc}\f$) as we expect is < 0.01%\f$var_{calc}\f$. Then the program checks if the content of each bin and
  * the variable calculated are concord.
  * It prints "Test passed!" if the statements are true or "Test failed!" if not.
  * A more detail description of the functions used it can be found in \c testOperationHist.cpp. 
