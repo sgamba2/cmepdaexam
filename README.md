@@ -2,11 +2,11 @@
 
 # Study of the CMS Monte Carlo and Run open data for the dimuon system
 
-This C++/ROOT Library was created by Sara Gamba and Giulia Nigrelli for the Computing Methods
+This C++/ROOT software was created by Sara Gamba and Giulia Nigrelli for the Computing Methods
 for Experimental Physics and Data Analysis exam.
 
 # Introduction
-Using MC and Run datas of the dimuon events of CMS, the main goals of this library are essentially three:
+Using MC and Run datas of the dimuon events of CMS, the main goals of this software are essentially three:
 -the measurement of the Z resonance; 
 -the measurement of the angle of the negative muon in the Collins–Soper frame of the dimuon system;
 -the measurement of the forward-backward asymmetry.
