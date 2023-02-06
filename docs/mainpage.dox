@@ -139,7 +139,7 @@
  * This macro will do the normalized histograms of the angle of the negative muon in the Collins–Soper frame of the dimuon system.
  * First it will be created three columns of the dimuon four vector, first muon four vector and second muon four vector, passing the four column we have saved
  * to the function in **utilities.h**.
- * Then we will calculate the dimuon invariant mass and othe quantities foundamental to calculate \f$cos(\theta^*)\f$.
+ * Then we will calculate the dimuon invariant mass and other quantities foundamental to calculate \f$cos(\theta^*)\f$.
  * We have also calculated the rapidity in order to plot three different plots with different costraints of rapidity.
  * The MC datas will be plotted in yellow and the Run datas will be plotted as black points.
  * We normalized the histograms with the total number of the events of MC and Run datas.
@@ -154,10 +154,10 @@
  *
  * A more detail description of the functions used it can be found in \c costheta.h , \c utilities.h and \c graphicalUtilities.h.
  * \subsection afb Afb
- * This macro will do the 2D histogram of Afb in function of dimuon mass only of MC events.
+ * This macro will do the 2D histogram of Afb in function of dimuon mass of MC events and of RUN events.
  * First it will be created three columns of the dimuon four vector, first muon four vector and second muon four vector, passing the four column we have saved
  * to the function in **utilities.h**.
- * Then we will calculate the dimuon invariant mass and othe quantities foundamental to calculate \f$cos(\theta^*)\f$, \f$wd\f$ and \f$wn\f$ (variables you can find in the [article](https://arxiv.org/abs/1806.00863)).
+ * Then we will calculate the dimuon invariant mass and other quantities foundamental to calculate \f$cos(\theta^*)\f$, \f$wd\f$ and \f$wn\f$ (variables you can find in the [article](https://arxiv.org/abs/1806.00863)).
  * We have also calculated the rapidity in order to plot six different plots in one canvas with different costraints of rapidity.
  * The MC datas will be plotted as black points.
  *
