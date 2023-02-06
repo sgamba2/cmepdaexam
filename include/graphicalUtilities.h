@@ -328,9 +328,9 @@ void afbHist(ROOT::RDF::RInterface<ROOT::Detail::RDF::RJittedFilter, void> df_MC
 ******************************************************************************/
    //creating two filtered datframes, one with costheta=>0, one with costheta<0
    auto df_cm_MC = df_MC.Filter("costheta<0", "backward");
-   auto df_cp_MC = df_MC.Filter("costheta>=0", "forward");
+   auto df_cp_MC = df_MC.Filter("costheta>0", "forward");
    auto df_cm_datas = df_datas.Filter("costheta<0", "backward");
-   auto df_cp_datas = df_datas.Filter("costheta>=0", "forward");
+   auto df_cp_datas = df_datas.Filter("costheta>0", "forward");
 
    //creating report
    auto report_cm_MC = df_cm_MC.Report();
